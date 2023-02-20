@@ -123,7 +123,7 @@ function DoctorView() {
                     <tr>
                         <th>Name</th>
                         <th>Age</th>
-                        //<th>Appointments</th>
+                        <th>Appointments</th>
                         <th>Action</th>
                     </tr>
                 </thead>
