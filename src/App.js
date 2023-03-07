@@ -1,61 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
-import useJaneHopkins from './hooks/useJaneHopkins';
-import { NavLink } from 'react-router-dom';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import DoctorView from './JaneHopkins/DoctorView';
-import AdminView from './JaneHopkins/AdminView';
-import Home from './JaneHopkins/Home';
-
+import { CssBaseline, ThemeProvider } from "@mui/material";
+import { ColorModeContext, useMode } from "./theme";
+import { useState } from "react";
+import { Routes, Route } from "react-router-dom";
+import TopBar from "./scenes/global/TopBar";
+import SideBar from "./scenes/global/SideBar";
+import Dashboard from "./scenes/dashboard";
+import Team from "./scenes/team";
+import Form from "./scenes/form";
+import Calendar from "./scenes/calendar";
+import FAQ from "./scenes/faq";
+import Patient from "./scenes/patient";
 
 function App() {
-  const { entities } = useJaneHopkins();
-
-  const addPatient = async () => {
-    const addPatientResponse = await entities.patient.add({
-      name: "William",
-      dob: "January 14, 1995",
-      insuranceNumber: "432653143",
-    });
-    console.log(addPatientResponse);
-  };
+  const [theme, colorMode] = useMode();
+  const [isSidebar, setIsSidebar] = useState(true);
 
   return (
-    <div className="App">
-      <Router>
-        <header>
-          <nav>
-            <ul>
-              <li>
-                <NavLink to="/" exact={true.toString()}>Home</NavLink>
-              </li>
-              <li>
-                <NavLink to="/doctor" exact={true.toString()}>Doctor Profile</NavLink>
-              </li>
-              <li>
-                <NavLink to="/admin" exact={true.toString()}>Admin Profile</NavLink>
-              </li>
-            </ul>
-          </nav>
-        </header>
-        <main>
-          <Routes>
-            <Route exact path="/" element={<Home />} />
-            <Route path="/doctor" element={<DoctorView />} />
-            <Route path="/admin" element={<AdminView />} />
-          </Routes>
-        </main>
-        <button
-          onClick={() => {
-            addPatient();
-          }}
-        >
-          Add patient
-        </button>
-      </Router>
-    </div>
+    <ColorModeContext.Provider value={colorMode}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+          <div className="app">
+            <SideBar isSidebar={isSidebar} />
+              <main className="content">
+                <TopBar setIsSidebar={setIsSidebar} />
+                <Routes>
+                  <Route path="/" element={<Dashboard />} />
+                  <Route path="/team" element={<Team />} />
+                  <Route path="/form" element={<Form />} />
+                  <Route path="/faq" element={<FAQ />} />
+                  <Route path="/calendar" element={<Calendar />} />
+                  <Route path="/patient" element={<Patient />} />
+                </Routes>
+              </main>
+          </div>
+      </ThemeProvider>
+    </ColorModeContext.Provider>
   );
 }
 
 export default App;
-
