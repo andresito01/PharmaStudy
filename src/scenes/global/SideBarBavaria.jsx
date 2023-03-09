@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import { useState } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
@@ -34,7 +34,7 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
 };
 
 
-const SideBar = () => {
+const SideBarBavaria = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const [isCollapsed, setIsCollapsed] = useState(false);
@@ -82,7 +82,7 @@ const SideBar = () => {
                       variant="h3" color={colors.greenAccent[500]}
                       fontWeight="bold"
                     >
-                      JaneHopkins
+                      Bavaria
                     </Typography>
                     {/* <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
                       <MenuOutlinedIcon />
@@ -191,7 +191,7 @@ const SideBar = () => {
                   setSelected={setSelected}
                 />
                 <Item
-                  title="FDA"
+                  title="JaneHopkins"
                   to="/patientFDA"
                   icon={<LaunchIcon />}
                   selected={selected}
@@ -218,4 +218,4 @@ const SideBar = () => {
     );
 };
     
-export default SideBar;
+export default SideBarBavaria;

@@ -5,7 +5,7 @@ import Header from "../../components/Header";
 import useJaneHopkins from "../../hooks/useJaneHopkins"
 import React, { useEffect, useState } from 'react';
 
-const Patient = () => {
+const PatientFDA = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
 
@@ -84,9 +84,12 @@ const Patient = () => {
               <DataGrid checkboxSelection rows={patients} columns={columns} getRowId={getRowId} />
             </div>
           </Box>
+          <Box sx={{ display: 'none' }}>
+              {/* Your sidebar content goes here */}
+            </Box>
         </Box>
     );
 };
 
 
-export default Patient;
+export default PatientFDA;
