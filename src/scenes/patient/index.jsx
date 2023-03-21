@@ -15,7 +15,8 @@ const Patient = () => {
     const { entities } = useJaneHopkins();
     const listPatients = async () => {
       const { items } = await entities.patient.list();
-      setPatients(items);      
+      setPatients(items);
+      
     };
 
     useEffect(() => {

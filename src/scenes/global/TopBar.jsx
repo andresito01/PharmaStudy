@@ -1,5 +1,5 @@
 import { Box, IconButton, useTheme } from "@mui/material";
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import { ColorModeContext, tokens } from "../../theme";
 import InputBase from "@mui/material/InputBase";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
@@ -8,40 +8,14 @@ import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SearchIcon from "@mui/icons-material/Search";
-import { Link } from "react-router-dom";
-import { Typography } from "@mui/material";
 import useJaneHopkins from '../../hooks/useJaneHopkins';
 //Test
 import { mockPatientList } from '../../data/mockData';
-
-
 
 const TopBar = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const colorMode = useContext(ColorModeContext);
-
-    const [selected, setSelected] = useState("Dashboard");
-
-    const ViewLink = ({ title, to, selected, setSelected }) => {
-        const theme = useTheme();
-        const colors = tokens(theme.palette.mode);
-        return (
-            <Typography 
-                fontWeight="bold" 
-                variant="h2" 
-                active={selected === title}
-                style={{
-                    color: colors.greenAccent[500],
-                }}
-                onClick={() => setSelected(title)}
-                component={Link} 
-                to={to} 
-            >
-                {title}
-            </Typography>
-        );
-    };
 
     /* TEST ADD PATIENT 
     const { entities } = useJaneHopkins();
@@ -71,27 +45,6 @@ const TopBar = () => {
                 <SearchIcon />
                 </IconButton>
             </Box>
-            <Box 
-                display="flex"
-                gap={5}
-                sx={{
-                    alignItems: 'flex-start', justifyContent: 'flex-start', flexGrow: 1, ml: 3,
-                  }}
-            >
-                    <Box 
-                    >
-                        <ViewLink  to="/dashboard" title="JaneHopkins" selected={selected} setSelected={setSelected}/>
-                    </Box>
-                    <Box    
-                    >
-                        <ViewLink to="/dashboard" title="Bavaria" selected={selected} setSelected={setSelected}/>
-                    </Box>
-                    <Box   
-                    >
-                        <ViewLink  to="/dashboard" title="FDA" selected={selected} setSelected={setSelected}/>
-                    </Box>
-            </Box>
-   
 
             {/* ICONS */}
             <Box display="flex">
