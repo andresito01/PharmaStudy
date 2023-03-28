@@ -545,493 +545,532 @@ export const mockLineData = [
 
 export const mockPatientList = [
   {
-    "name": "William",
-    "patientPicture": "",
-    "dob": "January 14, 1995",
-    "insuranceNumber": "432653143",
-    "height": "5'7",
-    "weight": "178lbs",
-    "bloodPressure": "120/80",
-    "temperature": "98.6 F",
-    "oxygenSaturation": "98%",
-    "uuid": "",
-    "address": "123 Main St, Anytown USA",
-    "currentMedications": [
+    name: "William",
+    patientPicture: "",
+    dob: "January 14, 1995",
+    insuranceNumber: "432653143",
+    height: "5'7",
+    weight: "178lbs",
+    bloodPressure: "120/80",
+    temperature: "98.6 F",
+    oxygenSaturation: "98%",
+    uuid: "",
+    address: "123 Main St, Anytown USA",
+    currentMedications: [
       {
-        "medication": "Lipitor"
+        medication: "Lipitor",
       },
       {
-        "medication": "Aspirin"
-      }
+        medication: "Aspirin",
+      },
     ],
-    "familyHistory": "No significant family history.",
-    "currentlyEmployed": "Yes",
-    "currentlyInsured": "Yes",
-    "icdHealthCodes": [
+    familyHistory: "No significant family history.",
+    currentlyEmployed: "Yes",
+    currentlyInsured: "Yes",
+    icdHealthCodes: [
       {
-        "code": "J45.901"
+        code: "J45.901",
       },
       {
-        "code": "E11.9"
-      }
+        code: "E11.9",
+      },
     ],
-    "allergies": [
+    allergies: [
       {
-        "allergy": "Penicillin"
+        allergy: "Penicillin",
       },
       {
-        "allergy": "Peanuts"
-      }
+        allergy: "Peanuts",
+      },
     ],
-    "visits": [
+    visits: [
       {
-        "dateTime": "2023-03-01T10:30:00Z",
-        "notes": "Patient presents with symptoms of a cold. Prescribed rest and plenty of fluids.",
+        dateTime: "2023-03-01T10:30:00Z",
+        notes:
+          "Patient presents with symptoms of a cold. Prescribed rest and plenty of fluids.",
       },
       {
-        "dateTime": "2023-02-22T09:45:00Z",
-        "notes": "Patient presents with joint pain. Prescribed anti-inflammatory medication.",
-      }
-    ]
+        dateTime: "2023-02-22T09:45:00Z",
+        notes:
+          "Patient presents with joint pain. Prescribed anti-inflammatory medication.",
+      },
+    ],
   },
   {
-    "name": "Jimmy Harmington",
-    "patientPicture": "",
-    "dob": "June 30, 1980",
-    "insuranceNumber": "123456789",
-    "height": "6'0",
-    "weight": "185lbs",
-    "bloodPressure": "120/80",
-    "temperature": "98.6F",
-    "oxygenSaturation": "99%",
-    "uuid": "123e4567-e89b-12d3-a456-426655440000",
-    "address": "123 Main St, Anytown USA",
-    "currentMedications": [
-      {"medication": "Aspirin"},
-      {"medication": "Lipitor"}
-    ],
-    "familyHistory": "No significant family history",
-    "currentlyEmployed": "Yes",
-    "currentlyInsured": "Yes",
-    "icdHealthCodes": [
-      {"code": "J45.909"},
-      {"code": "E11.9"}
-    ],
-    "allergies": [
-      {"allergy": "Penicillin"},
-      {"allergy": "Bee stings"}
-    ],
-    "visits": [
+    name: "Jimmy Harmington",
+    patientPicture: "",
+    dob: "June 30, 1980",
+    insuranceNumber: "123456789",
+    height: "6'0",
+    weight: "185lbs",
+    bloodPressure: "120/80",
+    temperature: "98.6F",
+    oxygenSaturation: "99%",
+    uuid: "123e4567-e89b-12d3-a456-426655440000",
+    address: "123 Main St, Anytown USA",
+    currentMedications: [{ medication: "Aspirin" }, { medication: "Lipitor" }],
+    familyHistory: "No significant family history",
+    currentlyEmployed: "Yes",
+    currentlyInsured: "Yes",
+    icdHealthCodes: [{ code: "J45.909" }, { code: "E11.9" }],
+    allergies: [{ allergy: "Penicillin" }, { allergy: "Bee stings" }],
+    visits: [
       {
-        "dateTime": "2022-03-01T13:30:00.000Z",
-        "notes": "Patient reported feeling fatigued and dizzy",
-        "hivViralLoad": "Undetectable"
+        dateTime: "2022-03-01T13:30:00.000Z",
+        notes: "Patient reported feeling fatigued and dizzy",
+        hivViralLoad: "Undetectable",
       },
       {
-        "dateTime": "2022-03-08T14:15:00.000Z",
-        "notes": "Patient reported feeling better after increasing fluid intake",
-        "hivViralLoad": "Undetectable"
-      }
-    ]
+        dateTime: "2022-03-08T14:15:00.000Z",
+        notes: "Patient reported feeling better after increasing fluid intake",
+        hivViralLoad: "Undetectable",
+      },
+    ],
   },
   {
-    "name": "Sarah Smith",
-    "patientPicture": "",
-    "dob": "June 25, 1980",
-    "insuranceNumber": "123456789",
-    "height": "5'6",
-    "weight": "140lbs",
-    "bloodPressure": "120/80",
-    "temperature": "98.6 F",
-    "oxygenSaturation": "97%",
-    "uuid": "abc123",
-    "address": "123 Main St, Anytown USA",
-    "currentMedications": [
+    name: "Sarah Smith",
+    patientPicture: "",
+    dob: "June 25, 1980",
+    insuranceNumber: "123456789",
+    height: "5'6",
+    weight: "140lbs",
+    bloodPressure: "120/80",
+    temperature: "98.6 F",
+    oxygenSaturation: "97%",
+    uuid: "abc123",
+    address: "123 Main St, Anytown USA",
+    currentMedications: [
       {
-        "medication": "Aspirin"
+        medication: "Aspirin",
       },
       {
-        "medication": "Lisinopril"
-      }
+        medication: "Lisinopril",
+      },
     ],
-    "familyHistory": "No known family history of major illnesses",
-    "currentlyEmployed": "Yes",
-    "currentlyInsured": "Yes",
-    "icdHealthCodes": [
+    familyHistory: "No known family history of major illnesses",
+    currentlyEmployed: "Yes",
+    currentlyInsured: "Yes",
+    icdHealthCodes: [
       {
-        "code": "E11.9"
+        code: "E11.9",
       },
       {
-        "code": "I10"
-      }
+        code: "I10",
+      },
     ],
-    "allergies": [
+    allergies: [
       {
-        "allergy": "Penicillin"
-      }
+        allergy: "Penicillin",
+      },
     ],
-    "visits": [
+    visits: [
       {
-        "dateTime": "2022-03-01T09:00:00Z",
-        "notes": "Patient complains of headaches and dizziness. Prescribed acetaminophen and advised to get more rest.",
-        "hivViralLoad": ""
+        dateTime: "2022-03-01T09:00:00Z",
+        notes:
+          "Patient complains of headaches and dizziness. Prescribed acetaminophen and advised to get more rest.",
+        hivViralLoad: "",
       },
       {
-        "dateTime": "2022-02-01T10:00:00Z",
-        "notes": "Patient reports feeling well. Routine check-up completed.",
-        "hivViralLoad": ""
+        dateTime: "2022-02-01T10:00:00Z",
+        notes: "Patient reports feeling well. Routine check-up completed.",
+        hivViralLoad: "",
       },
       {
-        "dateTime": "2022-01-15T11:00:00Z",
-        "notes": "Patient reports sinus congestion and cough. Prescribed antibiotics and advised to get rest.",
-        "hivViralLoad": ""
-      }
-    ]
+        dateTime: "2022-01-15T11:00:00Z",
+        notes:
+          "Patient reports sinus congestion and cough. Prescribed antibiotics and advised to get rest.",
+        hivViralLoad: "",
+      },
+    ],
   },
   {
-    "name": "Samantha",
-    "patientPicture": "",
-    "dob": "October 2, 1988",
-    "insuranceNumber": "567891234",
-    "height": "5'5",
-    "weight": "150lbs",
-    "bloodPressure": "120/80",
-    "temperature": "98.6 F",
-    "oxygenSaturation": "97%",
-    "uuid": "456789",
-    "address": "123 Main St, Anytown USA",
-    "currentMedications": [
+    name: "Samantha",
+    patientPicture: "",
+    dob: "October 2, 1988",
+    insuranceNumber: "567891234",
+    height: "5'5",
+    weight: "150lbs",
+    bloodPressure: "120/80",
+    temperature: "98.6 F",
+    oxygenSaturation: "97%",
+    uuid: "456789",
+    address: "123 Main St, Anytown USA",
+    currentMedications: [
       {
-        "medication": "Lisinopril"
+        medication: "Lisinopril",
       },
       {
-        "medication": "Levothyroxine"
-      }
+        medication: "Levothyroxine",
+      },
     ],
-    "familyHistory": "Mother had breast cancer, father had heart disease",
-    "currentlyEmployed": "Yes",
-    "currentlyInsured": "No",
-    "icdHealthCodes": [
+    familyHistory: "Mother had breast cancer, father had heart disease",
+    currentlyEmployed: "Yes",
+    currentlyInsured: "No",
+    icdHealthCodes: [
       {
-        "code": "E11.9"
+        code: "E11.9",
       },
       {
-        "code": "I10"
-      }
+        code: "I10",
+      },
     ],
-    "allergies": [
+    allergies: [
       {
-        "allergy": "Penicillin"
-      }
+        allergy: "Penicillin",
+      },
     ],
-    "visits": [
+    visits: [
       {
-        "dateTime": "2022-02-28T10:30:00Z",
-        "notes": "Patient complained of headache and nausea. Prescribed Tylenol and advised to rest.",
-        "hivViralLoad": ""
+        dateTime: "2022-02-28T10:30:00Z",
+        notes:
+          "Patient complained of headache and nausea. Prescribed Tylenol and advised to rest.",
+        hivViralLoad: "",
       },
       {
-        "dateTime": "2022-03-15T14:15:00Z",
-        "notes": "Patient reported no significant issues. Annual checkup completed.",
-        "hivViralLoad": ""
-      }
-    ]
+        dateTime: "2022-03-15T14:15:00Z",
+        notes:
+          "Patient reported no significant issues. Annual checkup completed.",
+        hivViralLoad: "",
+      },
+    ],
   },
   {
-    "name": "Lyly",
-    "patientPicture": "https://example.com/patients/1234/picture.jpg",
-    "dob": "January 1, 1970",
-    "insuranceNumber": "123456789",
-    "height": "6'2",
-    "weight": "180lbs",
-    "bloodPressure": "130/85",
-    "temperature": "98.4 F",
-    "oxygenSaturation": "98%",
-    "uuid": "123456",
-    "address": "456 Oak St, Anytown USA",
-    "currentMedications": [
+    name: "Lyly",
+    patientPicture: "https://example.com/patients/1234/picture.jpg",
+    dob: "January 1, 1970",
+    insuranceNumber: "123456789",
+    height: "6'2",
+    weight: "180lbs",
+    bloodPressure: "130/85",
+    temperature: "98.4 F",
+    oxygenSaturation: "98%",
+    uuid: "123456",
+    address: "456 Oak St, Anytown USA",
+    currentMedications: [
       {
-        "medication": "Aspirin"
+        medication: "Aspirin",
       },
       {
-        "medication": "Lipitor"
-      }
+        medication: "Lipitor",
+      },
     ],
-    "familyHistory": "No significant family history.",
-    "currentlyEmployed": "Yes",
-    "currentlyInsured": "Yes",
-    "icdHealthCodes": [
+    familyHistory: "No significant family history.",
+    currentlyEmployed: "Yes",
+    currentlyInsured: "Yes",
+    icdHealthCodes: [
       {
-        "code": "J45.901"
+        code: "J45.901",
       },
       {
-        "code": "R05"
-      }
+        code: "R05",
+      },
     ],
-    "allergies": [
+    allergies: [
       {
-        "allergy": "None"
-      }
+        allergy: "None",
+      },
     ],
-    "visits": [
+    visits: [
       {
-        "dateTime": "2022-01-15T09:00:00Z",
-        "notes": "Annual checkup completed. Blood test results pending.",
-        "hivViralLoad": ""
+        dateTime: "2022-01-15T09:00:00Z",
+        notes: "Annual checkup completed. Blood test results pending.",
+        hivViralLoad: "",
       },
       {
-        "dateTime": "2022-03-01T15:30:00Z",
-        "notes": "Patient reported mild joint pain. Prescribed Ibuprofen and advised to monitor symptoms.",
-        "hivViralLoad": ""
-      }
-    ]
+        dateTime: "2022-03-01T15:30:00Z",
+        notes:
+          "Patient reported mild joint pain. Prescribed Ibuprofen and advised to monitor symptoms.",
+        hivViralLoad: "",
+      },
+    ],
   },
   {
-    "name": "Jarvan",
-    "patientPicture": "",
-    "dob": "January 1, 1970",
-    "insuranceNumber": "123456789",
-    "height": "6'2",
-    "weight": "180lbs",
-    "bloodPressure": "130/80",
-    "temperature": "98.0 F",
-    "oxygenSaturation": "99%",
-    "uuid": "987654",
-    "address": "456 Main St, Anytown USA",
-    "currentMedications": [
+    name: "Jarvan",
+    patientPicture: "",
+    dob: "January 1, 1970",
+    insuranceNumber: "123456789",
+    height: "6'2",
+    weight: "180lbs",
+    bloodPressure: "130/80",
+    temperature: "98.0 F",
+    oxygenSaturation: "99%",
+    uuid: "987654",
+    address: "456 Main St, Anytown USA",
+    currentMedications: [
       {
-        "medication": "Aspirin"
+        medication: "Aspirin",
       },
       {
-        "medication": "Lipitor"
-      }
+        medication: "Lipitor",
+      },
     ],
-    "familyHistory": "No significant family history.",
-    "currentlyEmployed": "Yes",
-    "currentlyInsured": "Yes",
-    "icdHealthCodes": [
+    familyHistory: "No significant family history.",
+    currentlyEmployed: "Yes",
+    currentlyInsured: "Yes",
+    icdHealthCodes: [
       {
-        "code": "Z00.00"
+        code: "Z00.00",
       },
       {
-        "code": "R10.4"
-      }
+        code: "R10.4",
+      },
     ],
-    "allergies": [
+    allergies: [
       {
-        "allergy": "None"
-      }
+        allergy: "None",
+      },
     ],
-    "visits": [
+    visits: [
       {
-        "dateTime": "2022-04-01T11:00:00Z",
-        "notes": "Patient presented with flu-like symptoms. Prescribed Tamiflu and advised to rest.",
-        "hivViralLoad": ""
+        dateTime: "2022-04-01T11:00:00Z",
+        notes:
+          "Patient presented with flu-like symptoms. Prescribed Tamiflu and advised to rest.",
+        hivViralLoad: "",
       },
       {
-        "dateTime": "2022-06-15T15:30:00Z",
-        "notes": "Patient reported no significant issues. Routine follow-up completed.",
-        "hivViralLoad": ""
-      }
-    ]
+        dateTime: "2022-06-15T15:30:00Z",
+        notes:
+          "Patient reported no significant issues. Routine follow-up completed.",
+        hivViralLoad: "",
+      },
+    ],
   },
   {
-    "name": "Emily Jones",
-    "patientPicture": "https://example.com/patient_images/emily_jones.png",
-    "dob": "June 1, 1990",
-    "insuranceNumber": "123456789",
-    "height": "5'8",
-    "weight": "130lbs",
-    "bloodPressure": "110/70",
-    "temperature": "98.2 F",
-    "oxygenSaturation": "99%",
-    "uuid": "987654",
-    "address": "456 Elm St, Anytown USA",
-    "currentMedications": [
+    name: "Emily Jones",
+    patientPicture: "https://example.com/patient_images/emily_jones.png",
+    dob: "June 1, 1990",
+    insuranceNumber: "123456789",
+    height: "5'8",
+    weight: "130lbs",
+    bloodPressure: "110/70",
+    temperature: "98.2 F",
+    oxygenSaturation: "99%",
+    uuid: "987654",
+    address: "456 Elm St, Anytown USA",
+    currentMedications: [
       {
-        "medication": "Metformin"
+        medication: "Metformin",
       },
       {
-        "medication": "Zoloft"
-      }
+        medication: "Zoloft",
+      },
     ],
-    "familyHistory": "No significant family history of illness.",
-    "currentlyEmployed": "Yes",
-    "currentlyInsured": "Yes",
-    "icdHealthCodes": [
+    familyHistory: "No significant family history of illness.",
+    currentlyEmployed: "Yes",
+    currentlyInsured: "Yes",
+    icdHealthCodes: [
       {
-        "code": "E78.5"
+        code: "E78.5",
       },
       {
-        "code": "G44.1"
-      }
+        code: "G44.1",
+      },
     ],
-    "allergies": [
+    allergies: [
       {
-        "allergy": "Shellfish"
-      }
+        allergy: "Shellfish",
+      },
     ],
-    "visits": [
+    visits: [
       {
-        "dateTime": "2022-08-10T11:00:00Z",
-        "notes": "Patient complained of persistent cough and fever. Tested positive for COVID-19 and prescribed medication to manage symptoms.",
-        "hivViralLoad": ""
+        dateTime: "2022-08-10T11:00:00Z",
+        notes:
+          "Patient complained of persistent cough and fever. Tested positive for COVID-19 and prescribed medication to manage symptoms.",
+        hivViralLoad: "",
       },
       {
-        "dateTime": "2023-02-27T09:45:00Z",
-        "notes": "Patient reported no significant issues. Annual checkup completed.",
-        "hivViralLoad": ""
-      }
-    ]
+        dateTime: "2023-02-27T09:45:00Z",
+        notes:
+          "Patient reported no significant issues. Annual checkup completed.",
+        hivViralLoad: "",
+      },
+    ],
   },
   {
-    "name": "Maria Rodriguez",
-    "patientPicture": "https://example.com/patient-pictures/maria-rodriguez.jpg",
-    "dob": "April 10, 1995",
-    "insuranceNumber": "0987654321",
-    "height": "5'2",
-    "weight": "120lbs",
-    "bloodPressure": "110/70",
-    "temperature": "98.1 F",
-    "oxygenSaturation": "99%",
-    "uuid": "234567",
-    "address": "456 Oak St, Anytown USA",
-    "currentMedications": [
+    name: "Maria Rodriguez",
+    patientPicture: "https://example.com/patient-pictures/maria-rodriguez.jpg",
+    dob: "April 10, 1995",
+    insuranceNumber: "0987654321",
+    height: "5'2",
+    weight: "120lbs",
+    bloodPressure: "110/70",
+    temperature: "98.1 F",
+    oxygenSaturation: "99%",
+    uuid: "234567",
+    address: "456 Oak St, Anytown USA",
+    currentMedications: [
       {
-        "medication": "Prozac"
+        medication: "Prozac",
       },
       {
-        "medication": "Xanax"
-      }
+        medication: "Xanax",
+      },
     ],
-    "familyHistory": "No known family history of serious illnesses",
-    "currentlyEmployed": "No",
-    "currentlyInsured": "Yes",
-    "icdHealthCodes": [
+    familyHistory: "No known family history of serious illnesses",
+    currentlyEmployed: "No",
+    currentlyInsured: "Yes",
+    icdHealthCodes: [
       {
-        "code": "F41.1"
+        code: "F41.1",
       },
       {
-        "code": "Z56.9"
-      }
+        code: "Z56.9",
+      },
     ],
-    "allergies": [
+    allergies: [
       {
-        "allergy": "Peanuts"
+        allergy: "Peanuts",
       },
       {
-        "allergy": "Pollen"
-      }
+        allergy: "Pollen",
+      },
     ],
-    "visits": [
+    visits: [
       {
-        "dateTime": "2022-06-10T09:00:00Z",
-        "notes": "Patient reported feeling anxious and depressed. Prescribed Prozac and referred to therapist.",
-        "hivViralLoad": ""
+        dateTime: "2022-06-10T09:00:00Z",
+        notes:
+          "Patient reported feeling anxious and depressed. Prescribed Prozac and referred to therapist.",
+        hivViralLoad: "",
       },
       {
-        "dateTime": "2022-09-25T16:30:00Z",
-        "notes": "Patient complained of allergy symptoms. Prescribed Claritin and advised to avoid peanuts and pollen.",
-        "hivViralLoad": ""
-      }
-    ]
+        dateTime: "2022-09-25T16:30:00Z",
+        notes:
+          "Patient complained of allergy symptoms. Prescribed Claritin and advised to avoid peanuts and pollen.",
+        hivViralLoad: "",
+      },
+    ],
   },
   {
-    "name": "Jennifer Lee",
-    "patientPicture": "https://example.com/jennifer-lee.jpg",
-    "dob": "July 17, 1990",
-    "insuranceNumber": "789012345",
-    "height": "5'8",
-    "weight": "135lbs",
-    "bloodPressure": "110/70",
-    "temperature": "97.9 F",
-    "oxygenSaturation": "98%",
-    "uuid": "678901",
-    "address": "456 Elm St, Anytown USA",
-    "currentMedications": [
+    name: "Jennifer Lee",
+    patientPicture: "https://example.com/jennifer-lee.jpg",
+    dob: "July 17, 1990",
+    insuranceNumber: "789012345",
+    height: "5'8",
+    weight: "135lbs",
+    bloodPressure: "110/70",
+    temperature: "97.9 F",
+    oxygenSaturation: "98%",
+    uuid: "678901",
+    address: "456 Elm St, Anytown USA",
+    currentMedications: [
       {
-        "medication": "Zoloft"
+        medication: "Zoloft",
       },
       {
-        "medication": "Simvastatin"
-      }
+        medication: "Simvastatin",
+      },
     ],
-    "familyHistory": "No significant family history.",
-    "currentlyEmployed": "Yes",
-    "currentlyInsured": "Yes",
-    "icdHealthCodes": [
+    familyHistory: "No significant family history.",
+    currentlyEmployed: "Yes",
+    currentlyInsured: "Yes",
+    icdHealthCodes: [
       {
-        "code": "R07.0"
+        code: "R07.0",
       },
       {
-        "code": "J45.909"
-      }
+        code: "J45.909",
+      },
     ],
-    "allergies": [
+    allergies: [
       {
-        "allergy": "None"
-      }
+        allergy: "None",
+      },
     ],
-    "visits": [
+    visits: [
       {
-        "dateTime": "2022-09-10T11:00:00Z",
-        "notes": "Patient reported mild chest pain. EKG and blood tests performed, no significant issues found.",
-        "hivViralLoad": ""
+        dateTime: "2022-09-10T11:00:00Z",
+        notes:
+          "Patient reported mild chest pain. EKG and blood tests performed, no significant issues found.",
+        hivViralLoad: "",
       },
       {
-        "dateTime": "2023-03-01T16:30:00Z",
-        "notes": "Patient received flu shot and discussed weight loss goals. No significant issues found.",
-        "hivViralLoad": ""
-      }
-    ]
+        dateTime: "2023-03-01T16:30:00Z",
+        notes:
+          "Patient received flu shot and discussed weight loss goals. No significant issues found.",
+        hivViralLoad: "",
+      },
+    ],
   },
   {
-    "name": "Emma Thompson",
-    "patientPicture": "https://example.com/patient_images/emma_thompson.png",
-    "dob": "January 25, 1979",
-    "insuranceNumber": "789012345",
-    "height": "5'8",
-    "weight": "135lbs",
-    "bloodPressure": "130/85",
-    "temperature": "97.9 F",
-    "oxygenSaturation": "98%",
-    "uuid": "987654",
-    "address": "456 Maple Ave, Anytown USA",
-    "currentMedications": [
+    name: "Emma Thompson",
+    patientPicture: "https://example.com/patient_images/emma_thompson.png",
+    dob: "January 25, 1979",
+    insuranceNumber: "789012345",
+    height: "5'8",
+    weight: "135lbs",
+    bloodPressure: "130/85",
+    temperature: "97.9 F",
+    oxygenSaturation: "98%",
+    uuid: "987654",
+    address: "456 Maple Ave, Anytown USA",
+    currentMedications: [
       {
-        "medication": "Metformin"
+        medication: "Metformin",
       },
       {
-        "medication": "Atorvastatin"
-      }
+        medication: "Atorvastatin",
+      },
     ],
-    "familyHistory": "No known family history of major medical conditions",
-    "currentlyEmployed": "Yes",
-    "currentlyInsured": "Yes",
-    "icdHealthCodes": [
+    familyHistory: "No known family history of major medical conditions",
+    currentlyEmployed: "Yes",
+    currentlyInsured: "Yes",
+    icdHealthCodes: [
       {
-        "code": "E78.5"
+        code: "E78.5",
       },
       {
-        "code": "F41.1"
-      }
+        code: "F41.1",
+      },
     ],
-    "allergies": [
+    allergies: [
       {
-        "allergy": "Shellfish"
-      }
+        allergy: "Shellfish",
+      },
     ],
-    "visits": [
+    visits: [
       {
-        "dateTime": "2022-11-10T09:45:00Z",
-        "notes": "Patient reported feeling fatigued and dizzy. Blood work ordered and follow-up appointment scheduled.",
-        "hivViralLoad": ""
+        dateTime: "2022-11-10T09:45:00Z",
+        notes:
+          "Patient reported feeling fatigued and dizzy. Blood work ordered and follow-up appointment scheduled.",
+        hivViralLoad: "",
       },
       {
-        "dateTime": "2023-03-02T11:30:00Z",
-        "notes": "Patient presented with mild cold symptoms. Prescribed cough medicine and advised to rest.",
-        "hivViralLoad": ""
-      }
-    ]
-  }    
+        dateTime: "2023-03-02T11:30:00Z",
+        notes:
+          "Patient presented with mild cold symptoms. Prescribed cough medicine and advised to rest.",
+        hivViralLoad: "",
+      },
+    ],
+  },
+];
+
+export const mockEligiblePatientList = [
+  {
+    uuid: "sfa2121asd",
+    doses: "2/5",
+    hivReading: "121",
+    status: "Active",
+    medication: "Generic",
+  },
+  {
+    uuid: "12kljfsdk",
+    doses: "5/5",
+    hivReading: "21",
+    status: "Done",
+    medication: "Bavaria",
+  },
+  {
+    uuid: "s3321asd",
+    doses: "1/5",
+    hivReading: "41",
+    status: "Active",
+    medication: "Generic",
+  },
+  {
+    uuid: "1dsafjfsdk",
+    doses: "4/5",
+    hivReading: "91",
+    status: "Active",
+    medication: "Bavaria",
+  },
 ];
