@@ -2,7 +2,7 @@ import { Box, Typography, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../../theme";
 import Header from "../../../components/Header";
-import useFDA from "../../../hooks/useFDA";
+import useFDA from "../../../hooks/useJaneHopkins";
 import React, { useEffect, useState } from 'react';
 
 const Patient = () => {
@@ -14,7 +14,7 @@ const Patient = () => {
 
     const { entities } = useFDA();
     const listEligiblePatients = async () => {
-      const { items } = await entities.eligiblePatient.list();
+      const { items } = await entities.patient.list();
       setEligiblePatients(items);
       
     };
@@ -27,7 +27,7 @@ const Patient = () => {
 
     const columns = [
         { 
-          field: "_uuid", 
+          field: "uuid", 
           headerName: "UUID",
           flex: 1,
         },
@@ -86,7 +86,7 @@ const Patient = () => {
             }}
           >
             <div style={{ height: '100%', width: '100%' }}>
-              <DataGrid checkboxSelection rows={eligiblePatients} columns={columns} getRowId={getRowId} />
+              <DataGrid checkboxSelection rows={eligiblePatients} columns={columns} getRowId={getRowId} /> 
             </div>
           </Box>
         </Box>
