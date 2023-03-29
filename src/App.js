@@ -30,7 +30,7 @@ function App() {
           <Routes>
             <Route path="/" element={<ViewNavigation />} />
             <Route path="/janehopkins" element={<JaneHopkinsView />}>
-              <Route path="" element={<Dashboard />} />
+              <Route path="" element={<JaneHopkinsPatient />} />
               <Route path="team" element={<Team />} />
               <Route path="form" element={<Form />} />
               <Route path="faq" element={<FAQ />} />
