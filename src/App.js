@@ -3,7 +3,6 @@ import { ColorModeContext, useMode } from "./theme";
 import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import TopBar from "./scenes/global/TopBar";
-import SideBar from "./JaneHopkins/SideBar";
 import Dashboard from "./scenes/dashboard";
 import Team from "./scenes/team";
 import Form from "./scenes/form";
@@ -13,6 +12,7 @@ import FAQ from "./scenes/faq";
 import JaneHopkinsPatient from "./scenes/patient";
 import ViewNavigation from "./ViewNavigation.js";
 import JaneHopkinsView from "./JaneHopkins/JaneHopkinsView.js";
+import AddPatientJaneHopkins from "./scenes/addPatient";
 // FDA Imports
 import FDAView from "./FDA/FDAView.js";
 import FDAPatient from "./FDA/scenes/patient";
@@ -36,7 +36,7 @@ function App() {
               <Route path="faq" element={<FAQ />} />
               <Route path="calendar" element={<Calendar />} />
               <Route path="patient" element={<JaneHopkinsPatient />} />
-              <Route path="invoices" />
+              <Route path="addpatient" element={<AddPatientJaneHopkins />}/>
             </Route>
             <Route path="/fda" element={<FDAView />}>
               <Route path="" element={<Dashboard />} />
