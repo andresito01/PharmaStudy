@@ -2,7 +2,7 @@ import { Box, Typography, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../../theme";
 import Header from "../../../components/Header";
-import useFDA from "../../../hooks/useFDA";
+import useFDA from "../../../hooks/useJaneHopkins";
 import React, { useEffect, useState } from 'react';
 
 const Patient = () => {
@@ -90,7 +90,7 @@ const Patient = () => {
             }}
           >
             <div style={{ height: '100%', width: '100%' }}>
-              <DataGrid checkboxSelection rows={eligiblePatients} columns={columns} getRowId={getRowId} />
+              <DataGrid checkboxSelection rows={eligiblePatients} columns={columns} getRowId={getRowId} /> 
             </div>
           </Box>
         </Box>
