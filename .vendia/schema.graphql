@@ -288,6 +288,7 @@ input Self_Patient_ConditionInput_ {
   height: Vendia_ModelStringInput_
   _icdHealthCodesItem: Self_Patient_icdHealthCodes_icdHealthCodesItem_ConditionInput_
   insuranceNumber: Vendia_ModelStringInput_
+  isEligible: Vendia_ModelBooleanInput_
   name: Vendia_ModelStringInput_
   oxygenSaturation: Vendia_ModelStringInput_
   patientPicture: Vendia_ModelStringInput_
@@ -313,6 +314,7 @@ input Self_Patient_FilterInput_ {
   height: Vendia_ModelStringInput_
   _icdHealthCodesItem: Self_Patient_icdHealthCodes_icdHealthCodesItem_FilterInput_
   insuranceNumber: Vendia_ModelStringInput_
+  isEligible: Vendia_ModelBooleanInput_
   name: Vendia_ModelStringInput_
   oxygenSaturation: Vendia_ModelStringInput_
   patientPicture: Vendia_ModelStringInput_
@@ -342,6 +344,7 @@ type Self_Patient {
   height: String
   icdHealthCodes: [Self_Patient_icdHealthCodes_icdHealthCodesItem]
   insuranceNumber: String
+  isEligible: Boolean
   name: String
   oxygenSaturation: String
   patientPicture: String
@@ -366,6 +369,7 @@ type Self_Patient_Partial_ {
   height: String
   icdHealthCodes: [Self_Patient_icdHealthCodes_icdHealthCodesItem_Partial_]
   insuranceNumber: String
+  isEligible: Boolean
   name: String
   oxygenSaturation: String
   patientPicture: String
@@ -410,6 +414,7 @@ input Self_Patient_Input_ {
   height: String
   icdHealthCodes: [Self_Patient_icdHealthCodes_icdHealthCodesItem_Input_]
   insuranceNumber: String
+  isEligible: Boolean
   name: String
   oxygenSaturation: String
   patientPicture: String
@@ -431,6 +436,7 @@ input Self_Patient_UpdateInput_ {
   height: String
   icdHealthCodes: [Self_Patient_icdHealthCodes_icdHealthCodesItem_UpdateInput_]
   insuranceNumber: String
+  isEligible: Boolean
   name: String
   oxygenSaturation: String
   patientPicture: String
@@ -452,6 +458,7 @@ input Self_Patient_PartialInput_ {
   height: String
   icdHealthCodes: [Self_Patient_icdHealthCodes_icdHealthCodesItem_PartialInput_]
   insuranceNumber: String
+  isEligible: Boolean
   name: String
   oxygenSaturation: String
   patientPicture: String

@@ -14,9 +14,13 @@ const Patient = () => {
 
     const { entities } = useFDA();
     const listEligiblePatients = async () => {
-      const { items } = await entities.eligiblePatient.list();
-      setEligiblePatients(items);
-      
+      const { items } = await entities.patient.list();
+      console.log(items);
+      // Filter for eligible patients will need to be changed to be called from a smart contract. For now making a quick call to check that isEligible value is set to true.
+      const filterForEligiblePatients = Object.values(items).filter((patient) => {
+        return patient.name === "Malik";
+      })
+      setEligiblePatients(filterForEligiblePatients);
     };
 
     useEffect(() => {
@@ -27,17 +31,17 @@ const Patient = () => {
 
     const columns = [
         { 
-          field: "_uuid", 
-          headerName: "UUID",
+          field: "_id", 
+          headerName: "ID",
           flex: 1,
         },
         {
-          field: "doses",
-          headerName: "DOSES",
+          field: "name",
+          headerName: "Name",
           flex: 1,
         },
         {
-          field: "hivReading",
+          field: "hivViralLoad",
           headerName: "HIV READING",
           flex: 1,
         },

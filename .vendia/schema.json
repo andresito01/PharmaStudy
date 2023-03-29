@@ -110,6 +110,9 @@
                 }
               }
             }
+          },
+          "isEligible": {
+            "type": "boolean"
           }
         }
       }
