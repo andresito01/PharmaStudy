@@ -17,7 +17,26 @@ const AddPatientJaneHopkins = () => {
 
    const addPatient = async (values) => {
        const addPatientResponse = await entities.patient.add({
-        name: values.firstName,
+        name: values.firstName + " " + values.lastName,
+        patientPicture: values.patientPicture,
+        dob: values.dob,
+        insuranceNumber: values.insuranceNumber,
+        height: values.height,
+        weight: values.weight,
+        bloodPressure: values.bloodPressure,
+        // bloodType: values.bloodType,
+        temperature: values.temperature,
+        oxygenSaturation: values.oxygenSaturation,
+        uuid: values.uuid,
+        address: values.address,      
+        // currentMedications: values.currentMedications,
+        familyHistory: values.familyHistory,
+        currentlyEmployed: values.currentlyEmployed,
+        currentlyInsured: values.currentlyInsured,
+        // icd: values.icd,
+        // allergies: values.allergies,
+       // hiv: values.hiv,
+        
       });
    };
     
@@ -59,7 +78,7 @@ const AddPatientJaneHopkins = () => {
                 name="firstName"
                 error={!!touched.firstName && !!errors.firstName}
                 helperText={touched.firstName && errors.firstName}
-                sx={{ gridColumn: "span 2" }}
+                sx={{ gridColumn: "span 1" }}
               />
               <TextField
                 fullWidth
@@ -72,60 +91,210 @@ const AddPatientJaneHopkins = () => {
                 name="lastName"
                 error={!!touched.lastName && !!errors.lastName}
                 helperText={touched.lastName && errors.lastName}
+                sx={{ gridColumn: "span 1" }}
+              />
+             
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="Patient Picture Link"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.patientPicture}
+                name="patientPicture"
                 sx={{ gridColumn: "span 2" }}
               />
               <TextField
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Email"
+                label="DOB"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.email}
-                name="email"
-                error={!!touched.email && !!errors.email}
-                helperText={touched.email && errors.email}
-                sx={{ gridColumn: "span 4" }}
+                value={values.dob}
+                name="dob"
+                sx={{ gridColumn: "span 1" }}
               />
               <TextField
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Contact Number"
+                label="Height"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.contact}
-                name="contact"
-                error={!!touched.contact && !!errors.contact}
-                helperText={touched.contact && errors.contact}
-                sx={{ gridColumn: "span 4" }}
+                value={values.height}
+                name="height"
+                sx={{ gridColumn: "span 1" }}
               />
               <TextField
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Address 1"
+                label="Blood Pressure"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.address1}
-                name="address1"
-                error={!!touched.address1 && !!errors.address1}
-                helperText={touched.address1 && errors.address1}
-                sx={{ gridColumn: "span 4" }}
+                value={values.bloodPressure}
+                name="bloodPressure"
+                sx={{ gridColumn: "span 1" }}
               />
               <TextField
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Address 2"
+                label="Blood Type"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.address2}
-                name="address2"
-                error={!!touched.address2 && !!errors.address2}
-                helperText={touched.address2 && errors.address2}
-                sx={{ gridColumn: "span 4" }}
+                value={values.bloodType}
+                name="bloodType"
+                sx={{ gridColumn: "span 1" }}
               />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="Insurance Number"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.insuranceNumber}
+                name="insuranceNumber"
+                sx={{ gridColumn: "span 1" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="Weight"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.weight}
+                name="weight"
+                sx={{ gridColumn: "span 1" }}
+              />
+              
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="Temperature"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.temperature}
+                name="temperature"
+                sx={{ gridColumn: "span 1" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="Oxygen Saturation"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.oxygenSaturation}
+                name="oxygenSaturation"
+                sx={{ gridColumn: "span 1" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="UUID"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.uuid}
+                name="uuid"
+                sx={{ gridColumn: "span 2" }}
+              />
+               <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="Allergies"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.allergies}
+                name="allergies"
+                sx={{ gridColumn: "span 2" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="Address"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.address}
+                name="address"
+                error={!!touched.address && !!errors.address}
+                helperText={touched.address && errors.address}
+                sx={{ gridColumn: "span 2" }}
+              /> 
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="Current medications"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.currentMedications}
+                name="currentMedications"
+                sx={{ gridColumn: "span 2" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="Currently employed"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.currentlyEmployed}
+                name="currentlyEmployed"
+                sx={{ gridColumn: "span 1" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="Currently insured"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.currentlyInsured}
+                name="currentlyInsured"
+                sx={{ gridColumn: "span 1" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="Family history"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.familyHistory}
+                name="familyHistory"
+                sx={{ gridColumn: "span 2" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="ICD health codes"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.icd}
+                name="icd"
+                sx={{ gridColumn: "3/4" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="HIV Viral Load"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.hiv}
+                name="hiv"
+                sx={{ gridColumn: "4/4" }}
+              /> 
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="secondary" variant="contained">
@@ -145,20 +314,28 @@ const phoneRegExp =
 const checkoutSchema = yup.object().shape({
   firstName: yup.string().required("required"),
   lastName: yup.string().required("required"),
-  email: yup.string().email("invalid email").required("required"),
-  contact: yup
-    .string()
-    .matches(phoneRegExp, "Phone number is not valid")
-    .required("required"),
-  address1: yup.string().required("required"),
+  address: yup.string().required("required"),
 });
 const initialValues = {
   firstName: "",
   lastName: "",
-  email: "",
-  contact: "",
-  address1: "",
-  address2: "",
+  dob: "",
+  insuranceNumber: "",
+  height: "",
+  weight: "",
+  bloodPressure: "",
+  bloodType: "",
+  temperature: "",
+  oxygenSaturation: "",
+  uuid: "",
+  address: "",
+  allergies: "",
+  currentMedications: "",
+  familyHistory: "",
+  currentlyEmployed: "",
+  currentlyInsured: "",
+  icd: "",
+  hiv: "",
 };
 
 export default AddPatientJaneHopkins;
