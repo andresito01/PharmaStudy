@@ -7,10 +7,12 @@ import useJaneHopkins from "../../hooks/useJaneHopkins";
 import Snackbar from '@mui/material/Snackbar';
 import { Alert } from '@mui/material';
 import * as React from 'react';
+import { useRef } from 'react';
 
 
 const AddPatientJaneHopkins = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
+  const formRef = useRef();
 
   const handleFormSubmit = (values) => {
     console.log(values);
@@ -54,6 +56,7 @@ const AddPatientJaneHopkins = () => {
       });
       if(addPatientResponse?.transaction?._id != null){
         handleClick();
+        formRef.current.resetForm();
       }
    };
     
@@ -63,6 +66,7 @@ const AddPatientJaneHopkins = () => {
       <Header title="ADD PATIENT" subtitle="Create a New Patient Profile" />
 
       <Formik
+        innerRef={formRef}
         onSubmit={handleFormSubmit}
         initialValues={initialValues}
         validationSchema={checkoutSchema}
