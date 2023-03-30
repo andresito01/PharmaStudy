@@ -32,6 +32,8 @@ const AddPatientJaneHopkins = () => {
    const { entities } = useJaneHopkins();
 
    const addPatient = async (values) => {
+      const icdString = values.icd;
+      const icdArray = icdString.split(",").map((icdCode) => ({ code: icdCode.trim() })); // convert each string into an ICD object with the 'code' property
        const addPatientResponse = await entities.patient.add({
         name: values.firstName + " " + values.lastName,
         patientPicture: values.patientPicture,
@@ -48,8 +50,8 @@ const AddPatientJaneHopkins = () => {
         // currentMedications: values.currentMedications,
         familyHistory: values.familyHistory,
         currentlyEmployed: values.currentlyEmployed,
-        currentlyInsured: values.currentlyInsured,
-        // icd: values.icd,
+        currentlyInsured: values.currentlyInsured,        
+        icdHealthCodes: icdArray,
         // allergies: values.allergies,
         // hiv: values.hiv,
       });
@@ -127,7 +129,7 @@ const AddPatientJaneHopkins = () => {
               />
               <TextField
                 fullWidth
-                variant="standard"
+                variant="filled"
                 type="text"
                 label="DOB"
                 onBlur={handleBlur}

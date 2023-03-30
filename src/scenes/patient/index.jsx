@@ -1,10 +1,9 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import useJaneHopkins from "../../hooks/useJaneHopkins";
 import React, { useEffect, useState } from 'react';
-import Button from '@mui/material/Button';
 import SplitButton from "../../components/SplitButton";
 
 const Patient = () => {
@@ -34,7 +33,6 @@ const Patient = () => {
 
     const handleSelectionChange = (selectionModel) => {
       setSelectedRows(selectionModel);
-      //console.log(selectedRows);
     };
 
     const handleDeleteClick = async () => {
