@@ -9,6 +9,8 @@ import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import HomeIcon from '@mui/icons-material/Home';
+import { Routes, Route, Link } from "react-router-dom";
+
 //Test
 import { mockPatientList } from '../../data/mockData';
 
@@ -20,6 +22,10 @@ const TopBar = () => {
     function backToHome() {
         window.location.href = '/';
     }
+
+    const LinkCSS = {
+        color: "white",
+    };
 
     return (
         <Box display="flex" justifyContent="space-between" sx={{ height: 60 }} p={1}>
@@ -38,10 +44,12 @@ const TopBar = () => {
                     <SearchIcon />
                     </IconButton>
                 </Box>
-                <IconButton onClick={backToHome}>
+                <IconButton> 
+                    <Link style={LinkCSS} to={"/"}>
                     <HomeIcon
                         sx={{ flex: 1, fontSize: 28 }}
                     /> 
+                    </Link>
                 </IconButton>
             </Box>
 
