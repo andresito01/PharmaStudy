@@ -24,9 +24,9 @@ export default function SplitButton({ toggleSelectionBox }) {
     setSelectedIndex(index);
     setOpen(false);
     if (index === 0) {
-        toggleSelectionBox(0);
+        toggleSelectionBox(false);
     } else {
-        toggleSelectionBox(1);
+        toggleSelectionBox(true);
     }
   };
 

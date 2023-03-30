@@ -11,6 +11,7 @@ const Patient = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const [checkboxSelection, setCheckboxSelection] = React.useState(true);
+    const [selectedRows, setSelectedRows] = useState([]);
 
     const [patients, setPatients] = useState([]);
     console.log(patients);
@@ -19,7 +20,6 @@ const Patient = () => {
     const listPatients = async () => {
       const { items } = await entities.patient.list();
       setPatients(items);
-      
     };
 
     useEffect(() => {
@@ -32,14 +32,24 @@ const Patient = () => {
 
     const getRowId = (row) => row._id;
 
-    const handleDeletePatient = async () => {
-      const rows = selectedRows.values();
-      for (const row of rows) {
-        await entities.patient.remove(row._id);
+    const handleSelectionChange = (selectionModel) => {
+      setSelectedRows(selectionModel);
+      //console.log(selectedRows);
+    };
+
+    const handleDeleteClick = async () => {
+      for (const id of selectedRows) {
+        const response = await entities.patient.remove(id);
+        // handle response as needed
+        //console.log(id);
+        if (response.success) {
+          setPatients(patients.filter(patient => patient.id !== id));
+
+        }
       }
       setSelectedRows([]);
       listPatients();
-    }
+    };
 
     const columns = [
         { 
@@ -102,12 +112,12 @@ const Patient = () => {
             <Button
               color="custom" variant="contained"
               sx={{ mb: 2 }}
-              onClick={() => handleDeletePatient()}
+              onClick={() => handleDeleteClick()}
             >
               {checkboxSelection ? 'Edit Patient' : 'Delete Patient'}
             </Button>
             <div style={{ height: '100%', width: '100%' }}>
-              <DataGrid checkboxSelection={checkboxSelection} rows={patients} columns={columns} getRowId={getRowId} />
+              <DataGrid checkboxSelection={checkboxSelection} rows={patients} columns={columns} getRowId={getRowId} onSelectionModelChange={handleSelectionChange}/>
             </div>
           </Box>
         </Box>

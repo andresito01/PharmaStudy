@@ -53,10 +53,9 @@ const TopBar = () => {
                     <SearchIcon />
                     </IconButton>
                 </Box>
-                <IconButton>
+                <IconButton onClick={backToHome}>
                     <HomeIcon
                         sx={{ flex: 1, fontSize: 28 }}
-                        onClick={backToHome}
                     /> 
                 </IconButton>
             </Box>
