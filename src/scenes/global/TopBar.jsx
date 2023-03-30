@@ -9,6 +9,8 @@ import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import HomeIcon from '@mui/icons-material/Home';
+import { Routes, Route, Link } from "react-router-dom";
+
 //Test
 import { mockPatientList } from '../../data/mockData';
 
@@ -17,31 +19,20 @@ const TopBar = () => {
     const colors = tokens(theme.palette.mode);
     const colorMode = useContext(ColorModeContext);
 
-    /* TEST ADD PATIENT 
-    const { entities } = useJaneHopkins();
-
-    const addPatient = async (patientData) => {
-        const addPatientResponse = await entities.patient.add(patientData);
-    };
-    // const addPatient = async () => {
-    //     const response = await entities.patient.remove("01866901-70ee-8e21-5ea9-dbdd67850f61");
-    // };
-    
-     mockPatientList.forEach(async (patient) => {
-         await addPatient(patient);
-       });
-    /************************************/ 
-
     function backToHome() {
         window.location.href = '/';
     }
 
+    const LinkCSS = {
+        color: "white",
+    };
+
     return (
-        <Box display="flex" justifyContent="space-between" p={2}>
+        <Box display="flex" justifyContent="space-between" sx={{ height: 60 }} p={1}>
             {/* SEARCH BAR */}
             <Box
                  display="flex" justifyContent="space-between" p={2}
-                 sx={{ alignItems: 'flex-end' }}
+                 sx={{ alignItems: 'center' }}
             >
                 <Box
                     display="flex"
@@ -53,11 +44,13 @@ const TopBar = () => {
                     <SearchIcon />
                     </IconButton>
                 </Box>
-                 <HomeIcon
-                    sx={{ ml: 1.5, flex: 1, fontSize: 28 }}
-                    onClick={backToHome}
-                /> 
-                
+                <IconButton> 
+                    <Link style={LinkCSS} to={"/"}>
+                    <HomeIcon
+                        sx={{ flex: 1, fontSize: 28 }}
+                    /> 
+                    </Link>
+                </IconButton>
             </Box>
 
             {/* ICONS */}
