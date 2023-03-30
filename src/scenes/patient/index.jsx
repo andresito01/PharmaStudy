@@ -107,15 +107,8 @@ const Patient = () => {
               },
             }}
           >
-            <SplitButton toggleSelectionBox={toggleSelectionBox}>
+            <SplitButton toggleSelectionBox={toggleSelectionBox} handleDeleteClick={handleDeleteClick}>
             </SplitButton>
-            <Button
-              color="custom" variant="contained"
-              sx={{ mb: 2 }}
-              onClick={() => handleDeleteClick()}
-            >
-              {checkboxSelection ? 'Edit Patient' : 'Delete Patient'}
-            </Button>
             <div style={{ height: '100%', width: '100%' }}>
               <DataGrid checkboxSelection={checkboxSelection} rows={patients} columns={columns} getRowId={getRowId} onSelectionModelChange={handleSelectionChange}/>
             </div>

@@ -11,13 +11,18 @@ import MenuList from '@mui/material/MenuList';
 
 const options = ['Edit patient', 'Delete Patient', 'Add Appointment'];
 
-export default function SplitButton({ toggleSelectionBox }) {
+export default function SplitButton({ toggleSelectionBox, handleDeleteClick }) {
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
   const [selectedIndex, setSelectedIndex] = React.useState(1);
 
   const handleClick = () => {
     console.info(`You clicked ${options[selectedIndex]}`);
+    if (selectedIndex === 1) {
+        handleDeleteClick();
+    } else {
+        
+    }
   };
 
   const handleMenuItemClick = (event, index) => {
