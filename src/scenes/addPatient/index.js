@@ -4,6 +4,10 @@ import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
 import useJaneHopkins from "../../hooks/useJaneHopkins";
+import Snackbar from '@mui/material/Snackbar';
+import { Alert } from '@mui/material';
+import * as React from 'react';
+
 
 const AddPatientJaneHopkins = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
@@ -11,6 +15,17 @@ const AddPatientJaneHopkins = () => {
   const handleFormSubmit = (values) => {
     console.log(values);
     addPatient(values);
+  };
+
+  const [open, setOpen] = React.useState(false);
+  const [addSuccess, setAddSuccess] = React.useState(false);
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
    const { entities } = useJaneHopkins();
@@ -36,8 +51,10 @@ const AddPatientJaneHopkins = () => {
         // icd: values.icd,
         // allergies: values.allergies,
         // hiv: values.hiv,
-        
       });
+      if(addPatientResponse?.transaction?._id != null){
+        handleClick();
+      }
    };
     
 
@@ -297,9 +314,16 @@ const AddPatientJaneHopkins = () => {
               /> 
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
-              <Button type="submit" color="custom" variant="contained">
+              <Button type="submit" color="custom" variant="contained" 
+                       //onClick={handleClick}
+              >
                 Add New Patient
               </Button>
+              <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                  Patient has been added!
+                </Alert>
+              </Snackbar>
             </Box>
           </form>
         )}

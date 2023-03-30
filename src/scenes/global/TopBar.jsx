@@ -17,21 +17,6 @@ const TopBar = () => {
     const colors = tokens(theme.palette.mode);
     const colorMode = useContext(ColorModeContext);
 
-    /* TEST ADD PATIENT 
-    const { entities } = useJaneHopkins();
-
-    const addPatient = async (patientData) => {
-        const addPatientResponse = await entities.patient.add(patientData);
-    };
-    // const addPatient = async () => {
-    //     const response = await entities.patient.remove("01866901-70ee-8e21-5ea9-dbdd67850f61");
-    // };
-    
-     mockPatientList.forEach(async (patient) => {
-         await addPatient(patient);
-       });
-    /************************************/ 
-
     function backToHome() {
         window.location.href = '/';
     }

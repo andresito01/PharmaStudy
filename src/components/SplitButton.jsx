@@ -9,7 +9,7 @@ import Popper from '@mui/material/Popper';
 import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
 
-const options = ['Edit patient', 'Delete Patient', 'Add Appointment'];
+const options = ['Edit patient', 'Delete Patient', 'Add Patient'];
 
 export default function SplitButton({ toggleSelectionBox, handleDeleteClick }) {
   const [open, setOpen] = React.useState(false);
@@ -21,7 +21,7 @@ export default function SplitButton({ toggleSelectionBox, handleDeleteClick }) {
     if (selectedIndex === 1) {
         handleDeleteClick();
     } else {
-        
+
     }
   };
 
@@ -30,8 +30,10 @@ export default function SplitButton({ toggleSelectionBox, handleDeleteClick }) {
     setOpen(false);
     if (index === 0) {
         toggleSelectionBox(false);
-    } else {
+    } else if (index === 1) {
         toggleSelectionBox(true);
+    } else if (index === 2) {
+        window.location.href = "/janehopkins/addpatient";
     }
   };
 
@@ -87,7 +89,7 @@ export default function SplitButton({ toggleSelectionBox, handleDeleteClick }) {
                   {options.map((option, index) => (
                     <MenuItem
                       key={option}
-                      disabled={index === 2}
+                      //disabled={index === 2}
                       selected={index === selectedIndex}
                       onClick={(event) => handleMenuItemClick(event, index)}
                     >

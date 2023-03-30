@@ -40,12 +40,6 @@ const Patient = () => {
     const handleDeleteClick = async () => {
       for (const id of selectedRows) {
         const response = await entities.patient.remove(id);
-        // handle response as needed
-        //console.log(id);
-        if (response.success) {
-          setPatients(patients.filter(patient => patient.id !== id));
-
-        }
       }
       setSelectedRows([]);
       listPatients();
