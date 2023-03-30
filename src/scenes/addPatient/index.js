@@ -20,7 +20,6 @@ const AddPatientJaneHopkins = () => {
   };
 
   const [open, setOpen] = React.useState(false);
-  const [addSuccess, setAddSuccess] = React.useState(false);
 
   const handleClick = () => {
     setOpen(true);
@@ -128,7 +127,7 @@ const AddPatientJaneHopkins = () => {
               />
               <TextField
                 fullWidth
-                variant="filled"
+                variant="standard"
                 type="text"
                 label="DOB"
                 onBlur={handleBlur}
@@ -336,8 +335,8 @@ const AddPatientJaneHopkins = () => {
   );
 };
 
-const phoneRegExp =
-  /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
+// const phoneRegExp =
+//   /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
 
 const checkoutSchema = yup.object().shape({
   firstName: yup.string().required("required"),
