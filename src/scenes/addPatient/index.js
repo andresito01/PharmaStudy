@@ -35,7 +35,7 @@ const AddPatientJaneHopkins = () => {
         currentlyInsured: values.currentlyInsured,
         // icd: values.icd,
         // allergies: values.allergies,
-       // hiv: values.hiv,
+        // hiv: values.hiv,
         
       });
    };
@@ -297,7 +297,7 @@ const AddPatientJaneHopkins = () => {
               /> 
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
-              <Button type="submit" color="secondary" variant="contained">
+              <Button type="submit" color="custom" variant="contained">
                 Add New Patient
               </Button>
             </Box>

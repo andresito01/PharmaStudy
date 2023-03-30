@@ -139,6 +139,11 @@ export const tokens = (mode) => ({
                 main: colors.grey[500],
                 light: colors.grey[100],
               },
+              custom: {
+                dark: colors.blueAccent[700],
+                main: colors.blueAccent[600],
+                light: colors.blueAccent[100],
+              },
               background: {
                 default: colors.primary[500],
               },
@@ -155,6 +160,11 @@ export const tokens = (mode) => ({
                 dark: colors.grey[700],
                 main: colors.grey[500],
                 light: colors.grey[100],
+              },
+              custom: {
+                dark: colors.blueAccent[700],
+                main: colors.blueAccent[600],
+                light: colors.blueAccent[100],
               },
               background: {
                 default: "#fcfcfc",

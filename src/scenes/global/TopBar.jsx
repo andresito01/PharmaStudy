@@ -37,11 +37,11 @@ const TopBar = () => {
     }
 
     return (
-        <Box display="flex" justifyContent="space-between" p={2}>
+        <Box display="flex" justifyContent="space-between" sx={{ height: 60 }} p={1}>
             {/* SEARCH BAR */}
             <Box
                  display="flex" justifyContent="space-between" p={2}
-                 sx={{ alignItems: 'flex-end' }}
+                 sx={{ alignItems: 'center' }}
             >
                 <Box
                     display="flex"
@@ -53,11 +53,12 @@ const TopBar = () => {
                     <SearchIcon />
                     </IconButton>
                 </Box>
-                 <HomeIcon
-                    sx={{ ml: 1.5, flex: 1, fontSize: 28 }}
-                    onClick={backToHome}
-                /> 
-                
+                <IconButton>
+                    <HomeIcon
+                        sx={{ flex: 1, fontSize: 28 }}
+                        onClick={backToHome}
+                    /> 
+                </IconButton>
             </Box>
 
             {/* ICONS */}

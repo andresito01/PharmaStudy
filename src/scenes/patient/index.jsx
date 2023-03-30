@@ -4,10 +4,13 @@ import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import useJaneHopkins from "../../hooks/useJaneHopkins";
 import React, { useEffect, useState } from 'react';
+import Button from '@mui/material/Button';
+import SplitButton from "../../components/SplitButton";
 
 const Patient = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
+    const [checkboxSelection, setCheckboxSelection] = React.useState(true);
 
     const [patients, setPatients] = useState([]);
     console.log(patients);
@@ -23,7 +26,20 @@ const Patient = () => {
       listPatients();
     }, []);
 
+    const toggleSelectionBox = (value) => {
+      setCheckboxSelection(value);
+    };
+
     const getRowId = (row) => row._id;
+
+    const handleDeletePatient = async () => {
+      const rows = selectedRows.values();
+      for (const row of rows) {
+        await entities.patient.remove(row._id);
+      }
+      setSelectedRows([]);
+      listPatients();
+    }
 
     const columns = [
         { 
@@ -50,10 +66,10 @@ const Patient = () => {
       ];
 
       return (
-        <Box m="20px">
+        <Box m="40px">
           <Header title="Patient List" />
           <Box
-            m="40px 0 0 0"
+            m="20px 0 0 0"
             height="75vh"
             sx={{
               "& .MuiDataGrid-root": {
@@ -81,8 +97,17 @@ const Patient = () => {
               },
             }}
           >
+            <SplitButton toggleSelectionBox={toggleSelectionBox}>
+            </SplitButton>
+            <Button
+              color="custom" variant="contained"
+              sx={{ mb: 2 }}
+              onClick={() => handleDeletePatient()}
+            >
+              {checkboxSelection ? 'Edit Patient' : 'Delete Patient'}
+            </Button>
             <div style={{ height: '100%', width: '100%' }}>
-              <DataGrid checkboxSelection rows={patients} columns={columns} getRowId={getRowId} />
+              <DataGrid checkboxSelection={checkboxSelection} rows={patients} columns={columns} getRowId={getRowId} />
             </div>
           </Box>
         </Box>
