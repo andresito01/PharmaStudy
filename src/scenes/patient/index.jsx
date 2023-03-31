@@ -5,6 +5,8 @@ import Header from "../../components/Header";
 import useJaneHopkins from "../../hooks/useJaneHopkins";
 import React, { useEffect, useState } from 'react';
 import SplitButton from "../../components/SplitButton";
+import { useNavigate } from "react-router-dom";
+
 
 const Patient = () => {
     const theme = useTheme();
@@ -41,6 +43,12 @@ const Patient = () => {
       }
       setSelectedRows([]);
       listPatients();
+    };
+
+    const navigate = useNavigate();
+    const handleRowClick = (rowParams) => {
+      const patientId = rowParams.row._id;
+      navigate(`/janehopkins/patient/${patientId}`);
     };
 
     const columns = [
@@ -102,7 +110,14 @@ const Patient = () => {
             <SplitButton toggleSelectionBox={toggleSelectionBox} handleDeleteClick={handleDeleteClick}>
             </SplitButton>
             <div style={{ height: '100%', width: '100%' }}>
-              <DataGrid checkboxSelection={checkboxSelection} rows={patients} columns={columns} getRowId={getRowId} onSelectionModelChange={handleSelectionChange}/>
+              <DataGrid 
+                checkboxSelection={checkboxSelection} 
+                rows={patients} 
+                columns={columns} 
+                getRowId={getRowId} 
+                onSelectionModelChange={handleSelectionChange} 
+                onRowClick={handleRowClick}
+              />
             </div>
           </Box>
         </Box>

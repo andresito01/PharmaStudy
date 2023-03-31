@@ -13,6 +13,7 @@ import JaneHopkinsPatient from "./scenes/patient";
 import ViewNavigation from "./ViewNavigation.js";
 import JaneHopkinsView from "./JaneHopkins/JaneHopkinsView.js";
 import AddPatientJaneHopkins from "./scenes/addPatient";
+import PatientInfo from "./JaneHopkins/PatientInfo";
 // FDA Imports
 import FDAView from "./FDA/FDAView.js";
 import FDAPatient from "./FDA/scenes/patient";
@@ -37,6 +38,7 @@ function App() {
               <Route path="calendar" element={<Calendar />} />
               <Route path="patient" element={<JaneHopkinsPatient />} />
               <Route path="addpatient" element={<AddPatientJaneHopkins />}/>
+              <Route path="patient/:patientId" element={<PatientInfo />} />
             </Route>
             <Route path="/fda" element={<FDAView />}>
               <Route path="" element={<Dashboard />} />
