@@ -2,25 +2,24 @@ import { Box, Typography, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../../theme";
 import Header from "../../../components/Header";
-import useFDA from "../../../hooks/useJaneHopkins";
+import useFDA from "../../../hooks/useFDA";
 import React, { useEffect, useState } from 'react';
 
 const Patient = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
 
-    const [eligiblePatients, setEligiblePatients] = useState([]);
-    console.log(eligiblePatients);
+    const [eligiblePatients, setEligiblePatients] = useState([])
 
     const { entities } = useFDA();
     const listEligiblePatients = async () => {
       const { items } = await entities.patient.list();
-      console.log(items);
       // Filter for eligible patients will need to be changed to be called from a smart contract. For now making a quick call to check that isEligible value is set to true.
-      const filterForEligiblePatients = Object.values(items).filter((patient) => {
-        return patient.name === "Malik";
-      })
-      setEligiblePatients(filterForEligiblePatients);
+      // const filterForEligiblePatients = Object.values(items).filter((patient) => {
+      //   return patient.name === "Malik";
+      // })
+      setEligiblePatients(items);
+      console.log(items);
     };
 
     useEffect(() => {
@@ -36,8 +35,8 @@ const Patient = () => {
           flex: 1,
         },
         {
-          field: "name",
-          headerName: "Name",
+          field: "uuid",
+          headerName: "UUID",
           flex: 1,
         },
         {

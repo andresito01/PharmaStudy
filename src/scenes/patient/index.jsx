@@ -22,6 +22,7 @@ const Patient = () => {
       setPatients(items);
     };
 
+
     useEffect(() => {
       listPatients();
     }, []);

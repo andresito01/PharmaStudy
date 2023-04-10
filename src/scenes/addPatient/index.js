@@ -4,11 +4,10 @@ import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
 import useJaneHopkins from "../../hooks/useJaneHopkins";
-import Snackbar from '@mui/material/Snackbar';
-import { Alert } from '@mui/material';
-import * as React from 'react';
-import { useRef } from 'react';
-
+import Snackbar from "@mui/material/Snackbar";
+import { Alert } from "@mui/material";
+import * as React from "react";
+import { useRef } from "react";
 
 const AddPatientJaneHopkins = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
@@ -30,10 +29,78 @@ const AddPatientJaneHopkins = () => {
     setOpen(false);
   };
 
-   const { entities } = useJaneHopkins();
+  const { entities } = useJaneHopkins();
 
-   const addPatient = async (values) => {
-       const addPatientResponse = await entities.patient.add({
+  const addPatient = async (values) => {
+    const icdString = values.icd;
+    const icdArray = icdString
+      .split(",")
+      .map((icdCode) => ({ code: icdCode.trim() })); // convert each string into an ICD object with the 'code' property
+    // Determine Eligible Patients
+    // Exclude ICD-10 Pregnancy codes
+    // Exclude DOB greater than 1/1/2005
+    const patientDOBMinimumAge = new Date("01/01/2005");
+    const patientDOB = new Date(values.dob);
+    const ineligibleICD = "O00–O99";
+    let eligibilityStatus = null;
+
+    // Check for ineligible ICD Health Code - O00–O99
+    console.log(icdArray);
+    const patientIneligibleICD = icdArray.find(
+      (icdHealthCode) => icdHealthCode.code === ineligibleICD
+    );
+    console.log(patientIneligibleICD);
+
+    console.log(patientDOB.getTime() > patientDOBMinimumAge.getTime());
+
+    if (
+      patientDOB.getTime() < patientDOBMinimumAge.getTime() &&
+      patientIneligibleICD === undefined
+    ) {
+      eligibilityStatus = true;
+    } else {
+      eligibilityStatus = false;
+    }
+
+    // Read and Write Restrictions on FDA and Bavaria Nodes
+    // PII hidden from FDA and Bavaria
+    let nodePermissions = null;
+    eligibilityStatus === true
+      ? (nodePermissions = {
+          aclInput: {
+            acl: [
+              {
+                principal: {
+                  nodes: ["FDA", "Bavaria"],
+                },
+                operations: ["READ"],
+                path: "uuid",
+              },
+              {
+                principal: {
+                  nodes: ["FDA", "Bavaria"],
+                },
+                operations: ["READ"],
+                path: "isEligible",
+              },
+            ],
+          },
+        })
+      : (nodePermissions = {
+          aclInput: {
+            acl: [
+              {
+                principal: {
+                  nodes: [],
+                },
+                operations: ["READ"],
+              },
+            ],
+          },
+        });
+
+    const addPatientResponse = await entities.patient.add(
+      {
         name: values.firstName + " " + values.lastName,
         patientPicture: values.patientPicture,
         dob: values.dob,
@@ -45,21 +112,24 @@ const AddPatientJaneHopkins = () => {
         temperature: values.temperature,
         oxygenSaturation: values.oxygenSaturation,
         uuid: values.uuid,
-        address: values.address,      
+        address: values.address,
         // currentMedications: values.currentMedications,
         familyHistory: values.familyHistory,
         currentlyEmployed: values.currentlyEmployed,
         currentlyInsured: values.currentlyInsured,
-        // icd: values.icd,
+        icdHealthCodes: icdArray,
         // allergies: values.allergies,
         // hiv: values.hiv,
-      });
-      if(addPatientResponse?.transaction?._id != null){
-        handleClick();
-        formRef.current.resetForm();
-      }
-   };
-    
+        isEligible: eligibilityStatus,
+      },
+      nodePermissions
+    );
+    console.log(addPatientResponse);
+    if (addPatientResponse?.transaction?._id != null) {
+      handleClick();
+      formRef.current.resetForm();
+    }
+  };
 
   return (
     <Box m="20px">
@@ -114,7 +184,7 @@ const AddPatientJaneHopkins = () => {
                 helperText={touched.lastName && errors.lastName}
                 sx={{ gridColumn: "span 1" }}
               />
-             
+
               <TextField
                 fullWidth
                 variant="filled"
@@ -192,7 +262,7 @@ const AddPatientJaneHopkins = () => {
                 name="weight"
                 sx={{ gridColumn: "span 1" }}
               />
-              
+
               <TextField
                 fullWidth
                 variant="filled"
@@ -226,7 +296,7 @@ const AddPatientJaneHopkins = () => {
                 name="uuid"
                 sx={{ gridColumn: "span 2" }}
               />
-               <TextField
+              <TextField
                 fullWidth
                 variant="filled"
                 type="text"
@@ -249,7 +319,7 @@ const AddPatientJaneHopkins = () => {
                 error={!!touched.address && !!errors.address}
                 helperText={touched.address && errors.address}
                 sx={{ gridColumn: "span 2" }}
-              /> 
+              />
               <TextField
                 fullWidth
                 variant="filled"
@@ -315,16 +385,27 @@ const AddPatientJaneHopkins = () => {
                 value={values.hiv}
                 name="hiv"
                 sx={{ gridColumn: "4/4" }}
-              /> 
+              />
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
-              <Button type="submit" color="custom" variant="contained" 
-                       //onClick={handleClick}
+              <Button
+                type="submit"
+                color="custom"
+                variant="contained"
+                //onClick={handleClick}
               >
                 Add New Patient
               </Button>
-              <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-                <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+              <Snackbar
+                open={open}
+                autoHideDuration={6000}
+                onClose={handleClose}
+              >
+                <Alert
+                  onClose={handleClose}
+                  severity="success"
+                  sx={{ width: "100%" }}
+                >
                   Patient has been added!
                 </Alert>
               </Snackbar>
@@ -336,8 +417,7 @@ const AddPatientJaneHopkins = () => {
   );
 };
 
-const phoneRegExp =
-  /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
+const phoneRegExp = /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
 
 const checkoutSchema = yup.object().shape({
   firstName: yup.string().required("required"),
