@@ -27,6 +27,7 @@ const PatientInfo = () => {
         <p>Name: {patient.name}</p>
         <p>DOB: {patient.dob}</p>
         <p>Insurance Number: {patient.insuranceNumber}</p>
+        <p>ICD Health Codes: {patient.icdHealthCodes.map(icdCode => icdCode.code).join(", ")}</p>
       </div>
     );
 //     return (
