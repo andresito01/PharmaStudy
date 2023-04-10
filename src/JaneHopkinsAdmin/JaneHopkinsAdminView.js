@@ -1,11 +1,11 @@
 import { Outlet } from "react-router-dom";
-import SideBar from "./SideBar";
+import SideBar from "../JaneHopkinsAdmin/SideBar";
 
-function JaneHopkinsView() {
+function JaneHopkinsAdminView() {
 
   return (
     <div
-      className="JaneHopkinsView"
+      className="JaneHopkinsAdminView"
       style={{ display: "flex", position: "relative", width: "100%" }}
     >
       <SideBar isSidebar={true} />
@@ -16,4 +16,4 @@ function JaneHopkinsView() {
   );
 }
 
-export default JaneHopkinsView;
+export default JaneHopkinsAdminView;
