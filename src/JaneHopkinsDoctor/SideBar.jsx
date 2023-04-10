@@ -120,7 +120,7 @@ const SideBar = () => {
               <Box paddingLeft={isCollapsed ? undefined : "10%"}>
                 <Item
                   title="Dashboard"
-                  to="/janehopkins"
+                  to="/janehopkinsdoctor"
                   icon={<HomeOutlinedIcon />}
                   selected={selected}
                   setSelected={setSelected}
@@ -135,21 +135,21 @@ const SideBar = () => {
                 </Typography>               
                 <Item
                   title="View Patient"
-                  to="/janehopkins/patient"
+                  to="/janehopkinsdoctor/patient"
                   icon={<ContactsOutlinedIcon />}
                   selected={selected}
                   setSelected={setSelected}
                 />
                 <Item
                   title="Add Patient"
-                  to="/janehopkins/addpatient"
+                  to="/janehopkinsdoctor/addpatient"
                   icon={<PersonAddIcon />}
                   selected={selected}
                   setSelected={setSelected}
                 />   
                 <Item
                   title="Calendar"
-                  to="/janehopkins/calendar"
+                  to="/janehopkinsdoctor/calendar"
                   icon={<CalendarTodayOutlinedIcon />}
                   selected={selected}
                   setSelected={setSelected}
@@ -163,14 +163,14 @@ const SideBar = () => {
                 </Typography>
                 <Item
                   title="Manage Team"
-                  to="/janehopkins/team"
+                  to="/janehopkinsdoctor/team"
                   icon={<PeopleOutlinedIcon />}
                   selected={selected}
                   setSelected={setSelected}
                 />
                 <Item
                   title="Create New User"
-                  to="/janehopkins/form"
+                  to="/janehopkinsdoctor/form"
                   icon={<PersonOutlinedIcon />}
                   selected={selected}
                   setSelected={setSelected}
@@ -184,7 +184,7 @@ const SideBar = () => {
                 </Typography>
                 <Item
                   title="FAQ Page"
-                  to="/janehopkins/faq"
+                  to="/janehopkinsdoctor/faq"
                   icon={<HelpOutlineOutlinedIcon />}
                   selected={selected}
                   setSelected={setSelected}
