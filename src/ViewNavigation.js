@@ -1,19 +1,6 @@
-import { CssBaseline, ThemeProvider } from "@mui/material";
-import { ColorModeContext, useMode } from "./theme";
-import { useState } from "react";
-import { Routes, Route, Link } from "react-router-dom";
-import TopBar from "./scenes/global/TopBar";
-import SideBar from "./JaneHopkins/SideBar";
-import Dashboard from "./scenes/dashboard";
-import Team from "./scenes/team";
-import Form from "./scenes/form";
-import Calendar from "./scenes/calendar";
-import FAQ from "./scenes/faq";
-import Patient from "./scenes/patient";
+import { Link } from "react-router-dom";
 
 function ViewNavigation() {
-  const [theme, colorMode] = useMode();
-  const [isSidebar, setIsSidebar] = useState(true);
 
   const LinkCSS = {
     color: "white",
@@ -33,8 +20,11 @@ function ViewNavigation() {
         gap: "2rem",
       }}
     >
-      <Link style={LinkCSS} to={"/janehopkins"}>
-        Jane Hopkins
+      <Link style={LinkCSS} to={"/janehopkinsdoctor"}>
+        Jane Hopkins Doctor
+      </Link>
+      <Link style={LinkCSS} to={"/janehopkinsadmin"}>
+        Jane Hopkins Admin
       </Link>
       <Link style={LinkCSS} to={"/fda"}>
         FDA

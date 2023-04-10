@@ -19,7 +19,6 @@ const AddPatientJaneHopkins = () => {
   };
 
   const [open, setOpen] = React.useState(false);
-  const [addSuccess, setAddSuccess] = React.useState(false);
 
   const handleClick = () => {
     setOpen(true);
@@ -31,76 +30,116 @@ const AddPatientJaneHopkins = () => {
 
   const { entities } = useJaneHopkins();
 
+  let addPatientResponse;
+  const pregnancyCodes = [
+    "O00",
+    "O01",
+    "O02",
+    "O03",
+    "O04",
+    "O05",
+    "O06",
+    "O07",
+    "O08",
+    "O09",
+    "O10",
+    "O11",
+    "O12",
+    "O13",
+    "O14",
+    "O15",
+    "O16",
+    "O20",
+    "O21",
+    "O22",
+    "O23",
+    "O24",
+    "O25",
+    "O26",
+    "O28",
+    "O29",
+    "O30",
+    "O31",
+    "O32",
+    "O33",
+    "O34",
+    "O35",
+    "O36",
+    "O37",
+    "O38",
+    "O39",
+    "O40",
+    "O41",
+    "O42",
+    "O43",
+    "O44",
+    "O45",
+    "O46",
+    "O47",
+    "O48",
+    "O49",
+    "O50",
+    "O51",
+    "O52",
+    "O53",
+    "O54",
+    "O55",
+    "O56",
+    "O57",
+    "O58",
+    "O59",
+    "O60",
+    "O61",
+    "O62",
+    "O63",
+    "O64",
+    "O65",
+    "O66",
+    "O67",
+    "O68",
+    "O69",
+    "O70",
+    "O71",
+    "O72",
+    "O73",
+    "O74",
+    "O75",
+    "O76",
+    "O77",
+    "O78",
+    "O79",
+    "O80",
+    "O81",
+    "O82",
+    "O83",
+    "O84",
+    "O85",
+    "O86",
+    "O87",
+    "O88",
+    "O89",
+    "O90",
+    "O91",
+    "O92",
+    "O93",
+    "O94",
+    "O95",
+    "O96",
+    "O97",
+    "O98",
+    "O99",
+  ];
   const addPatient = async (values) => {
     const icdString = values.icd;
     const icdArray = icdString
       .split(",")
       .map((icdCode) => ({ code: icdCode.trim() })); // convert each string into an ICD object with the 'code' property
-    // Determine Eligible Patients
-    // Exclude ICD-10 Pregnancy codes
-    // Exclude DOB greater than 1/1/2005
-    const patientDOBMinimumAge = new Date("01/01/2005");
-    const patientDOB = new Date(values.dob);
-    const ineligibleICD = "O00–O99";
-    let eligibilityStatus = null;
-
-    // Check for ineligible ICD Health Code - O00–O99
-    console.log(icdArray);
-    const patientIneligibleICD = icdArray.find(
-      (icdHealthCode) => icdHealthCode.code === ineligibleICD
-    );
-    console.log(patientIneligibleICD);
-
-    console.log(patientDOB.getTime() > patientDOBMinimumAge.getTime());
-
     if (
-      patientDOB.getTime() < patientDOBMinimumAge.getTime() &&
-      patientIneligibleICD === undefined
+      icdArray.some((icd) => pregnancyCodes.includes(icd.code)) ||
+      new Date(values.dob) >= new Date("2005-01-01")
     ) {
-      eligibilityStatus = true;
-    } else {
-      eligibilityStatus = false;
-    }
-
-    // Read and Write Restrictions on FDA and Bavaria Nodes
-    // PII hidden from FDA and Bavaria
-    let nodePermissions = null;
-    eligibilityStatus === true
-      ? (nodePermissions = {
-          aclInput: {
-            acl: [
-              {
-                principal: {
-                  nodes: ["FDA", "Bavaria"],
-                },
-                operations: ["READ"],
-                path: "uuid",
-              },
-              {
-                principal: {
-                  nodes: ["FDA", "Bavaria"],
-                },
-                operations: ["READ"],
-                path: "isEligible",
-              },
-            ],
-          },
-        })
-      : (nodePermissions = {
-          aclInput: {
-            acl: [
-              {
-                principal: {
-                  nodes: [],
-                },
-                operations: ["READ"],
-              },
-            ],
-          },
-        });
-
-    const addPatientResponse = await entities.patient.add(
-      {
+      // patient is not eligible for the new drug
+      addPatientResponse = await entities.patient.add({
         name: values.firstName + " " + values.lastName,
         patientPicture: values.patientPicture,
         dob: values.dob,
@@ -108,23 +147,41 @@ const AddPatientJaneHopkins = () => {
         height: values.height,
         weight: values.weight,
         bloodPressure: values.bloodPressure,
-        // bloodType: values.bloodType,
         temperature: values.temperature,
         oxygenSaturation: values.oxygenSaturation,
         uuid: values.uuid,
         address: values.address,
-        // currentMedications: values.currentMedications,
         familyHistory: values.familyHistory,
         currentlyEmployed: values.currentlyEmployed,
         currentlyInsured: values.currentlyInsured,
         icdHealthCodes: icdArray,
+        isEligible: false,
+        // bloodType: values.bloodType,
+        // currentMedications: values.currentMedications,
         // allergies: values.allergies,
         // hiv: values.hiv,
-        isEligible: eligibilityStatus,
-      },
-      nodePermissions
-    );
-    console.log(addPatientResponse);
+      });
+    } else {
+      // patient is eligible for the new drug
+      addPatientResponse = await entities.patient.add({
+        name: values.firstName + " " + values.lastName,
+        patientPicture: values.patientPicture,
+        dob: values.dob,
+        insuranceNumber: values.insuranceNumber,
+        height: values.height,
+        weight: values.weight,
+        bloodPressure: values.bloodPressure,
+        temperature: values.temperature,
+        oxygenSaturation: values.oxygenSaturation,
+        uuid: values.uuid,
+        address: values.address,
+        familyHistory: values.familyHistory,
+        currentlyEmployed: values.currentlyEmployed,
+        currentlyInsured: values.currentlyInsured,
+        icdHealthCodes: icdArray,
+        isEligible: true,
+      });
+    }
     if (addPatientResponse?.transaction?._id != null) {
       handleClick();
       formRef.current.resetForm();
@@ -388,12 +445,7 @@ const AddPatientJaneHopkins = () => {
               />
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
-              <Button
-                type="submit"
-                color="custom"
-                variant="contained"
-                //onClick={handleClick}
-              >
+              <Button type="submit" color="custom" variant="contained">
                 Add New Patient
               </Button>
               <Snackbar
@@ -417,7 +469,8 @@ const AddPatientJaneHopkins = () => {
   );
 };
 
-const phoneRegExp = /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
+// const phoneRegExp =
+//   /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
 
 const checkoutSchema = yup.object().shape({
   firstName: yup.string().required("required"),

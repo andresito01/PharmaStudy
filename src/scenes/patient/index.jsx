@@ -1,11 +1,13 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, useTheme, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import useJaneHopkins from "../../hooks/useJaneHopkins";
 import React, { useEffect, useState } from 'react';
-import Button from '@mui/material/Button';
 import SplitButton from "../../components/SplitButton";
+import { useNavigate } from "react-router-dom";
+import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
+import GppBadIcon from '@mui/icons-material/GppBad';
 
 const Patient = () => {
     const theme = useTheme();
@@ -35,7 +37,6 @@ const Patient = () => {
 
     const handleSelectionChange = (selectionModel) => {
       setSelectedRows(selectionModel);
-      //console.log(selectedRows);
     };
 
     const handleDeleteClick = async () => {
@@ -46,17 +47,59 @@ const Patient = () => {
       listPatients();
     };
 
+    const navigate = useNavigate();
+    const handleRowClick = (rowParams) => {
+      const patientId = rowParams.row._id;
+      navigate(`/janehopkinsdoctor/patient/${patientId}`);
+    };
+
     const columns = [
-        { 
-          field: "_id", 
-          headerName: "ID",
-          flex: 1,
-        },
         {
           field: "name",
           headerName: "Name",
           flex: 1,
           cellClassName: "name-column--cell",
+        },
+        {
+          field: "isEligible",
+          headerName: "Eligible",
+          flex: 1,
+          headerAlign:'center',
+          renderCell: ({ row: { isEligible } }) => {
+            return (
+              <Box
+                width="60%"
+                m="0 auto"
+                p="5px"
+                display="flex"
+                justifyContent="center"
+                backgroundColor={
+                  isEligible === true
+                    ? colors.greenAccent[600]
+                    : isEligible === false
+                    ? colors.greenAccent[800]
+                    : colors.greenAccent[800]
+                }
+                borderRadius="4px"
+              >
+                {isEligible === true && <span>
+                  <VerifiedUserIcon />
+                  <span>Eligible</span>
+                </span>}
+                {isEligible === false && <span>
+                  <GppBadIcon />
+                  <span>Not Eligible</span>
+                </span>}
+                {isEligible === null && <span>
+                  <GppBadIcon />
+                  <span>Not Eligible</span>
+                </span>}
+                <Typography color={colors.grey[100]} sx={{ ml: "5px" }}>
+                  {isEligible}
+                </Typography>
+              </Box>
+            );
+          },
         },
         {
           field: "dob",
@@ -105,7 +148,14 @@ const Patient = () => {
             <SplitButton toggleSelectionBox={toggleSelectionBox} handleDeleteClick={handleDeleteClick}>
             </SplitButton>
             <div style={{ height: '100%', width: '100%' }}>
-              <DataGrid checkboxSelection={checkboxSelection} rows={patients} columns={columns} getRowId={getRowId} onSelectionModelChange={handleSelectionChange}/>
+              <DataGrid 
+                checkboxSelection={checkboxSelection} 
+                rows={patients} 
+                columns={columns} 
+                getRowId={getRowId} 
+                onSelectionModelChange={handleSelectionChange} 
+                onRowClick={handleRowClick}
+              />
             </div>
           </Box>
         </Box>

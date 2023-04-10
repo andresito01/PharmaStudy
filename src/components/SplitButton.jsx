@@ -33,7 +33,7 @@ export default function SplitButton({ toggleSelectionBox, handleDeleteClick }) {
     } else if (index === 1) {
         toggleSelectionBox(true);
     } else if (index === 2) {
-        window.location.href = "/janehopkins/addpatient";
+        window.location.href = "/janehopkinsdoctor/addpatient";
     }
   };
 
