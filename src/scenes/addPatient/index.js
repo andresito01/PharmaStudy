@@ -31,45 +31,13 @@ const AddPatientJaneHopkins = () => {
 
    const { entities } = useJaneHopkins();
 
-   let addPatientResponse;
-  //  const pregnancyCodes = Array.from({ length: 100 }, (_, i) => `O${i}`) // create an array of O00 - O99
-  //   .filter(code => /^O[0-9][0-9]\./.test(code)) // filter out codes that don't start with 'O' followed by two digits and a dot
-  //   .filter(code => code >= 'O00' && code <= 'O99'); // filter out codes outside of the O00 - O99 range
+  let addPatientResponse;
   const pregnancyCodes = [
     'O00', 'O01', 'O02', 'O03', 'O04', 'O05', 'O06', 'O07', 'O08', 'O09', 'O10', 'O11', 'O12', 'O13', 'O14', 'O15', 'O16', 'O20', 'O21', 'O22', 'O23', 'O24', 'O25', 'O26', 'O28', 'O29', 'O30', 'O31', 'O32', 'O33', 'O34', 'O35', 'O36', 'O37', 'O38', 'O39', 'O40', 'O41', 'O42', 'O43', 'O44', 'O45', 'O46', 'O47', 'O48','O49', 'O50', 'O51', 'O52', 'O53', 'O54', 'O55', 'O56', 'O57', 'O58', 'O59', 'O60', 'O61', 'O62', 'O63', 'O64', 'O65', 'O66', 'O67', 'O68', 'O69', 'O70', 'O71', 'O72', 'O73', 'O74', 'O75', 'O76', 'O77', 'O78', 'O79', 'O80', 'O81', 'O82', 'O83', 'O84', 'O85', 'O86', 'O87', 'O88', 'O89', 'O90', 'O91', 'O92', 'O93', 'O94', 'O95', 'O96', 'O97', 'O98', 'O99'
   ];
    const addPatient = async (values) => {
       const icdString = values.icd;
       const icdArray = icdString.split(",").map((icdCode) => ({ code: icdCode.trim() })); // convert each string into an ICD object with the 'code' property
-      //  const addPatientResponse = await entities.patient.add({
-      //   name: values.firstName + " " + values.lastName,
-      //   patientPicture: values.patientPicture,
-      //   dob: values.dob,
-      //   insuranceNumber: values.insuranceNumber,
-      //   height: values.height,
-      //   weight: values.weight,
-      //   bloodPressure: values.bloodPressure,
-      //   // bloodType: values.bloodType,
-      //   temperature: values.temperature,
-      //   oxygenSaturation: values.oxygenSaturation,
-      //   uuid: values.uuid,
-      //   address: values.address,      
-      //   // currentMedications: values.currentMedications,
-      //   familyHistory: values.familyHistory,
-      //   currentlyEmployed: values.currentlyEmployed,
-      //   currentlyInsured: values.currentlyInsured,        
-      //   icdHealthCodes: icdArray,
-      //   // allergies: values.allergies,
-      //   // hiv: values.hiv,
-      //   // check eligibility
-      //   if (icdArray.every(code => !pregnancyCodes.includes(code)) && new Date(values.dob) < new Date("2005-01-01")) {
-      //     // patient is eligible for the new drug
-      //     isEligible = true;
-      //   } else {
-      //     // patient is not eligible for the new drug
-      //     isEligible = false;
-      //   }
-      // });
       if (icdArray.some(icd => pregnancyCodes.includes(icd.code)) || new Date(values.dob) >= new Date("2005-01-01")) {
         // patient is not eligible for the new drug
         addPatientResponse = await entities.patient.add({
@@ -89,6 +57,10 @@ const AddPatientJaneHopkins = () => {
           currentlyInsured: values.currentlyInsured,
           icdHealthCodes: icdArray,
           isEligible: false
+          // bloodType: values.bloodType,
+          // currentMedications: values.currentMedications,
+          // allergies: values.allergies,
+          // hiv: values.hiv,
         });
       } else {
         // patient is eligible for the new drug

@@ -74,7 +74,7 @@ const Patient = () => {
                 justifyContent="center"
                 backgroundColor={
                   isEligible === true
-                    ? colors.greenAccent[500]
+                    ? colors.greenAccent[600]
                     : isEligible === false
                     ? colors.greenAccent[800]
                     : colors.greenAccent[800]
