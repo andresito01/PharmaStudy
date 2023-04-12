@@ -13,8 +13,8 @@ import JaneHopkinsPatient from "./scenes/patient";
 import ViewNavigation from "./ViewNavigation.js";
 import JaneHopkinsDoctorView from "./JaneHopkinsDoctor/JaneHopkinsDoctorView.js";
 import AddPatientJaneHopkins from "./scenes/addPatient";
-import PatientInfo from "./JaneHopkinsDoctor/PatientInfo";
 import JaneHopkinsAdminView from "./JaneHopkinsAdmin/JaneHopkinsAdminView";
+import PatientInfo from "./JaneHopkinsDoctor/PatientInfo";
 // FDA Imports
 import FDAView from "./FDA/FDAView.js";
 import FDAPatient from "./FDA/scenes/patient";
