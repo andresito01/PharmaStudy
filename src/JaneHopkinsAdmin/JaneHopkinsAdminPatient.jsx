@@ -1,15 +1,15 @@
-import { Box, useTheme, Typography } from "@mui/material";
+import { Box, useTheme, Typography, Button } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { tokens } from "../../theme";
-import Header from "../../components/Header";
-import useJaneHopkins from "../../hooks/useJaneHopkins";
+import { tokens } from "../theme";
+import Header from "../components/Header";
+import useJaneHopkins from "../hooks/useJaneHopkins";
 import React, { useEffect, useState } from 'react';
-import SplitButton from "../../components/SplitButton";
 import { useNavigate } from "react-router-dom";
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import GppBadIcon from '@mui/icons-material/GppBad';
+import OutboxIcon from '@mui/icons-material/Outbox';
 
-const Patient = () => {
+const JaneHopkinsAdminPatient = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const [checkboxSelection, setCheckboxSelection] = React.useState(true);
@@ -23,7 +23,6 @@ const Patient = () => {
       const { items } = await entities.patient.list();
       setPatients(items);
     };
-
 
     useEffect(() => {
       listPatients();
@@ -160,16 +159,23 @@ const Patient = () => {
               },
             }}
           >
-            <SplitButton toggleSelectionBox={toggleSelectionBox} handleDeleteClick={handleDeleteClick}>
-            </SplitButton>
+            <Button
+                color= "secondary"
+                variant="contained" 
+                type="submit" 
+                sx={{ mb: "20px", padding: "10px 18px" }}
+              >
+                Send Report to FDA
+                <OutboxIcon sx={{ ml: "10px" }}></OutboxIcon>
+            </Button>
             <div style={{ height: '100%', width: '100%' }}>
               <DataGrid 
                 checkboxSelection={checkboxSelection} 
                 rows={patients} 
                 columns={columns} 
                 getRowId={getRowId} 
-                onSelectionModelChange={handleSelectionChange} 
-                onRowClick={handleRowClick}
+                //onSelectionModelChange={handleSelectionChange} 
+                //onRowClick={handleRowClick}
               />
             </div>
           </Box>
@@ -178,4 +184,4 @@ const Patient = () => {
 };
 
 
-export default Patient;
+export default JaneHopkinsAdminPatient;

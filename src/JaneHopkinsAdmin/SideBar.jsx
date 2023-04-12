@@ -97,7 +97,7 @@ const SideBar = () => {
                       alt="profile-user"
                       width="100px"
                       height="100px"
-                      src={'../../assets/mockAvatar.png'}
+                      src={'../../assets/blank-profile-picture.webp'}
                       style={{ cursor: "pointer", borderRadius: "50%" }}
                     />
                   </Box>
