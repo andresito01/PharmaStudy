@@ -76,8 +76,8 @@ const Patient = () => {
                   isEligible === true
                     ? colors.greenAccent[600]
                     : isEligible === false
-                    ? colors.greenAccent[800]
-                    : colors.greenAccent[800]
+                    ? colors.redAccent[600]
+                    : colors.redAccent[600]
                 }
                 borderRadius="4px"
               >

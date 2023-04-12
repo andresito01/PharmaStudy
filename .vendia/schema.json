@@ -113,6 +113,9 @@
           },
           "isEligible": {
             "type": "boolean"
+          },
+          "doses": {
+            "type": "string"
           }
         }
       }
