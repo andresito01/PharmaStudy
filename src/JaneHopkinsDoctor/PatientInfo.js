@@ -57,26 +57,26 @@ const PatientInfo = () => {
         'O00', 'O01', 'O02', 'O03', 'O04', 'O05', 'O06', 'O07', 'O08', 'O09', 'O10', 'O11', 'O12', 'O13', 'O14', 'O15', 'O16', 'O20', 'O21', 'O22', 'O23', 'O24', 'O25', 'O26', 'O28', 'O29', 'O30', 'O31', 'O32', 'O33', 'O34', 'O35', 'O36', 'O37', 'O38', 'O39', 'O40', 'O41', 'O42', 'O43', 'O44', 'O45', 'O46', 'O47', 'O48','O49', 'O50', 'O51', 'O52', 'O53', 'O54', 'O55', 'O56', 'O57', 'O58', 'O59', 'O60', 'O61', 'O62', 'O63', 'O64', 'O65', 'O66', 'O67', 'O68', 'O69', 'O70', 'O71', 'O72', 'O73', 'O74', 'O75', 'O76', 'O77', 'O78', 'O79', 'O80', 'O81', 'O82', 'O83', 'O84', 'O85', 'O86', 'O87', 'O88', 'O89', 'O90', 'O91', 'O92', 'O93', 'O94', 'O95', 'O96', 'O97', 'O98', 'O99'
       ];
 
-      const visitsArray = patient.visits ? patient.visits.map((visit) => ({ dateTime: visit.dateTime, notes: visit.notes, hivViralLoad: visit.hivViralLoad })) : [];
-      const visits = [];
-      let index = 0;
-      while (values[`visit_${index}`]) {
-        visits.push({
-          dateTime: values[`visit_${index}`],
-          notes: values[`visit_notes_${index}`],
-          hivViralLoad: values[`visit_hiv_${index}`],
-        });
-        index++;
-      }
-      console.log('Visits:', visits);
-      console.log('Values:', values);
-      // Check if there are any visits missing from values.visits compared to patient.visits, and add them back in
-      const updatedVisits = patient.visits.map((visit, index) => {
-        const updatedVisit = visits[index];
-        const result = updatedVisit || visit;
-        console.log('Visit:', index, 'Original:', visit, 'Updated:', updatedVisit, 'Result:', result);
-        return result;
-      });
+      // const visitsArray = patient.visits ? patient.visits.map((visit) => ({ dateTime: visit.dateTime, notes: visit.notes, hivViralLoad: visit.hivViralLoad })) : [];
+      // const visits = [];
+      // let index = 0;
+      // while (values[`visit_${index}`]) {
+      //   visits.push({
+      //     dateTime: values[`visit_${index}`],
+      //     notes: values[`visit_notes_${index}`],
+      //     hivViralLoad: values[`visit_hiv_${index}`],
+      //   });
+      //   index++;
+      // }
+      // console.log('Visits:', visits);
+      // console.log('Values:', values);
+      // // Check if there are any visits missing from values.visits compared to patient.visits, and add them back in
+      // const updatedVisits = patient.visits.map((visit, index) => {
+      //   const updatedVisit = visits[index];
+      //   const result = updatedVisit || visit;
+      //   console.log('Visit:', index, 'Original:', visit, 'Updated:', updatedVisit, 'Result:', result);
+      //   return result;
+      // });
 
       if (icdArray.some(icd => pregnancyCodes.includes(icd.code)) || new Date(defaultDob) >= new Date("2005-01-01")) {
         const response = await entities.patient.update({
