@@ -55,10 +55,25 @@ const Patient = () => {
 
     const columns = [
         {
+          field: "uuid",
+          headerName: "UUID",
+          flex: 1,
+        },
+        {
           field: "name",
           headerName: "Name",
           flex: 0.5,
           cellClassName: "name-column--cell",
+        },
+        {
+          field: "dob",
+          headerName: "DOB",
+          flex: 1,
+        },
+        {
+          field: "insuranceNumber",
+          headerName: "Insurance Number",
+          flex: 1,
         },
         {
           field: "isEligible",
@@ -102,11 +117,6 @@ const Patient = () => {
           },
         },
         {
-          field: "dob",
-          headerName: "DOB",
-          flex: 1,
-        },
-        {
           field: "doses",
           headerName: "Doses",
           flex: 1,
@@ -120,11 +130,6 @@ const Patient = () => {
               </Box>
             );
           },
-        },
-        {
-          field: "insuranceNumber",
-          headerName: "Insurance Number",
-          flex: 1,
         }
       ];
 

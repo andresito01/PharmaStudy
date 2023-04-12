@@ -1,4 +1,6 @@
 import { Box, Typography, useTheme } from "@mui/material";
+import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
+import GppBadIcon from '@mui/icons-material/GppBad';
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../../theme";
 import Header from "../../../components/Header";
@@ -29,24 +31,70 @@ const Patient = () => {
     const getRowId = (row) => row._id;
 
     const columns = [
-        { 
-          field: "_id", 
-          headerName: "ID",
-          flex: 1,
-        },
         {
           field: "uuid",
           headerName: "UUID",
           flex: 1,
         },
         {
-          field: "hivViralLoad",
-          headerName: "HIV READING",
+          field: "isEligible",
+          headerName: "Eligible",
           flex: 1,
+          headerAlign:'center',
+          renderCell: ({ row: { isEligible } }) => {
+            return (
+              <Box
+                width="60%"
+                m="0 auto"
+                p="5px"
+                display="flex"
+                justifyContent="center"
+                backgroundColor={
+                  isEligible === true
+                    ? colors.greenAccent[600]
+                    : isEligible === false
+                    ? colors.redAccent[600]
+                    : colors.redAccent[600]
+                }
+                borderRadius="4px"
+              >
+                {isEligible === true && <span>
+                  <VerifiedUserIcon />
+                  <span>Eligible</span>
+                </span>}
+                {isEligible === false && <span>
+                  <GppBadIcon />
+                  <span>Not Eligible</span>
+                </span>}
+                {isEligible === null && <span>
+                  <GppBadIcon />
+                  <span>Not Eligible</span>
+                </span>}
+                <Typography color={colors.grey[100]} sx={{ ml: "5px" }}>
+                  {isEligible}
+                </Typography>
+              </Box>
+            );
+          },
         },
         {
-          field: "status",
-          headerName: "STATUS",
+          field: "doses",
+          headerName: "Doses",
+          flex: 1,
+          renderCell: ({ row: { doses } }) => {
+            const dosesCount = parseInt(doses);
+            return (
+              <Box sx={{ display: "flex", justifyContent: "center" }}>
+                <Typography sx={{ color: dosesCount === 5 ? colors.greenAccent[600] : colors.redAccent[400]}}>
+                  {dosesCount ? dosesCount : 0}/{5}
+                </Typography>
+              </Box>
+            );
+          },
+        },
+        {
+          field: "hivViralLoad",
+          headerName: "HIV READING",
           flex: 1,
         },
         {

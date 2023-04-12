@@ -141,13 +141,6 @@ const SideBar = () => {
                   setSelected={setSelected}
                 />
                 <Item
-                  title="Invoices Balances"
-                  to="/fda/invoices"
-                  icon={<ReceiptOutlinedIcon />}
-                  selected={selected}
-                  setSelected={setSelected}
-                />   
-                <Item
                   title="Calendar"
                   to="/fda/calendar"
                   icon={<CalendarTodayOutlinedIcon />}

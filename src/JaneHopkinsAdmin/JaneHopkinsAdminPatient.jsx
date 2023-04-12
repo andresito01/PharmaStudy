@@ -53,79 +53,84 @@ const JaneHopkinsAdminPatient = () => {
     };
 
     const columns = [
-        {
-          field: "name",
-          headerName: "Name",
-          flex: 0.5,
-          cellClassName: "name-column--cell",
+      {
+        field: "uuid",
+        headerName: "UUID",
+        flex: 1,
+      },
+      {
+        field: "name",
+        headerName: "Name",
+        flex: 0.5,
+        cellClassName: "name-column--cell",
+      },
+      {
+        field: "dob",
+        headerName: "DOB",
+        flex: 1,
+      },
+      {
+        field: "insuranceNumber",
+        headerName: "Insurance Number",
+        flex: 1,
+      },
+      {
+        field: "isEligible",
+        headerName: "Eligible",
+        flex: 1,
+        headerAlign:'center',
+        renderCell: ({ row: { isEligible } }) => {
+          return (
+            <Box
+              width="60%"
+              m="0 auto"
+              p="5px"
+              display="flex"
+              justifyContent="center"
+              backgroundColor={
+                isEligible === true
+                  ? colors.greenAccent[600]
+                  : isEligible === false
+                  ? colors.redAccent[600]
+                  : colors.redAccent[600]
+              }
+              borderRadius="4px"
+            >
+              {isEligible === true && <span>
+                <VerifiedUserIcon />
+                <span>Eligible</span>
+              </span>}
+              {isEligible === false && <span>
+                <GppBadIcon />
+                <span>Not Eligible</span>
+              </span>}
+              {isEligible === null && <span>
+                <GppBadIcon />
+                <span>Not Eligible</span>
+              </span>}
+              <Typography color={colors.grey[100]} sx={{ ml: "5px" }}>
+                {isEligible}
+              </Typography>
+            </Box>
+          );
         },
-        {
-          field: "isEligible",
-          headerName: "Eligible",
-          flex: 1,
-          headerAlign:'center',
-          renderCell: ({ row: { isEligible } }) => {
-            return (
-              <Box
-                width="60%"
-                m="0 auto"
-                p="5px"
-                display="flex"
-                justifyContent="center"
-                backgroundColor={
-                  isEligible === true
-                    ? colors.greenAccent[600]
-                    : isEligible === false
-                    ? colors.redAccent[600]
-                    : colors.redAccent[600]
-                }
-                borderRadius="4px"
-              >
-                {isEligible === true && <span>
-                  <VerifiedUserIcon />
-                  <span>Eligible</span>
-                </span>}
-                {isEligible === false && <span>
-                  <GppBadIcon />
-                  <span>Not Eligible</span>
-                </span>}
-                {isEligible === null && <span>
-                  <GppBadIcon />
-                  <span>Not Eligible</span>
-                </span>}
-                <Typography color={colors.grey[100]} sx={{ ml: "5px" }}>
-                  {isEligible}
-                </Typography>
-              </Box>
-            );
-          },
+      },
+      {
+        field: "doses",
+        headerName: "Doses",
+        flex: 1,
+        renderCell: ({ row: { doses } }) => {
+          const dosesCount = parseInt(doses);
+          return (
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
+              <Typography sx={{ color: dosesCount === 5 ? colors.greenAccent[600] : colors.redAccent[400]}}>
+                {dosesCount ? dosesCount : 0}/{5}
+              </Typography>
+            </Box>
+          );
         },
-        {
-          field: "dob",
-          headerName: "DOB",
-          flex: 1,
-        },
-        {
-          field: "doses",
-          headerName: "Doses",
-          flex: 1,
-          renderCell: ({ row: { doses } }) => {
-            const dosesCount = parseInt(doses);
-            return (
-              <Box sx={{ display: "flex", justifyContent: "center" }}>
-                <Typography sx={{ color: dosesCount === 5 ? colors.greenAccent[600] : colors.redAccent[400]}}>
-                  {dosesCount ? dosesCount : 0}/{5}
-                </Typography>
-              </Box>
-            );
-          },
-        },
-        {
-          field: "insuranceNumber",
-          headerName: "Insurance Number",
-          flex: 1,
-        }
-      ];
+      }
+    ];
 
       return (
         <Box m="40px">
@@ -180,7 +185,7 @@ const JaneHopkinsAdminPatient = () => {
             </div>
           </Box>
         </Box>
-    );
+      );
 };
 
 

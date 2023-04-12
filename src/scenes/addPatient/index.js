@@ -134,53 +134,101 @@ const AddPatientJaneHopkins = () => {
     const icdArray = icdString
       .split(",")
       .map((icdCode) => ({ code: icdCode.trim() })); // convert each string into an ICD object with the 'code' property
+
     if (
       icdArray.some((icd) => pregnancyCodes.includes(icd.code)) ||
       new Date(values.dob) >= new Date("2005-01-01")
     ) {
+      // Providing acl node permissions that restricts FDA and Bavaria from access to READ and WRITE permissions on non eligible patients
+      let nodePermissions = {
+        aclInput: {
+          acl: [
+            {
+              principal: {
+                nodes: [],
+              },
+              operations: ["READ"],
+            },
+          ],
+        },
+      };
       // patient is not eligible for the new drug
-      addPatientResponse = await entities.patient.add({
-        name: values.firstName + " " + values.lastName,
-        patientPicture: values.patientPicture,
-        dob: values.dob,
-        insuranceNumber: values.insuranceNumber,
-        height: values.height,
-        weight: values.weight,
-        bloodPressure: values.bloodPressure,
-        temperature: values.temperature,
-        oxygenSaturation: values.oxygenSaturation,
-        uuid: values.uuid,
-        address: values.address,
-        familyHistory: values.familyHistory,
-        currentlyEmployed: values.currentlyEmployed,
-        currentlyInsured: values.currentlyInsured,
-        icdHealthCodes: icdArray,
-        isEligible: false,
-        // bloodType: values.bloodType,
-        // currentMedications: values.currentMedications,
-        // allergies: values.allergies,
-        // hiv: values.hiv,
-      });
+      addPatientResponse = await entities.patient.add(
+        {
+          name: values.firstName + " " + values.lastName,
+          patientPicture: values.patientPicture,
+          dob: values.dob,
+          insuranceNumber: values.insuranceNumber,
+          height: values.height,
+          weight: values.weight,
+          bloodPressure: values.bloodPressure,
+          temperature: values.temperature,
+          oxygenSaturation: values.oxygenSaturation,
+          uuid: values.uuid,
+          address: values.address,
+          familyHistory: values.familyHistory,
+          currentlyEmployed: values.currentlyEmployed,
+          currentlyInsured: values.currentlyInsured,
+          icdHealthCodes: icdArray,
+          isEligible: false,
+          // bloodType: values.bloodType,
+          // currentMedications: values.currentMedications,
+          // allergies: values.allergies,
+          // hiv: values.hiv,
+        },
+        nodePermissions
+      );
     } else {
+      // Providing acl node permissions that restricts FDA and Bavaria to READ Patient properties: uuid, isEligible, doses
+      let nodePermissions = {
+        aclInput: {
+          acl: [
+            {
+              principal: {
+                nodes: ["FDA", "Bavaria"],
+              },
+              operations: ["READ"],
+              path: "uuid",
+            },
+            {
+              principal: {
+                nodes: ["FDA", "Bavaria"],
+              },
+              operations: ["READ"],
+              path: "isEligible",
+            },
+            {
+              principal: {
+                nodes: ["FDA", "Bavaria"],
+              },
+              operations: ["READ"],
+              path: "doses",
+            },
+          ],
+        },
+      };
       // patient is eligible for the new drug
-      addPatientResponse = await entities.patient.add({
-        name: values.firstName + " " + values.lastName,
-        patientPicture: values.patientPicture,
-        dob: values.dob,
-        insuranceNumber: values.insuranceNumber,
-        height: values.height,
-        weight: values.weight,
-        bloodPressure: values.bloodPressure,
-        temperature: values.temperature,
-        oxygenSaturation: values.oxygenSaturation,
-        uuid: values.uuid,
-        address: values.address,
-        familyHistory: values.familyHistory,
-        currentlyEmployed: values.currentlyEmployed,
-        currentlyInsured: values.currentlyInsured,
-        icdHealthCodes: icdArray,
-        isEligible: true,
-      });
+      addPatientResponse = await entities.patient.add(
+        {
+          name: values.firstName + " " + values.lastName,
+          patientPicture: values.patientPicture,
+          dob: values.dob,
+          insuranceNumber: values.insuranceNumber,
+          height: values.height,
+          weight: values.weight,
+          bloodPressure: values.bloodPressure,
+          temperature: values.temperature,
+          oxygenSaturation: values.oxygenSaturation,
+          uuid: values.uuid,
+          address: values.address,
+          familyHistory: values.familyHistory,
+          currentlyEmployed: values.currentlyEmployed,
+          currentlyInsured: values.currentlyInsured,
+          icdHealthCodes: icdArray,
+          isEligible: true,
+        },
+        nodePermissions
+      );
     }
     if (addPatientResponse?.transaction?._id != null) {
       handleClick();
