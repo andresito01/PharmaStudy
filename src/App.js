@@ -15,6 +15,7 @@ import JaneHopkinsDoctorView from "./JaneHopkinsDoctor/JaneHopkinsDoctorView.js"
 import AddPatientJaneHopkins from "./scenes/addPatient";
 import JaneHopkinsAdminView from "./JaneHopkinsAdmin/JaneHopkinsAdminView";
 import PatientInfo from "./JaneHopkinsDoctor/PatientInfo";
+import JaneHopkinsAdminPatient from "./JaneHopkinsAdmin/JaneHopkinsAdminPatient";
 // FDA Imports
 import FDAView from "./FDA/FDAView.js";
 import FDAPatient from "./FDA/scenes/patient";
@@ -41,7 +42,9 @@ function App() {
               <Route path="addpatient" element={<AddPatientJaneHopkins />}/>
               <Route path="patient/:patientId" element={<PatientInfo />} />
             </Route>
-            <Route path="/janehopkinsadmin" element={<JaneHopkinsAdminView />}></Route>
+            <Route path="/janehopkinsadmin" element={<JaneHopkinsAdminView />}>
+              <Route path="" element={<JaneHopkinsAdminPatient />} />
+            </Route>
             <Route path="/fda" element={<FDAView />}>
               <Route path="" element={<Dashboard />} />
               <Route path="team" element={<Team />} />
