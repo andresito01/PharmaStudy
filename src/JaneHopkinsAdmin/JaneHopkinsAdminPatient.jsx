@@ -61,7 +61,7 @@ const JaneHopkinsAdminPatient = () => {
       {
         field: "name",
         headerName: "Name",
-        flex: 0.5,
+        flex: 1,
         cellClassName: "name-column--cell",
       },
       {
@@ -73,6 +73,21 @@ const JaneHopkinsAdminPatient = () => {
         field: "insuranceNumber",
         headerName: "Insurance Number",
         flex: 1,
+      },
+      {
+        field: "doses",
+        headerName: "Doses",
+        flex: 1,
+        renderCell: ({ row: { doses } }) => {
+          const dosesCount = parseInt(doses);
+          return (
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
+              <Typography sx={{ color: dosesCount === 5 ? colors.greenAccent[600] : colors.redAccent[400]}}>
+                {dosesCount ? dosesCount : 0}/{5}
+              </Typography>
+            </Box>
+          );
+        },
       },
       {
         field: "isEligible",
@@ -115,21 +130,6 @@ const JaneHopkinsAdminPatient = () => {
           );
         },
       },
-      {
-        field: "doses",
-        headerName: "Doses",
-        flex: 1,
-        renderCell: ({ row: { doses } }) => {
-          const dosesCount = parseInt(doses);
-          return (
-            <Box sx={{ display: "flex", justifyContent: "center" }}>
-              <Typography sx={{ color: dosesCount === 5 ? colors.greenAccent[600] : colors.redAccent[400]}}>
-                {dosesCount ? dosesCount : 0}/{5}
-              </Typography>
-            </Box>
-          );
-        },
-      }
     ];
 
       return (

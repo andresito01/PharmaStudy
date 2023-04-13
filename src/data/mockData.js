@@ -545,16 +545,16 @@ export const mockLineData = [
 
 export const mockPatientList = [
   {
-    name: "William",
+    name: "William Smith",
     patientPicture: "",
-    dob: "January 14, 1995",
+    dob: "1995-01-14",
     insuranceNumber: "432653143",
     height: "5'7",
     weight: "178lbs",
     bloodPressure: "120/80",
     temperature: "98.6 F",
     oxygenSaturation: "98%",
-    uuid: "",
+    uuid: "123e4567-e89b-12d3-a456-4266987740000",
     address: "123 Main St, Anytown USA",
     currentMedications: [
       {
@@ -599,7 +599,7 @@ export const mockPatientList = [
   {
     name: "Jimmy Harmington",
     patientPicture: "",
-    dob: "June 30, 1980",
+    dob: "1980-06-30",
     insuranceNumber: "123456789",
     height: "6'0",
     weight: "185lbs",
@@ -630,7 +630,7 @@ export const mockPatientList = [
   {
     name: "Sarah Smith",
     patientPicture: "",
-    dob: "June 25, 1980",
+    dob: "1980-06-25",
     insuranceNumber: "123456789",
     height: "5'6",
     weight: "140lbs",
@@ -684,9 +684,9 @@ export const mockPatientList = [
     ],
   },
   {
-    name: "Samantha",
+    name: "Samantha Evelyn",
     patientPicture: "",
-    dob: "October 2, 1988",
+    dob: "1988-10-02",
     insuranceNumber: "567891234",
     height: "5'5",
     weight: "150lbs",
@@ -737,7 +737,7 @@ export const mockPatientList = [
   {
     name: "Lyly",
     patientPicture: "https://example.com/patients/1234/picture.jpg",
-    dob: "January 1, 1970",
+    dob: "1970-01-01",
     insuranceNumber: "123456789",
     height: "6'2",
     weight: "180lbs",
@@ -787,7 +787,7 @@ export const mockPatientList = [
   {
     name: "Jarvan",
     patientPicture: "",
-    dob: "January 1, 1970",
+    dob: "1970-03-15",
     insuranceNumber: "123456789",
     height: "6'2",
     weight: "180lbs",
@@ -838,7 +838,7 @@ export const mockPatientList = [
   {
     name: "Emily Jones",
     patientPicture: "https://example.com/patient_images/emily_jones.png",
-    dob: "June 1, 1990",
+    dob: "1990-06-01",
     insuranceNumber: "123456789",
     height: "5'8",
     weight: "130lbs",
@@ -889,7 +889,7 @@ export const mockPatientList = [
   {
     name: "Maria Rodriguez",
     patientPicture: "https://example.com/patient-pictures/maria-rodriguez.jpg",
-    dob: "April 10, 1995",
+    dob: "1995-04-10",
     insuranceNumber: "0987654321",
     height: "5'2",
     weight: "120lbs",
@@ -943,7 +943,7 @@ export const mockPatientList = [
   {
     name: "Jennifer Lee",
     patientPicture: "https://example.com/jennifer-lee.jpg",
-    dob: "July 17, 1990",
+    dob: "1990-07-17",
     insuranceNumber: "789012345",
     height: "5'8",
     weight: "135lbs",
@@ -994,7 +994,7 @@ export const mockPatientList = [
   {
     name: "Emma Thompson",
     patientPicture: "https://example.com/patient_images/emma_thompson.png",
-    dob: "January 25, 1979",
+    dob: "1979-01-25",
     insuranceNumber: "789012345",
     height: "5'8",
     weight: "135lbs",

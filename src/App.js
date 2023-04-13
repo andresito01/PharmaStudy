@@ -32,21 +32,19 @@ function App() {
         <div className="app">
           <Routes>
             <Route path="/" element={<ViewNavigation />} />
-            <Route
-              path="/janehopkinsdoctor"
-              element={<JaneHopkinsDoctorView />}
-            >
+            <Route path="/janehopkinsdoctor" element={<JaneHopkinsDoctorView />}>
               <Route path="" element={<JaneHopkinsPatient />} />
-              <Route path="team" element={<Team />} />
-              <Route path="form" element={<Form />} />
-              <Route path="faq" element={<FAQ />} />
-              <Route path="calendar" element={<Calendar />} />
               <Route path="patient" element={<JaneHopkinsPatient />} />
               <Route path="addpatient" element={<AddPatientJaneHopkins />} />
               <Route path="patient/:patientId" element={<PatientInfo />} />
+              <Route path="calendar" element={<Calendar />} />
+              <Route path="faq" element={<FAQ />} />
             </Route>
             <Route path="/janehopkinsadmin" element={<JaneHopkinsAdminView />}>
               <Route path="" element={<JaneHopkinsAdminPatient />} />
+              <Route path="team" element={<Team />} />
+              <Route path="form" element={<Form />} />
+              <Route path="faq" element={<FAQ />} />
             </Route>
             <Route path="/fda" element={<FDAView />}>
               <Route path="" element={<FDAPatient />} />

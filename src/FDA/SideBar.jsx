@@ -83,9 +83,6 @@ const SideBar = () => {
                     >
                       FDA
                     </Typography>
-                    {/* <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
-                      <MenuOutlinedIcon />
-                    </IconButton> */}
                   </Box>
                 )}
               </MenuItem>

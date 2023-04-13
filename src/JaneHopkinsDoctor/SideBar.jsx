@@ -83,9 +83,6 @@ const SideBar = () => {
                     >
                       JaneHopkins
                     </Typography>
-                    {/* <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
-                      <MenuOutlinedIcon />
-                    </IconButton> */}
                   </Box>
                 )}
               </MenuItem>
@@ -151,27 +148,6 @@ const SideBar = () => {
                   title="Calendar"
                   to="/janehopkinsdoctor/calendar"
                   icon={<CalendarTodayOutlinedIcon />}
-                  selected={selected}
-                  setSelected={setSelected}
-                />
-                <Typography
-                  variant="h6"
-                  color={colors.grey[300]}
-                  sx={{ m: "15px 0 5px 20px" }}
-                >
-                  Manage
-                </Typography>
-                <Item
-                  title="Manage Team"
-                  to="/janehopkinsdoctor/team"
-                  icon={<PeopleOutlinedIcon />}
-                  selected={selected}
-                  setSelected={setSelected}
-                />
-                <Item
-                  title="Create New User"
-                  to="/janehopkinsdoctor/form"
-                  icon={<PersonOutlinedIcon />}
                   selected={selected}
                   setSelected={setSelected}
                 />
