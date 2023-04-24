@@ -1,4 +1,4 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, Button, Typography, useTheme } from "@mui/material";
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import GppBadIcon from '@mui/icons-material/GppBad';
 import { DataGrid } from "@mui/x-data-grid";
@@ -13,16 +13,92 @@ const Patient = () => {
 
     const [eligiblePatients, setEligiblePatients] = useState([])
 
+
+    // Treatment group (receiving the actual medication)
+    const [treatmentPatientGroup, setTreatmentPatientGroup] = useState([])
+
+    // Control group (receiving a placebo or established medication)
+    const [controlPatientGroup, setControlPatientGroup] = useState([])
+
     const { entities } = useFDA();
+
     const listEligiblePatients = async () => {
       const { items } = await entities.patient.list();
-      // Filter for eligible patients will need to be changed to be called from a smart contract. For now making a quick call to check that isEligible value is set to true.
-      // const filterForEligiblePatients = Object.values(items).filter((patient) => {
-      //   return patient.name === "Malik";
-      // })
       setEligiblePatients(items);
       console.log(items);
     };
+
+    const mapDrugsToPatients = () => {
+      const patientArrayForSort = [...eligiblePatients]
+      // Return a shuffled list of patients. 
+      const shuffledPatients = shuffleList(patientArrayForSort);
+      // Split shuffled list of patients in half at its midpoint. 
+      const midpoint = Math.ceil(shuffledPatients.length / 2);
+      // Assign the first half of patients to the treatment group. 
+      const treatmentGroup = shuffledPatients.splice(0, midpoint);
+      setTreatmentPatientGroup
+      (treatmentGroup)
+      // Assign the second half of patients to the control group.
+      const controlGroup = shuffledPatients;
+      setControlPatientGroup(controlGroup)
+
+      // const icdString = values.icd || patient.icdHealthCodes.map((code) => code.code).join(", ");
+      // const icdDefaultArray = patient.icdHealthCodes ? patient.icdHealthCodes.map((code) => ({ code: code.code })) : [];
+      // const icdArray = icdString ? icdString.split(",").map((icdCode) => ({ code: icdCode.trim() })) : icdDefaultArray;
+
+      // Update treatment group patients current medications to receive the generic medication 
+      treatmentGroup.map(async (treatmentPatient) => {
+        const patient = await entities.patient.get(treatmentPatient._id)
+        console.log(patient.currentMedications)
+        // const response = await entities.product.update({
+        //   _id: patient._id,
+        //   currentMedications: {medication: "Generic"}
+        // })
+        // setTreatmentPatientGroup(...response)
+        // if (patient.currentMedications === null) {
+        //   patient.currentMedications = {medication: "Generic"}
+        // }
+        // const updatePatientResponse = await entities.patient.update(patient)
+        // console.log(updatePatientResponse)
+      })
+
+      console.log("Above are treatment patient ids, and below are control patient ids")
+
+      // Update control group patients current medications to receive the placebo medication 
+      controlGroup.map(async (controlPatient) => {
+        const patient = await entities.patient.get(controlPatient._id)
+        console.log(patient.currentMedications)
+        // const response = await entities.product.update({
+        //   _id: patient._id,
+        //   currentMedications: {medication: "Placebo"}
+        // })
+        // setControlPatientGroup(...response)
+
+      //   if (patient.currentMedications === null) {
+      //     patient.currentMedications = {medication: "Placebo"}
+      //   }
+      //   const updatePatientResponse = await entities.patient.update(patient)
+      //   console.log(updatePatientResponse)
+      })
+    }
+
+    // Helper method to shuffle the list of patients thus randomizing the indices for each patient object in the list of patients
+    // This method shuffles an array using the Fisher-Yates shuffle algorithm, which works by swapping elements randomly in the array.
+    const shuffleList = (patientList) => {
+      let currentIndex = patientList.length;
+      let temporaryValue, randomIndex;
+    
+      while (currentIndex !== 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+        temporaryValue = patientList[currentIndex];
+        patientList[currentIndex] = patientList[randomIndex];
+        patientList[randomIndex] = temporaryValue;
+      }
+    
+      return patientList;
+    }
+
 
     useEffect(() => {
       listEligiblePatients();
@@ -105,8 +181,12 @@ const Patient = () => {
       ];
 
       return (
+        
         <Box m="20px">
           <Header title="Patient List" />
+          <Button onClick={mapDrugsToPatients} color="custom" variant="contained">
+              Map Drugs To Patients
+          </Button>
           <Box
             m="40px 0 0 0"
             height="75vh"

@@ -179,7 +179,7 @@ const AddPatientJaneHopkins = () => {
         nodePermissions
       );
     } else {
-      // Providing acl node permissions that restricts FDA and Bavaria to READ Patient properties: uuid, isEligible, doses
+      // Providing acl node permissions that restricts FDA and Bavaria to READ Patient properties: uuid, currentMedications (And Write Permissions), isEligible, doses
       let nodePermissions = {
         aclInput: {
           acl: [
@@ -189,6 +189,13 @@ const AddPatientJaneHopkins = () => {
               },
               operations: ["READ"],
               path: "uuid",
+            },
+            {
+              principal: {
+                nodes: ["FDA"],
+              },
+              operations: ["READ", "WRITE"],
+              path: "currentMedications",
             },
             {
               principal: {
