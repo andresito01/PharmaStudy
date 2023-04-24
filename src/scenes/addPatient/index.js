@@ -485,18 +485,7 @@ const AddPatientJaneHopkins = () => {
                 onChange={handleChange}
                 value={values.icd}
                 name="icd"
-                sx={{ gridColumn: "3/4" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="HIV Viral Load"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.hiv}
-                name="hiv"
-                sx={{ gridColumn: "4/4" }}
+                sx={{ gridColumn: "3/5" }}
               />
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
@@ -535,6 +524,7 @@ const checkoutSchema = yup.object().shape({
 const initialValues = {
   firstName: "",
   lastName: "",
+  patientPicture: "",
   dob: "",
   insuranceNumber: "",
   height: "",
