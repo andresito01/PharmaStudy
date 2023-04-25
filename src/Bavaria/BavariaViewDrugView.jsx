@@ -2,30 +2,50 @@ import { Box, useTheme, Typography, Button } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../theme";
 import Header from "../components/Header";
-import useJaneHopkins from "../hooks/useJaneHopkins";
+import useBavaria from "../hooks/useBavaria";
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
-import GppBadIcon from '@mui/icons-material/GppBad';
 import OutboxIcon from '@mui/icons-material/Outbox';
 
-const JaneHopkinsAdminPatient = () => {
+const BavariaViewDrugView = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const [checkboxSelection, setCheckboxSelection] = React.useState(true);
     const [selectedRows, setSelectedRows] = useState([]);
 
-    const [patients, setPatients] = useState([]);
-    console.log(patients);
+    const [drugs, setDrugs] = useState([]);
+    console.log(drugs);
 
-    const { entities } = useJaneHopkins();
-    const listPatients = async () => {
-      const { items } = await entities.patient.list();
-      setPatients(items);
+    const { entities } = useBavaria();
+    const listDrugs = async () => {
+      const { items } = await entities.drug.list();
+      setDrugs(items);
     };
 
+    let addBavariaResponse;
+    const addBavaria = async (values) => {
+      addBavariaResponse = await entities.drug.add(
+        {
+          placebo: false,
+          batchNumber: "5",
+        },
+      );
+      listDrugs();
+    }
+
+    let addPlaceboResponse;
+    const addPlacebo = async (values) => {
+      addPlaceboResponse = await entities.drug.add(
+        {
+          placebo: true,
+          batchNumber: "5",
+        },
+      );
+      listDrugs();
+    }
+
     useEffect(() => {
-      listPatients();
+        listDrugs();
     }, []);
 
     const toggleSelectionBox = (value) => {
@@ -40,101 +60,66 @@ const JaneHopkinsAdminPatient = () => {
 
     const handleDeleteClick = async () => {
       for (const id of selectedRows) {
-        const response = await entities.patient.remove(id);
+        const response = await entities.drug.remove(id);
       }
       setSelectedRows([]);
-      listPatients();
-    };
-
-    const navigate = useNavigate();
-    const handleRowClick = (rowParams) => {
-      const patientId = rowParams.row._id;
-      navigate(`/janehopkinsdoctor/patient/${patientId}`);
+      listDrugs();
     };
 
     const columns = [
       {
-        field: "uuid",
+        field: "_id",
         headerName: "UUID",
-        flex: 1,
+        flex: 0.7,
       },
       {
-        field: "name",
-        headerName: "Name",
-        flex: 1,
-        cellClassName: "name-column--cell",
-      },
-      {
-        field: "dob",
-        headerName: "DOB",
-        flex: 1,
-      },
-      {
-        field: "insuranceNumber",
-        headerName: "Insurance Number",
-        flex: 1,
-      },
-      {
-        field: "doses",
-        headerName: "Doses",
-        flex: 1,
-        renderCell: ({ row: { doses } }) => {
-          const dosesCount = parseInt(doses);
-          return (
-            <Box sx={{ display: "flex", justifyContent: "center" }}>
-              <Typography sx={{ color: dosesCount === 5 ? colors.greenAccent[600] : colors.redAccent[400]}}>
-                {dosesCount ? dosesCount : 0}/{5}
-              </Typography>
-            </Box>
-          );
-        },
-      },
-      {
-        field: "isEligible",
-        headerName: "Eligible",
+        field: "placebo",
+        headerName: "Type",
         flex: 1,
         headerAlign:'center',
-        renderCell: ({ row: { isEligible } }) => {
+        renderCell: ({ row: { placebo } }) => {
           return (
             <Box
-              width="60%"
+              width="20%"
               m="0 auto"
-              p="5px"
-              display="flex"
+              p="10px"
+              display="start-flex"
               justifyContent="center"
               backgroundColor={
-                isEligible === true
+                placebo === false
                   ? colors.greenAccent[600]
-                  : isEligible === false
+                  : placebo === true
                   ? colors.redAccent[600]
                   : colors.redAccent[600]
               }
               borderRadius="4px"
             >
-              {isEligible === true && <span>
-                <VerifiedUserIcon />
-                <span>Eligible</span>
+              {placebo === true && <span>
+                <span>Placebo</span>
               </span>}
-              {isEligible === false && <span>
-                <GppBadIcon />
-                <span>Not Eligible</span>
+              {placebo === false && <span>
+                <span>Bavaria</span>
               </span>}
-              {isEligible === null && <span>
-                <GppBadIcon />
-                <span>Not Eligible</span>
+              {placebo === null && <span>
+                <span>TBD</span>
               </span>}
               <Typography color={colors.grey[100]} sx={{ ml: "5px" }}>
-                {isEligible}
+                {placebo}
               </Typography>
             </Box>
           );
         },
       },
+      {
+        field: "batchNumber",
+        headerName: "Doses",
+        flex: 1,
+      },
     ];
 
       return (
         <Box m="40px">
-          <Header title="Patient List" />
+          <Header title="Drug List" />
           <Box
             m="20px 0 0 0"
             height="75vh"
@@ -168,19 +153,26 @@ const JaneHopkinsAdminPatient = () => {
                 color= "secondary"
                 variant="contained" 
                 type="submit" 
-                sx={{ mb: "20px", padding: "10px 18px" }}
+                sx={{ mb: "20px", padding: "16px 30px" }}
+                onClick={() => addBavaria()}
               >
-                Send to FDA
-                <OutboxIcon sx={{ ml: "10px" }}></OutboxIcon>
+                Bavaria
+            </Button>
+            <Button
+                color= "redcustom"
+                variant="contained" 
+                type="submit" 
+                sx={{ mb: "20px", ml: "30px", padding: "16px 30px" }}
+                onClick={() => addPlacebo()}
+              >
+                Placebo
             </Button>
             <div style={{ height: '100%', width: '100%' }}>
               <DataGrid 
                 checkboxSelection={checkboxSelection} 
-                rows={patients} 
+                rows={drugs} 
                 columns={columns} 
                 getRowId={getRowId} 
-                //onSelectionModelChange={handleSelectionChange} 
-                //onRowClick={handleRowClick}
               />
             </div>
           </Box>
@@ -189,4 +181,4 @@ const JaneHopkinsAdminPatient = () => {
 };
 
 
-export default JaneHopkinsAdminPatient;
+export default BavariaViewDrugView;

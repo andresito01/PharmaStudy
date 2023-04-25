@@ -5,13 +5,10 @@ import { Link } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
 import { tokens } from "../theme";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
-import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
-import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
-import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
+import BiotechIcon from '@mui/icons-material/Biotech';
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import AssessmentIcon from '@mui/icons-material/Assessment';
 
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
@@ -81,7 +78,7 @@ const SideBar = () => {
                       variant="h3" color={colors.greenAccent[500]}
                       fontWeight="bold"
                     >
-                      JaneHopkins
+                      Bavaria
                     </Typography>
                   </Box>
                 )}
@@ -107,8 +104,8 @@ const SideBar = () => {
                     >
                     </Typography>
                     <Typography variant="h5" color={colors.greenAccent[500]}>
-                      Doctor
-                    </Typography>
+                      Administrator
+                    </Typography>  
                   </Box>
                 </Box>
               )}
@@ -116,12 +113,11 @@ const SideBar = () => {
               <Box paddingLeft={isCollapsed ? undefined : "10%"}>
                 <Item
                   title="Dashboard"
-                  to="/janehopkinsdoctor"
+                  to="/bavaria"
                   icon={<HomeOutlinedIcon />}
                   selected={selected}
                   setSelected={setSelected}
                 />
-    
                 <Typography
                   variant="h6"
                   color={colors.grey[300]}
@@ -130,40 +126,19 @@ const SideBar = () => {
                   Data
                 </Typography>               
                 <Item
-                  title="View Patient"
-                  to="/janehopkinsdoctor/patient"
-                  icon={<ContactsOutlinedIcon />}
+                  title="Real-time Trials"
+                  to="/bavaria/realtimetrials"
+                  icon={<BiotechIcon />}
                   selected={selected}
                   setSelected={setSelected}
                 />
                 <Item
-                  title="Add Patient"
-                  to="/janehopkinsdoctor/addpatient"
-                  icon={<PersonAddIcon />}
+                  title="Post-trial Report"
+                  to="/bavaria/report"
+                  icon={<AssessmentIcon />}
                   selected={selected}
                   setSelected={setSelected}
                 />   
-                <Item
-                  title="Calendar"
-                  to="/janehopkinsdoctor/calendar"
-                  icon={<CalendarTodayOutlinedIcon />}
-                  selected={selected}
-                  setSelected={setSelected}
-                />
-                <Typography
-                  variant="h6"
-                  color={colors.grey[300]}
-                  sx={{ m: "15px 0 5px 20px" }}
-                >
-                  About
-                </Typography>
-                <Item
-                  title="FAQ Page"
-                  to="/janehopkinsdoctor/faq"
-                  icon={<HelpOutlineOutlinedIcon />}
-                  selected={selected}
-                  setSelected={setSelected}
-                />
               </Box>
             </Menu>
           </ProSidebar>

@@ -3,7 +3,6 @@ import { ColorModeContext, useMode } from "./theme";
 import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import TopBar from "./scenes/global/TopBar";
-import Dashboard from "./scenes/dashboard";
 import Team from "./scenes/team";
 import Form from "./scenes/form";
 import Calendar from "./scenes/calendar";
@@ -19,6 +18,9 @@ import JaneHopkinsAdminPatient from "./JaneHopkinsAdmin/JaneHopkinsAdminPatient"
 // FDA Imports
 import FDAView from "./FDA/FDAView.js";
 import FDAPatient from "./FDA/scenes/patient";
+// Bavaria imports
+import BavariaViewDrugView from "./Bavaria/BavariaViewDrugView";
+import BavariaView from "./Bavaria/BavariaView";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -55,9 +57,9 @@ function App() {
               <Route path="patient" element={<FDAPatient />} />
               <Route path="invoices" />
             </Route>
-            {/* <Route path="/bavaria" element={<BavariaView />} >
-
-            </Route> */}
+            <Route path="/bavaria" element={<BavariaView />} >
+              <Route path="" element={<BavariaViewDrugView />} />
+            </Route>
           </Routes>
         </div>
       </ThemeProvider>
