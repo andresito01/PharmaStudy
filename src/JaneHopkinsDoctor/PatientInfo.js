@@ -11,6 +11,11 @@ import { useRef } from "react";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+
 
 const PatientInfo = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
@@ -25,7 +30,6 @@ const PatientInfo = () => {
   const [numMedications, setNumMedications] = useState(1);
   const [numAllergies, setNumAllergies] = useState(1);
   
-
   const { entities } = useJaneHopkins();
   useEffect(() => {
     async function fetchPatient() {
@@ -53,15 +57,15 @@ const PatientInfo = () => {
     }
   }, [patient]);
 
+
   if (!patient) {
     return <div>Loading...</div>;
   }
 
-  
-
   const initialValues = {
     fullName: patient?.name || "",
     patientPicture: patient?.patientPicture || "",
+    doses: patient?.doses || 0,
     // ...
     // Other fields here
     // ...
@@ -580,23 +584,7 @@ const PatientInfo = () => {
                 name="allergies"
                 sx={{ gridColumn: "span 2" }}
               /> */}
-              
-              <TextField
-                disabled={!isEditing}
-                fullWidth
-                label="Current medications"
-                defaultValue={
-                  patient.currentMedications
-                    ? patient.currentMedications
-                        .map((med) => med.medication)
-                        .join(", ")
-                    : ""
-                }
-                onBlur={handleBlur}
-                onChange={handleChange}
-                name="currentMedications"
-                sx={{ gridColumn: "span 2" }}
-              />
+
               <TextField
                 fullWidth
                 disabled={!isEditing}
@@ -621,17 +609,7 @@ const PatientInfo = () => {
                 sx={{ gridColumn: "3/4" }}
               /> */}
 
-              <TextField
-                fullWidth
-                disabled={!isEditing}
-                label="Doses"
-                defaultValue={patient.doses}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                name="doses"
-                sx={{ gridColumn: "4/4" }}
-              />
-
+              
               <Box display="flex" gap="30px">
                     <Typography 
                       variant="h3"
@@ -820,6 +798,20 @@ const PatientInfo = () => {
                       />
                       
               )} */}
+
+            <Box display="flex" gap="30px" width = "50%">
+              <TextField
+                fullWidth
+                disabled={!isEditing}
+                label="Doses"
+                defaultValue={patient.doses}
+                onBlur={handleBlur}
+                onChange={handleChange}
+                name="doses"
+                sx={{ gridColumn: "span 1" }}
+              />
+            </Box>
+
               {patient.visits &&
                 patient.visits.length > 0 &&
                 patient.visits.map((visit, index) => {

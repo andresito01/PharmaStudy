@@ -45,7 +45,7 @@ const SideBar = () => {
     useEffect(() => {
       if (sidebarRef.current) {
         const contentHeight = document.documentElement.scrollHeight;
-        sidebarRef.current.style.height = `${contentHeight}px`;
+        sidebarRef.current.style.height = `${contentHeight} px`;
       }
     }, []);
     
