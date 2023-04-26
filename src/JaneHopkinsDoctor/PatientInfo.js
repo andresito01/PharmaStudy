@@ -225,7 +225,7 @@ const PatientInfo = () => {
                 principal: {
                   nodes: ["FDA", "Bavaria"],
                 },
-                operations: ["READ"],
+                operations: ["READ", "WRITE"],
                 path: "uuid",
               },
               {

@@ -187,7 +187,7 @@ const AddPatientJaneHopkins = () => {
               principal: {
                 nodes: ["FDA", "Bavaria"],
               },
-              operations: ["READ"],
+              operations: ["READ", "WRITE"],
               path: "uuid",
             },
             {

@@ -19,6 +19,9 @@ import JaneHopkinsAdminPatient from "./JaneHopkinsAdmin/JaneHopkinsAdminPatient"
 // FDA Imports
 import FDAView from "./FDA/FDAView.js";
 import FDAPatient from "./FDA/scenes/patient";
+// Bavaria Imports
+import BavariaView from "./Bavaria/BavariaView.js";
+import BavariaPatient from "./Bavaria/scenes/patient";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -32,7 +35,10 @@ function App() {
         <div className="app">
           <Routes>
             <Route path="/" element={<ViewNavigation />} />
-            <Route path="/janehopkinsdoctor" element={<JaneHopkinsDoctorView />}>
+            <Route
+              path="/janehopkinsdoctor"
+              element={<JaneHopkinsDoctorView />}
+            >
               <Route path="" element={<JaneHopkinsPatient />} />
               <Route path="patient" element={<JaneHopkinsPatient />} />
               <Route path="addpatient" element={<AddPatientJaneHopkins />} />
@@ -55,9 +61,11 @@ function App() {
               <Route path="patient" element={<FDAPatient />} />
               <Route path="invoices" />
             </Route>
-            {/* <Route path="/bavaria" element={<BavariaView />} >
-
-            </Route> */}
+            <Route path="/bavaria" element={<BavariaView />}>
+              <Route path="" element={<BavariaPatient />} />
+              <Route path="faq" element={<FAQ />} />
+              <Route path="patient" element={<BavariaPatient />} />
+            </Route>
           </Routes>
         </div>
       </ThemeProvider>
