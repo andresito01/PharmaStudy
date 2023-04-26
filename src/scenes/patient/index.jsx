@@ -61,7 +61,7 @@ const Patient = () => {
         },
         {
           field: "name",
-          headerName: "Name",
+          headerName: "NAME",
           flex: 1,
           cellClassName: "name-column--cell",
         },
@@ -72,12 +72,12 @@ const Patient = () => {
         },
         {
           field: "insuranceNumber",
-          headerName: "Insurance Number",
+          headerName: "INSURANCE NUMBER",
           flex: 1,
         },
         {
           field: "doses",
-          headerName: "Doses",
+          headerName: "DOSES",
           flex: 1,
           renderCell: ({ row: { doses } }) => {
             const dosesCount = parseInt(doses);
@@ -92,7 +92,7 @@ const Patient = () => {
         },
         {
           field: "isEligible",
-          headerName: "Eligible",
+          headerName: "ELIGIBLE",
           flex: 1,
           headerAlign:'center',
           renderCell: ({ row: { isEligible } }) => {

@@ -12,11 +12,13 @@ import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import React, { useRef, useEffect } from 'react';
 
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
+   
     return (
       <MenuItem
         active={selected === title}
@@ -39,8 +41,17 @@ const SideBar = () => {
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [selected, setSelected] = useState("Dashboard");
   
+    const sidebarRef = useRef(null);
+    useEffect(() => {
+      if (sidebarRef.current) {
+        const contentHeight = document.documentElement.scrollHeight;
+        sidebarRef.current.style.height = `${contentHeight}px`;
+      }
+    }, []);
+    
     return (
         <Box
+          ref={sidebarRef}
           sx={{
             "& .pro-sidebar-inner": {
               background: `${colors.primary[400]} !important`,

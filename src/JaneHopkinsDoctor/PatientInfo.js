@@ -1,7 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import useJaneHopkins from "../hooks/useJaneHopkins";
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, Typography, TextField, IconButton } from "@mui/material";
 import { Formik } from "formik";
 import Header from "../components/Header";
 import { Snackbar } from "@mui/material";
@@ -9,6 +9,8 @@ import { Alert } from "@mui/material";
 import { useMediaQuery } from "@mui/material";
 import { useRef } from "react";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 const PatientInfo = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
@@ -19,6 +21,11 @@ const PatientInfo = () => {
   const [isEditing, setIsEditing] = React.useState(false);
   const [showVisitField, setShowVisitField] = useState(false);
 
+  const [numICD, setNumICD] = useState(1);
+  const [numMedications, setNumMedications] = useState(1);
+  const [numAllergies, setNumAllergies] = useState(1);
+  
+
   const { entities } = useJaneHopkins();
   useEffect(() => {
     async function fetchPatient() {
@@ -28,9 +35,63 @@ const PatientInfo = () => {
     fetchPatient();
   }, [patientId]);
 
+  useEffect(() => {
+    if (patient && patient.icdHealthCodes) {
+      setNumICD(patient.icdHealthCodes.length);
+    }
+  }, [patient]);
+
+  useEffect(() => {
+    if (patient && patient.allergies) {
+      setNumAllergies(patient.allergies.length);
+    }
+  }, [patient]);
+
+  useEffect(() => {
+    if (patient && patient.currentMedications) {
+      setNumMedications(patient.currentMedications.length);
+    }
+  }, [patient]);
+
   if (!patient) {
     return <div>Loading...</div>;
   }
+
+  
+
+  const initialValues = {
+    fullName: patient?.name || "",
+    patientPicture: patient?.patientPicture || "",
+    // ...
+    // Other fields here
+    // ...
+    ...((patient?.icdHealthCodes || []).reduce(
+      (acc, code, index) => ({ ...acc, [`icd-${index}`]: code.code }),
+      {}
+    )),
+    ...((patient?.currentMedications || []).reduce(
+      (acc, medication, index) => ({ ...acc, [`medication-${index}`]: medication.medication }),
+      {}
+    )),
+    ...((patient?.allergies || []).reduce(
+      (acc, allergy, index) => ({ ...acc, [`allergy-${index}`]: allergy.allergy }),
+      {}
+    )),
+  };
+
+  
+
+  const handleAddICD = () => {
+    setNumICD(numICD + 1);
+  };
+
+  const handleAddAllergies = () => {
+    setNumAllergies(numAllergies + 1);
+  };
+
+  const handleAddMedications = () => {
+    setNumMedications(numMedications + 1);
+  };
 
   const handleFormSubmit = async (values, { setSubmitting }) => {
     console.log(values);
@@ -43,6 +104,30 @@ const PatientInfo = () => {
       // const icdArray = icdString ? icdString.split(",").map((icdCode) => ({ code: icdCode.trim() })) : [patient.icdHealthCodes];
       // console.log("icdArray",icdArray);
 
+      const icdCodes = [];
+      for (let i = 0; i < numICD; i++) {
+        const key = `icd-${i}`;
+        if (values[key]) {
+          icdCodes.push({ code: values[key].trim() });
+        }
+      }
+
+      const allergies = [];
+      for (let i = 0; i < numAllergies; i++) {
+        const key = `allergy-${i}`;
+        if (values[key]) {
+          allergies.push({ allergy: values[key].trim() });
+        }
+      }
+
+      const currentMedications = [];
+      for (let i = 0; i < numMedications; i++) {
+        const key = `medication-${i}`;
+        if (values[key]) {
+          currentMedications.push({ medication: values[key].trim() });
+        }
+      }
+
       const icdString =
         values.icd ||
         patient.icdHealthCodes.map((code) => code.code).join(", ");
@@ -52,6 +137,16 @@ const PatientInfo = () => {
       const icdArray = icdString
         ? icdString.split(",").map((icdCode) => ({ code: icdCode.trim() }))
         : icdDefaultArray;
+
+        const allergiesString =
+        values.allergies ||
+        patient.allergies.map((allergy) => allergy.allergy).join(", ");
+      const allergiesDefaultArray = patient.allergies
+        ? patient.allergies.map((allergy) => ({ allergy: allergy.allergy }))
+        : [];
+      const allergiesArray = allergiesString
+        ? allergiesString.split(",").map((allergiesCode) => ({ allergy: allergiesCode.trim() }))
+        : allergiesDefaultArray;
 
       const defaultDob = values.dob ? values.dob : patient.dob;
 
@@ -209,13 +304,16 @@ const PatientInfo = () => {
             familyHistory: values.familyHistory,
             currentlyEmployed: values.currentlyEmployed,
             currentlyInsured: values.currentlyInsured,
-            icdHealthCodes: icdArray,
+            icdHealthCodes: icdCodes,
             doses: values.doses,
+            allergies: allergies,
+            currentMedications: currentMedications,
             //visits: updatedVisits,
             isEligible: false,
           },
           nodePermissions
         );
+        setIsEditing(false);
       } else {
         // Providing acl node permissions that restricts FDA and Bavaria to READ Patient properties: uuid, currentMedications (And Write Permissions), isEligible, doses
         let nodePermissions = {
@@ -269,13 +367,16 @@ const PatientInfo = () => {
             familyHistory: values.familyHistory,
             currentlyEmployed: values.currentlyEmployed,
             currentlyInsured: values.currentlyInsured,
-            icdHealthCodes: icdArray,
+            icdHealthCodes: icdCodes,
             doses: values.doses,
+            allergies: allergies,
+            currentMedications: currentMedications,
             //visits: visits,
             isEligible: true,
           },
           nodePermissions
         );
+        setIsEditing(false);
       }
 
       // Show success message
@@ -320,12 +421,10 @@ const PatientInfo = () => {
         }) => (
           <form onSubmit={handleSubmit}>
             <Box
-              display="grid"
+              display="flex"
               gap="30px"
-              gridTemplateColumns="repeat(4, minmax(0, 1fr))"
-              sx={{
-                "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
-              }}
+              flexDirection="column"
+              width="50%"
             >
               <TextField
                 disabled={!isEditing}
@@ -351,46 +450,6 @@ const PatientInfo = () => {
               <TextField
                 disabled={!isEditing}
                 fullWidth
-                label="DOB"
-                defaultValue={patient.dob}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                name="dob"
-                sx={{ gridColumn: "span 1" }}
-              />
-              <TextField
-                disabled={!isEditing}
-                fullWidth
-                label="Height"
-                defaultValue={patient.height}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                name="height"
-                sx={{ gridColumn: "span 1" }}
-              />
-              <TextField
-                disabled={!isEditing}
-                fullWidth
-                label="Blood Pressure"
-                defaultValue={patient.bloodPressure}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                name="bloodPressure"
-                sx={{ gridColumn: "span 1" }}
-              />
-              <TextField
-                disabled={!isEditing}
-                fullWidth
-                label="Blood Type"
-                defaultValue={patient.bloodType}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                name="bloodType"
-                sx={{ gridColumn: "span 1" }}
-              />
-              <TextField
-                disabled={!isEditing}
-                fullWidth
                 label="Insurance Number"
                 defaultValue={patient.insuranceNumber}
                 onBlur={handleBlur}
@@ -398,36 +457,73 @@ const PatientInfo = () => {
                 name="insuranceNumber"
                 sx={{ gridColumn: "span 1" }}
               />
-              <TextField
-                disabled={!isEditing}
-                fullWidth
-                label="Weight"
-                defaultValue={patient.weight}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                name="weight"
-                sx={{ gridColumn: "span 1" }}
-              />
-              <TextField
-                disabled={!isEditing}
-                fullWidth
-                label="Temperature"
-                defaultValue={patient.temperature}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                name="temperature"
-                sx={{ gridColumn: "span 1" }}
-              />
-              <TextField
-                disabled={!isEditing}
-                fullWidth
-                label="Oxygen Saturation"
-                defaultValue={patient.oxygenSaturation}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                name="oxygenSaturation"
-                sx={{ gridColumn: "span 1" }}
-              />
+              <Box display="flex" gap="30px">
+                <TextField
+                  disabled={!isEditing}
+                  fullWidth
+                  label="DOB"
+                  defaultValue={patient.dob}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  name="dob"
+                  sx={{ gridColumn: "span 2" }}
+                />
+                <TextField
+                  disabled={!isEditing}
+                  fullWidth
+                  label="Height"
+                  defaultValue={patient.height}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  name="height"
+                  sx={{ gridColumn: "span 2" }}
+                />
+              </Box>
+              <Box display="flex" gap="30px">
+                <TextField
+                  disabled={!isEditing}
+                  fullWidth
+                  label="Blood Pressure"
+                  defaultValue={patient.bloodPressure}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  name="bloodPressure"
+                  sx={{ gridColumn: "span 1" }}
+                />
+                
+                <TextField
+                  disabled={!isEditing}
+                  fullWidth
+                  label="Weight"
+                  defaultValue={patient.weight}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  name="weight"
+                  sx={{ gridColumn: "span 1" }}
+                />
+              </Box>
+              <Box display="flex" gap="30px">
+                <TextField
+                  disabled={!isEditing}
+                  fullWidth
+                  label="Temperature"
+                  defaultValue={patient.temperature}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  name="temperature"
+                  sx={{ gridColumn: "span 1" }}
+                />
+                <TextField
+                  disabled={!isEditing}
+                  fullWidth
+                  label="Oxygen Saturation"
+                  defaultValue={patient.oxygenSaturation}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  name="oxygenSaturation"
+                  sx={{ gridColumn: "span 1" }}
+                />
+              </Box>
               <TextField
                 disabled={!isEditing}
                 fullWidth
@@ -441,20 +537,6 @@ const PatientInfo = () => {
               <TextField
                 disabled={!isEditing}
                 fullWidth
-                label="Allergies"
-                defaultValue={
-                  patient.allergies
-                    ? patient.allergies.map((med) => med.medication).join(", ")
-                    : ""
-                }
-                onBlur={handleBlur}
-                onChange={handleChange}
-                name="allergies"
-                sx={{ gridColumn: "span 2" }}
-              />
-              <TextField
-                disabled={!isEditing}
-                fullWidth
                 label="Address"
                 defaultValue={patient.address}
                 onBlur={handleBlur}
@@ -462,6 +544,43 @@ const PatientInfo = () => {
                 name="address"
                 sx={{ gridColumn: "span 2" }}
               />
+              <Box display="flex" gap="30px">
+                <TextField
+                  disabled={!isEditing}
+                  fullWidth
+                  label="Currently employed"
+                  defaultValue={patient.currentlyEmployed}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  name="currentlyEmployed"
+                  sx={{ gridColumn: "span 1" }}
+                />
+                <TextField
+                  disabled={!isEditing}
+                  fullWidth
+                  label="Currently insured"
+                  defaultValue={patient.currentlyInsured}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  name="currentlyInsured"
+                  sx={{ gridColumn: "span 1" }}
+                />
+              </Box>
+              {/* <TextField
+                disabled={!isEditing}
+                fullWidth
+                label="Allergies"
+                defaultValue={
+                  patient.allergies
+                  .map((allergy) => allergy.allergy)
+                  .join(", ")
+                }
+                onBlur={handleBlur}
+                onChange={handleChange}
+                name="allergies"
+                sx={{ gridColumn: "span 2" }}
+              /> */}
+              
               <TextField
                 disabled={!isEditing}
                 fullWidth
@@ -479,26 +598,6 @@ const PatientInfo = () => {
                 sx={{ gridColumn: "span 2" }}
               />
               <TextField
-                disabled={!isEditing}
-                fullWidth
-                label="Currently employed"
-                defaultValue={patient.currentlyEmployed}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                name="currentlyEmployed"
-                sx={{ gridColumn: "span 1" }}
-              />
-              <TextField
-                disabled={!isEditing}
-                fullWidth
-                label="Currently insured"
-                defaultValue={patient.currentlyInsured}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                name="currentlyInsured"
-                sx={{ gridColumn: "span 1" }}
-              />
-              <TextField
                 fullWidth
                 disabled={!isEditing}
                 label="Family history"
@@ -508,6 +607,182 @@ const PatientInfo = () => {
                 name="familyHistory"
                 sx={{ gridColumn: "span 2" }}
               />
+              
+              {/* <TextField
+                fullWidth
+                disabled={!isEditing}
+                label="ICD health codes"
+                defaultValue={patient.icdHealthCodes
+                  .map((code) => code.code)
+                  .join(", ")}
+                onBlur={handleBlur}
+                onChange={handleChange}
+                name="icd"
+                sx={{ gridColumn: "3/4" }}
+              /> */}
+
+              <TextField
+                fullWidth
+                disabled={!isEditing}
+                label="Doses"
+                defaultValue={patient.doses}
+                onBlur={handleBlur}
+                onChange={handleChange}
+                name="doses"
+                sx={{ gridColumn: "4/4" }}
+              />
+
+              <Box display="flex" gap="30px">
+                    <Typography 
+                      variant="h3"
+                      fontWeight="bold"
+                    >
+                      ICD Health Codes
+                    </Typography>
+                    <Button
+                        disabled={!isEditing}
+                        color="custom"
+                        variant="contained"
+                        onClick={handleAddICD}
+                      >
+                        <AddCircleIcon/>
+                        </Button>
+              </Box>
+
+                {[...Array(numICD)].map((_, index) => (
+                  <Box display="flex" gap="30px">
+                          <TextField
+                            key={index}
+                            fullWidth
+                            disabled={!isEditing}
+                            defaultValue={
+                              patient.icdHealthCodes[index]
+                                ? patient.icdHealthCodes[index].code
+                                : ""
+                            }
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            name={`icd-${index}`}
+                            sx={{ gridColumn: "span 2" }}
+                            label={`ICD Health Code ${index + 1}`}
+                          />
+                          {index >= 0 && (
+                            <Button
+                            disabled={!isEditing}
+                            color="error"
+                            variant="contained"
+                              onClick={() => {
+                                setNumICD(numICD - 1);
+                              }}
+                              
+                            >
+                              <HighlightOffIcon/>
+                            </Button>
+                          )}
+                          </Box>
+                        ))}
+
+                  <Box display="flex" gap="30px">
+                    <Typography 
+                      variant="h3"
+                      fontWeight="bold"
+                    >
+                      Allergies
+                    </Typography>
+                    <Button
+                      disabled={!isEditing}
+                        color="custom"
+                        variant="contained"
+                        onClick={handleAddAllergies}
+                      >
+                        <AddCircleIcon/>
+                        </Button>
+              </Box>
+
+                {[...Array(numAllergies)].map((_, index) => (
+                  <Box display="flex" gap="30px">
+                          <TextField
+                            key={index}
+                            fullWidth
+                            disabled={!isEditing}
+                            defaultValue={
+                              (patient?.allergies || [])[index]
+                                ? (patient?.allergies || [])[index].allergy
+                                : ""
+                            }
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            name={`allergy-${index}`}
+                            sx={{ gridColumn: "span 2" }}
+                            label={`Allergy ${index + 1}`}
+                          />
+                          {index >= 0 && (
+                            <Button
+                            disabled={!isEditing}
+                            color="error"
+                            variant="contained"
+                              onClick={() => {
+                                setNumAllergies(numAllergies - 1);
+                              }}
+                              
+                            >
+                              <HighlightOffIcon/>
+                            </Button>
+                          )}
+                          </Box>
+                        ))}
+
+            <Box display="flex" gap="30px">
+                    <Typography 
+                      variant="h3"
+                      fontWeight="bold"
+                    >
+                      Current Medication
+                    </Typography>
+                    <Button
+                        disabled={!isEditing}
+                        color="custom"
+                        variant="contained"
+                        onClick={handleAddMedications}
+                      >
+                        <AddCircleIcon/>
+                        </Button>
+              </Box>
+
+                {[...Array(numMedications)].map((_, index) => (
+                  <Box display="flex" gap="30px">
+                          <TextField
+                            key={index}
+                            fullWidth
+                            disabled={!isEditing}
+                            defaultValue={
+                              (patient?.currentMedications || [])[index]
+                                ? (patient?.currentMedications || [])[index].medication
+                                : ""
+                            }
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            name={`medication-${index}`}
+                            sx={{ gridColumn: "span 2" }}
+                            label={`Medication ${index + 1}`}
+                          />
+                          {index >= 0 && (
+                            <Button
+                            disabled={!isEditing}
+                            color="error"
+                            variant="contained"
+                              onClick={() => {
+                                setNumMedications(numMedications - 1);
+                              }}
+                              
+                            >
+                              <HighlightOffIcon/>
+                            </Button>
+                          )}
+                          </Box>
+                        ))}
+
+
               {isEditing ? (
                 <Button
                   color="success"
@@ -529,30 +804,6 @@ const PatientInfo = () => {
                   Appointment
                 </Button>
               )}
-
-              <TextField
-                fullWidth
-                disabled={!isEditing}
-                label="ICD health codes"
-                defaultValue={patient.icdHealthCodes
-                  .map((code) => code.code)
-                  .join(", ")}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                name="icd"
-                sx={{ gridColumn: "3/4" }}
-              />
-
-              <TextField
-                fullWidth
-                disabled={!isEditing}
-                label="Doses"
-                defaultValue={patient.doses}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                name="doses"
-                sx={{ gridColumn: "4/4" }}
-              />
 
               {/* {showVisitField && (
                       <TextField
@@ -622,7 +873,7 @@ const PatientInfo = () => {
                   );
                 })}
             </Box>
-            <Box display="flex" justifyContent="end" mt="20px">
+            <Box display="flex" justifyContent="start" mt="20px">
               {isEditing ? (
                 <>
                   <Button

@@ -4,14 +4,15 @@ import { tokens } from "../theme";
 import Header from "../components/Header";
 import useBavaria from "../hooks/useBavaria";
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from "react-router-dom";
-import OutboxIcon from '@mui/icons-material/Outbox';
+import { Snackbar } from "@mui/material";
+import { Alert } from "@mui/material";
 
 const BavariaViewDrugView = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const [checkboxSelection, setCheckboxSelection] = React.useState(true);
     const [selectedRows, setSelectedRows] = useState([]);
+    const [open, setOpen] = React.useState(false);
 
     const [drugs, setDrugs] = useState([]);
     console.log(drugs);
@@ -30,6 +31,9 @@ const BavariaViewDrugView = () => {
           batchNumber: "5",
         },
       );
+      if (addBavariaResponse?.transaction?._id != null) {
+        setOpen(true);
+      }
       listDrugs();
     }
 
@@ -41,12 +45,23 @@ const BavariaViewDrugView = () => {
           batchNumber: "5",
         },
       );
+      if (addPlaceboResponse?.transaction?._id != null) {
+        setOpen(true);
+      }
       listDrugs();
     }
 
     useEffect(() => {
         listDrugs();
     }, []);
+
+    const handleClose = (event, reason) => {
+      if (reason === 'clickaway') {
+        return;
+      }
+  
+      setOpen(false);
+    };
 
     const toggleSelectionBox = (value) => {
       setCheckboxSelection(value);
@@ -176,6 +191,18 @@ const BavariaViewDrugView = () => {
               />
             </div>
           </Box>
+          <Snackbar
+                open={open}
+                autoHideDuration={1500}
+                onClose={handleClose}
+              >
+                <Alert
+                  severity="success"
+                  sx={{ width: "100%" }}
+                >
+                  Drug has been sent!
+                </Alert>
+              </Snackbar>
         </Box>
       );
 };
