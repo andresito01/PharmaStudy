@@ -21,6 +21,7 @@ import FDAPatient from "./FDA/scenes/patient";
 // Bavaria imports
 import BavariaViewDrugView from "./Bavaria/BavariaViewDrugView";
 import BavariaView from "./Bavaria/BavariaView";
+import RealtimeTrials from "./Bavaria/RealtimeTrials";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -59,6 +60,7 @@ function App() {
             </Route>
             <Route path="/bavaria" element={<BavariaView />} >
               <Route path="" element={<BavariaViewDrugView />} />
+              <Route path="realtimetrials" element={<RealtimeTrials />} />
             </Route>
           </Routes>
         </div>
