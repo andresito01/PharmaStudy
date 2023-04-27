@@ -165,7 +165,7 @@ const JaneHopkinsAdminPatient = () => {
             }}
           >
             <Button
-                color= "secondary"
+                color= "custom"
                 variant="contained" 
                 type="submit" 
                 sx={{ mb: "20px", padding: "10px 18px" }}
