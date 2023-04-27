@@ -29,6 +29,8 @@ const PatientInfo = () => {
   const [numICD, setNumICD] = useState(1);
   const [numMedications, setNumMedications] = useState(1);
   const [numAllergies, setNumAllergies] = useState(1);
+  const [numVisits, setNumVisits] = useState(1);
+  
   
   const { entities } = useJaneHopkins();
   useEffect(() => {
@@ -38,6 +40,8 @@ const PatientInfo = () => {
     }
     fetchPatient();
   }, [patientId]);
+
+
 
   useEffect(() => {
     if (patient && patient.icdHealthCodes) {
@@ -52,15 +56,65 @@ const PatientInfo = () => {
   }, [patient]);
 
   useEffect(() => {
+    if (patient && patient.visits) {
+      setNumVisits(patient.visits.length);
+    }
+  }, [patient]);
+
+  useEffect(() => {
     if (patient && patient.currentMedications) {
       setNumMedications(patient.currentMedications.length);
     }
   }, [patient]);
 
+  const removeVisitsRow = () => {
+    setNumVisits(numVisits - 1);
+  };
+
+
 
   if (!patient) {
     return <div>Loading...</div>;
   }
+
+  const removeICDRow = (indexToRemove) => {
+    setNumICD((prevNumICD) => {
+      // Remove the specific row by filtering out the unwanted index
+      const newICDHealthCodes = patient.icdHealthCodes.filter(
+        (_, i) => i !== indexToRemove
+      );
+      // Update the patient object
+      setPatient({ ...patient, icdHealthCodes: newICDHealthCodes });
+      // Update the numICD count
+      return prevNumICD - 1;
+    });
+  };
+
+  const removeAllergiesRow = (indexToRemove) => {
+    setNumAllergies((prevNumAllergies) => {
+      // Remove the specific row by filtering out the unwanted index
+      const newAllergies = patient.allergies.filter(
+        (_, i) => i !== indexToRemove
+      );
+      // Update the patient object
+      setPatient({ ...patient, allergies: newAllergies });
+      // Update the numICD count
+      return prevNumAllergies - 1;
+    });
+  };
+
+  const removeMedicationRow = (indexToRemove) => {
+    setNumMedications((prevNumMedications) => {
+      // Remove the specific row by filtering out the unwanted index
+      const newMedications = patient.currentMedications.filter(
+        (_, i) => i !== indexToRemove
+      );
+      // Update the patient object
+      setPatient({ ...patient, currentMedications: newMedications });
+      // Update the numICD count
+      return prevNumMedications - 1;
+    });
+  };
 
   const initialValues = {
     fullName: patient?.name || "",
@@ -81,8 +135,19 @@ const PatientInfo = () => {
       (acc, allergy, index) => ({ ...acc, [`allergy-${index}`]: allergy.allergy }),
       {}
     )),
+    ...((patient?.visits || []).reduce(
+      (acc, visit, index) => ({
+        ...acc,
+        [`patient-${index}`]: visit.patient,
+        [`dateTime-${index}`]: visit.dateTime,
+        [`notes-${index}`]: visit.notes,
+        [`hivViralLoad-${index}`]: visit.hivViralLoad,
+      }),
+      {}
+    )),
   };
 
+ 
   
 
   const handleAddICD = () => {
@@ -95,6 +160,10 @@ const PatientInfo = () => {
 
   const handleAddMedications = () => {
     setNumMedications(numMedications + 1);
+  };
+
+  const handleAddVisit = () => {
+    setNumVisits(numVisits + 1);
   };
 
   const handleFormSubmit = async (values, { setSubmitting }) => {
@@ -130,6 +199,21 @@ const PatientInfo = () => {
         if (values[key]) {
           currentMedications.push({ medication: values[key].trim() });
         }
+      }
+
+      const visitData = [];
+      for (let i = 0; i < numVisits; i++) {
+        const dateTimeKey = `dateTime-${i}`;
+        const notesKey = `notes-${i}`;
+        const hivViralLoadKey = `hivViralLoad-${i}`;
+      
+        const visit = {
+          patient: patient._id,
+          dateTime: values[dateTimeKey],
+          notes: values[notesKey],
+          hivViralLoad: values[hivViralLoadKey],
+        };
+        visitData.push(visit);
       }
 
       const icdString =
@@ -312,7 +396,7 @@ const PatientInfo = () => {
             doses: values.doses,
             allergies: allergies,
             currentMedications: currentMedications,
-            //visits: updatedVisits,
+            visits: visitData,
             isEligible: false,
           },
           nodePermissions
@@ -375,7 +459,7 @@ const PatientInfo = () => {
             doses: values.doses,
             allergies: allergies,
             currentMedications: currentMedications,
-            //visits: visits,
+            visits: visitData,
             isEligible: true,
           },
           nodePermissions
@@ -395,16 +479,43 @@ const PatientInfo = () => {
     }
   };
 
-  const handleClickVisit = () => {
-    setShowVisitField(true);
-  };
-
   const handleClick = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const updateObjectKeys = (obj, updateFn) => {
+    return Object.keys(obj).reduce((acc, key) => {
+      const newKey = updateFn(key);
+      if (newKey) {
+        acc[newKey] = obj[key];
+      }
+      return acc;
+    }, {});
+  };
+
+  const handleRemoveVisit = (index) => {
+    setNumVisits((prevNumVisits) => prevNumVisits - 1);
+    setPatient((prevState) => {
+      const updatedVisits = [...prevState.visits];
+      updatedVisits.splice(index, 1);
+      const updatedPatient = { ...prevState, visits: updatedVisits };
+  
+      updatedPatient.visits = updatedPatient.visits.map((visit, idx) => {
+        if (idx >= index) {
+          visit.patient = `patient-${idx}`;
+          visit.dateTime = `dateTime-${idx}`;
+          visit.notes = `notes-${idx}`;
+          visit.hivViralLoad = `hivViralLoad-${idx}`;
+        }
+        return visit;
+      });
+  
+      return updatedPatient;
+    });
   };
 
   return (
@@ -650,7 +761,7 @@ const PatientInfo = () => {
                             color="error"
                             variant="contained"
                               onClick={() => {
-                                setNumICD(numICD - 1);
+                                removeICDRow(index);
                               }}
                               
                             >
@@ -700,7 +811,7 @@ const PatientInfo = () => {
                             color="error"
                             variant="contained"
                               onClick={() => {
-                                setNumAllergies(numAllergies - 1);
+                                removeAllergiesRow(index);
                               }}
                               
                             >
@@ -750,7 +861,7 @@ const PatientInfo = () => {
                             color="error"
                             variant="contained"
                               onClick={() => {
-                                setNumMedications(numMedications - 1);
+                                removeMedicationRow(index);
                               }}
                               
                             >
@@ -761,7 +872,7 @@ const PatientInfo = () => {
                         ))}
 
 
-              {isEditing ? (
+              {/* {isEditing ? (
                 <Button
                   color="success"
                   variant="contained"
@@ -781,7 +892,7 @@ const PatientInfo = () => {
                 >
                   Appointment
                 </Button>
-              )}
+              )} */}
 
               {/* {showVisitField && (
                       <TextField
@@ -799,6 +910,112 @@ const PatientInfo = () => {
                       
               )} */}
 
+              <Box display="flex" gap="30px">
+                    <Typography 
+                      variant="h3"
+                      fontWeight="bold"
+                    >
+                      Visits
+                    </Typography>
+                    <Button
+                        disabled={!isEditing}
+                        color="custom"
+                        variant="contained"
+                        onClick={handleAddVisit}
+                      >
+                        <EventAvailableIcon/>
+                        </Button>
+              </Box>
+
+              
+              {[...Array(numVisits)].map((_, index) => (
+                    <Box display="flex"
+                    gap="30px"
+                    flexDirection="column"
+                    key={index}>
+                      <Box display="flex" gap="30px">
+                        <TextField
+                          label="Patient"
+                          name={`patient-${index}`}
+                          defaultValue={
+                            (patient?.visits || [])[index]
+                              ? (patient?.visits || [])[index].patient
+                              : ""
+                          }
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          disabled={!isEditing}
+                          fullWidth
+                        />
+                        {index >= 0 && (
+                          <Button
+                            disabled={!isEditing}
+                            color="error"
+                            variant="contained"
+                            onClick={() => {
+                              // const updatedValues = { ...initialValues };
+                              // delete updatedValues[`patient-${index}`];
+                              // delete updatedValues[`dateTime-${index}`];
+                              // delete updatedValues[`notes-${index}`];
+                              // delete updatedValues[`hivViralLoad-${index}`];
+                              // setInitialValues(updatedValues);
+                              removeVisitsRow();
+                            }}
+                          >
+                            <HighlightOffIcon />
+                          </Button>
+                        )}
+                      </Box>
+                      <Box display="flex" gap="30px">
+                        <TextField
+                          label="Date Time"
+                          name={`dateTime-${index}`}
+                          defaultValue={
+                            (patient?.visits || [])[index]
+                              ? (patient?.visits || [])[index].dateTime
+                              : ""
+                          }
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          disabled={!isEditing}
+                          fullWidth
+                        />
+                      </Box>
+                      <Box display="flex" gap="30px">
+                        <TextField
+                          label="Notes"
+                          name={`notes-${index}`}
+                          defaultValue={
+                            (patient?.visits || [])[index]
+                              ? (patient?.visits || [])[index].notes
+                              : ""
+                          }
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          disabled={!isEditing}
+                          fullWidth
+                        />
+                      </Box>
+                      <Box display="flex" gap="30px">
+                        <TextField
+                          label="HIV Viral Load"
+                          name={`hivViralLoad-${index}`}
+                          defaultValue={
+                            (patient?.visits || [])[index]
+                              ? (patient?.visits || [])[index].hivViralLoad
+                              : ""
+                          }
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          disabled={!isEditing}
+                          fullWidth
+                        />
+                        
+                      </Box>
+                    </Box>
+                  ))
+              }
+
             <Box display="flex" gap="30px" width = "50%">
               <TextField
                 fullWidth
@@ -811,8 +1028,9 @@ const PatientInfo = () => {
                 sx={{ gridColumn: "span 1" }}
               />
             </Box>
+            
 
-              {patient.visits &&
+              {/* {patient.visits &&
                 patient.visits.length > 0 &&
                 patient.visits.map((visit, index) => {
                   const updatedVisit = values.visits && values.visits[index];
@@ -863,8 +1081,11 @@ const PatientInfo = () => {
                       />
                     </Box>
                   );
-                })}
+                })} */}
+
+
             </Box>
+
             <Box display="flex" justifyContent="start" mt="20px">
               {isEditing ? (
                 <>
