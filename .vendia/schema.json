@@ -5,6 +5,9 @@
     "patientACL": {
       "type": "Patient"
     },
+    "eligiblePatientACL": {
+      "type": "EligiblePatient"
+    },
     "drugACL": {
       "type": "Drug"
     }
@@ -115,6 +118,29 @@
             "type": "boolean"
           },
           "doses": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "EligiblePatient": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "type": "string"
+          },
+          "isEligible": {
+            "type": "boolean"
+          },
+          "medication": {
+            "type": "string"
+          },
+          "doses": {
+            "type": "string"
+          },
+          "hivViralLoad": {
             "type": "string"
           }
         }

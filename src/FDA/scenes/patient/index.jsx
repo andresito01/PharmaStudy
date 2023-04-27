@@ -11,7 +11,51 @@ const Patient = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
 
+    const nodePermissions = {
+      aclInput: {
+        acl: [
+          {
+            principal: {
+              nodes: ["Bavaria"],
+            },
+            operations: ["READ"],
+            path: "uuid"
+          },
+          {
+            principal: {
+              nodes: ["Bavaria"],
+            },
+            operations: ["READ"],
+            path: "isEligible"
+          },
+          {
+            principal: {
+              nodes: ["Bavaria"],
+            },
+            operations: ["READ"],
+            path: "medication"
+          },
+          {
+            principal: {
+              nodes: ["Bavaria"],
+            },
+            operations: ["READ"],
+            path: "doses"
+          },
+          {
+            principal: {
+              nodes: ["Bavaria"],
+            },
+            operations: ["READ"],
+            path: "hivViralLoad"
+          },
+        ],
+      },
+    };
+
     const [eligiblePatients, setEligiblePatients] = useState([])
+    const [eligiblePatientsFDA, setEligiblePatientsFDA] = useState([])
+
 
     // Treatment group (receiving the actual medication)
     const [treatmentPatientGroup, setTreatmentPatientGroup] = useState([])
@@ -21,67 +65,47 @@ const Patient = () => {
 
     const { entities } = useFDA();
 
-    const listEligiblePatients = async () => {
+    const listEligiblePatientsFromPatientProperty = async () => {
+      // List Eligible Patients from patient property
       const { items } = await entities.patient.list();
       setEligiblePatients(items);
-      console.log(items);
-      // Add Eligible Patients to the EligiblePatient entity
-      let nodePermissions = {
-        aclInput: {
-          acl: [
-            {
-              principal: {
-                nodes: ["Bavaria"],
-              },
-              operations: ["READ"],
-              path: "uuid"
-            },
-            {
-              principal: {
-                nodes: ["Bavaria"],
-              },
-              operations: ["READ"],
-              path: "isEligible"
-            },
-            {
-              principal: {
-                nodes: ["Bavaria"],
-              },
-              operations: ["READ"],
-              path: "medication"
-            },
-            {
-              principal: {
-                nodes: ["Bavaria"],
-              },
-              operations: ["READ"],
-              path: "doses"
-            },
-            {
-              principal: {
-                nodes: ["Bavaria"],
-              },
-              operations: ["READ"],
-              path: "hivViralLoad"
-            },
-          ],
-        },
-      };
-      eligiblePatients.map(async (patient) => {
-        try {
-          const response = await entities.eligiblepatient.add({
-            uuid: patient.uuid,
-            isEligible: patient.isEligible,
-            medication: patient.medication
-          }, nodePermissions)
-          console.log(response)
-        } catch (err) {
-          console.log(err)
-        }
-      })
     };
 
-    const mapDrugsToPatients = () => {
+    let addEligiblePatientResponse;
+
+    const addEligiblePatientsToEligiblePatientProperty = async () => {
+      console.log("Method initiated")
+      console.log(eligiblePatients)
+      // List Eligible Patients from eligiblePatient property that will be hidden from JaneHopkins
+      const { items } = await entities.eligiblePatient.list();
+      // Add Eligible Patients to the EligiblePatient entity
+      eligiblePatients.map(async (patient) => {
+        console.log(items.some((item) => item.uuid === patient.uuid) === false)
+        if (items.some((item) => item.uuid === patient.uuid) === false) {
+          try {
+            addEligiblePatientResponse = await entities.eligiblePatient.add({
+              uuid: patient.uuid,
+              isEligible: patient.isEligible,
+              medication: "Not Assigned",
+              doses: patient.doses||"0",
+              hivViralLoad: "Not Determined"
+            }, nodePermissions)
+            console.log(addEligiblePatientResponse)
+          } catch (err) {
+            console.log(err)
+          }
+        }
+      })
+    }
+
+    const listEligiblePatientsFromEligiblePatientProperty = async () => {
+      // List Eligible Patients from eligiblePatient property
+      const { items } = await entities.eligiblePatient.list();
+      setEligiblePatientsFDA(items);
+    };
+
+
+    const mapDrugsToPatients =  () => {
       const patientArrayForSort = [...eligiblePatients]
       // Return a shuffled list of patients. 
       const shuffledPatients = shuffleList(patientArrayForSort);
@@ -95,109 +119,109 @@ const Patient = () => {
       const controlGroup = shuffledPatients;
       setControlPatientGroup(controlGroup)
 
-      console.log(treatmentGroup)
-      // Update treatment group patients current medications to receive the generic medication 
-      treatmentGroup.forEach(async (treatmentPatient) => {
-        let nodePermissions = {
-          aclInput: {
-            acl: [
-              {
-                principal: {
-                  nodes: ["JaneHopkins"],
-                },
-                operations: ["READ", "WRITE"],
-                path: "currentMedications"
-              },
-              {
-                principal: {
-                  nodes: ["Bavaria"],
-                },
-                operations: ["READ"],
-                path: "currentMedications"
-              },
-            ],
-          },
-        };
-        if(treatmentPatient.currentMedications == null) {
-          let currentMedicationsArray = [{medication: "Generic"}]
-          try {
-            const response = await entities.patient.update({
-              _id: treatmentPatient._id,
-              currentMedications: currentMedicationsArray
-            })
-            console.log(response)
-          } catch (err) {
-            console.log(err)
-          }
-        } else {
-          let currentMedicationsArray = treatmentPatient.currentMedications
-          if((currentMedicationsArray.includes({medication: "Generic"})) === false) {
-            currentMedicationsArray = currentMedicationsArray.push({medication: "Generic"})
-            try {
-              const response = await entities.patient.update({
-                _id: treatmentPatient._id,
-                currentMedications: currentMedicationsArray
-              })
-              console.log(response)
-            } catch (err) {
-              console.log(err)
-            }
-          }
-        }
-      })
+      // console.log(treatmentGroup)
+      // // Update treatment group patients current medications to receive the generic medication 
+      // treatmentGroup.forEach(async (treatmentPatient) => {
+      //   let nodePermissions = {
+      //     aclInput: {
+      //       acl: [
+      //         {
+      //           principal: {
+      //             nodes: ["JaneHopkins"],
+      //           },
+      //           operations: ["READ", "WRITE"],
+      //           path: "currentMedications"
+      //         },
+      //         {
+      //           principal: {
+      //             nodes: ["Bavaria"],
+      //           },
+      //           operations: ["READ"],
+      //           path: "currentMedications"
+      //         },
+      //       ],
+      //     },
+      //   };
+      //   if(treatmentPatient.currentMedications == null) {
+      //     let currentMedicationsArray = [{medication: "Generic"}]
+      //     try {
+      //       const response = await entities.patient.update({
+      //         _id: treatmentPatient._id,
+      //         currentMedications: currentMedicationsArray
+      //       })
+      //       console.log(response)
+      //     } catch (err) {
+      //       console.log(err)
+      //     }
+      //   } else {
+      //     let currentMedicationsArray = treatmentPatient.currentMedications
+      //     if((currentMedicationsArray.includes({medication: "Generic"})) === false) {
+      //       currentMedicationsArray = currentMedicationsArray.push({medication: "Generic"})
+      //       try {
+      //         const response = await entities.patient.update({
+      //           _id: treatmentPatient._id,
+      //           currentMedications: currentMedicationsArray
+      //         })
+      //         console.log(response)
+      //       } catch (err) {
+      //         console.log(err)
+      //       }
+      //     }
+      //   }
+      // })
 
-      console.log(controlGroup)
-      // Update control group patients current medications to receive the placebo medication 
-      controlGroup.forEach(async (controlPatient) => {
-        let nodePermissions = {
-          aclInput: {
-            acl: [
-              {
-                principal: {
-                  nodes: ["JaneHopkins"],
-                },
-                operations: ["READ", "WRITE"],
-                path: "currentMedications"
-              },
-              {
-                principal: {
-                  nodes: ["Bavaria"],
-                },
-                operations: ["READ"],
-                path: "currentMedications"
-              },
-            ],
-          },
-        };
+      // console.log(controlGroup)
+      // // Update control group patients current medications to receive the placebo medication 
+      // controlGroup.forEach(async (controlPatient) => {
+      //   let nodePermissions = {
+      //     aclInput: {
+      //       acl: [
+      //         {
+      //           principal: {
+      //             nodes: ["JaneHopkins"],
+      //           },
+      //           operations: ["READ", "WRITE"],
+      //           path: "currentMedications"
+      //         },
+      //         {
+      //           principal: {
+      //             nodes: ["Bavaria"],
+      //           },
+      //           operations: ["READ"],
+      //           path: "currentMedications"
+      //         },
+      //       ],
+      //     },
+      //   };
         
-        if(controlPatient.currentMedications == null) {
-          let currentMedicationsArray = [{medication: "Placebo"}]
-          try {
-            const response = await entities.patient.update({
-              _id: controlPatient._id,
-              currentMedications: currentMedicationsArray
-            })
-            console.log(response)
-          } catch (err) {
-            console.log(err)
-          }
-        } else {
-          let currentMedicationsArray = controlPatient.currentMedications
-          if((currentMedicationsArray.includes({medication: "Placebo"})) === false) {
-            currentMedicationsArray = currentMedicationsArray.push({medication: "Placebo"})
-            console.log(currentMedicationsArray)
-            try {
-              const response = await entities.patient.update({
-                _id: controlPatient._id,
-                currentMedications: currentMedicationsArray
-              })
-              console.log(response)
-            } catch (err) {
-              console.log(err)
-            }
-          }
-        }
-      })
+      //   if(controlPatient.currentMedications == null) {
+      //     let currentMedicationsArray = [{medication: "Placebo"}]
+      //     try {
+      //       const response = await entities.patient.update({
+      //         _id: controlPatient._id,
+      //         currentMedications: currentMedicationsArray
+      //       })
+      //       console.log(response)
+      //     } catch (err) {
+      //       console.log(err)
+      //     }
+      //   } else {
+      //     let currentMedicationsArray = controlPatient.currentMedications
+      //     if((currentMedicationsArray.includes({medication: "Placebo"})) === false) {
+      //       currentMedicationsArray = currentMedicationsArray.push({medication: "Placebo"})
+      //       console.log(currentMedicationsArray)
+      //       try {
+      //         const response = await entities.patient.update({
+      //           _id: controlPatient._id,
+      //           currentMedications: currentMedicationsArray
+      //         })
+      //         console.log(response)
+      //       } catch (err) {
+      //         console.log(err)
+      //       }
+      //     }
+      //   }
+      // })
     }
 
     // Helper method to shuffle the list of patients thus randomizing the indices for each patient object in the list of patients
@@ -219,8 +243,13 @@ const Patient = () => {
 
 
     useEffect(() => {
-      listEligiblePatients();
+      listEligiblePatientsFromPatientProperty();
     }, []);
+
+    useEffect(() => {
+      addEligiblePatientsToEligiblePatientProperty();
+      listEligiblePatientsFromEligiblePatientProperty();
+    }, [eligiblePatients]);
 
     const getRowId = (row) => row._id;
 

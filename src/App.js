@@ -3,7 +3,6 @@ import { ColorModeContext, useMode } from "./theme";
 import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import TopBar from "./scenes/global/TopBar";
-import Dashboard from "./scenes/dashboard";
 import Team from "./scenes/team";
 import Form from "./scenes/form";
 import Calendar from "./scenes/calendar";
@@ -19,8 +18,9 @@ import JaneHopkinsAdminPatient from "./JaneHopkinsAdmin/JaneHopkinsAdminPatient"
 // FDA Imports
 import FDAView from "./FDA/FDAView.js";
 import FDAPatient from "./FDA/scenes/patient";
-// Bavaria Imports
-import BavariaView from "./Bavaria/BavariaView.js";
+// Bavaria imports
+import BavariaViewDrugView from "./Bavaria/BavariaViewDrugView";
+import BavariaView from "./Bavaria/BavariaView";
 import BavariaPatient from "./Bavaria/scenes/patient";
 
 function App() {
@@ -62,9 +62,8 @@ function App() {
               <Route path="invoices" />
             </Route>
             <Route path="/bavaria" element={<BavariaView />}>
-              <Route path="" element={<BavariaPatient />} />
+              <Route path="" element={<BavariaViewDrugView />} />
               <Route path="faq" element={<FAQ />} />
-              <Route path="patient" element={<BavariaPatient />} />
             </Route>
           </Routes>
         </div>

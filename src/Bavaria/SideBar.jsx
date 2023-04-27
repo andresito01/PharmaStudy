@@ -1,17 +1,14 @@
 import { useState } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
-import { Box, IconButton, Typography, useTheme } from "@mui/material";
+import { Box, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
 import { tokens } from "../theme";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
-import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
-import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
-import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
-import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
+import BiotechIcon from '@mui/icons-material/Biotech';
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
+import AssessmentIcon from '@mui/icons-material/Assessment';
 
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
@@ -105,11 +102,10 @@ const SideBar = () => {
                       fontWeight="bold"
                       sx={{ m: "10px 0 0 0" }}
                     >
-                      Andres Morocho
                     </Typography>
                     <Typography variant="h5" color={colors.greenAccent[500]}>
                       Administrator
-                    </Typography>
+                    </Typography>  
                   </Box>
                 </Box>
               )}
@@ -122,7 +118,6 @@ const SideBar = () => {
                   selected={selected}
                   setSelected={setSelected}
                 />
-    
                 <Typography
                   variant="h6"
                   color={colors.grey[300]}
@@ -131,26 +126,19 @@ const SideBar = () => {
                   Data
                 </Typography>               
                 <Item
-                  title="View Patient"
-                  to="/bavaria/patient"
-                  icon={<ContactsOutlinedIcon />}
+                  title="Real-time Trials"
+                  to="/bavaria/realtimetrials"
+                  icon={<BiotechIcon />}
                   selected={selected}
                   setSelected={setSelected}
                 />
-                <Typography
-                  variant="h6"
-                  color={colors.grey[300]}
-                  sx={{ m: "15px 0 5px 20px" }}
-                >
-                  About
-                </Typography>
                 <Item
-                  title="FAQ Page"
-                  to="/bavaria/faq"
-                  icon={<HelpOutlineOutlinedIcon />}
+                  title="Post-trial Report"
+                  to="/bavaria/report"
+                  icon={<AssessmentIcon />}
                   selected={selected}
                   setSelected={setSelected}
-                />
+                />   
               </Box>
             </Menu>
           </ProSidebar>
