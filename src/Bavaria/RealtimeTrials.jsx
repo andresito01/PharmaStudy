@@ -9,7 +9,7 @@ import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import GppBadIcon from '@mui/icons-material/GppBad';
 import OutboxIcon from '@mui/icons-material/Outbox';
 
-const JaneHopkinsAdminPatient = () => {
+const RealtimeTrials = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const [checkboxSelection, setCheckboxSelection] = React.useState(true);
@@ -55,28 +55,12 @@ const JaneHopkinsAdminPatient = () => {
     const columns = [
       {
         field: "uuid",
-        headerName: "UUID",
-        flex: 1,
-      },
-      {
-        field: "name",
-        headerName: "Name",
-        flex: 1,
-        cellClassName: "name-column--cell",
-      },
-      {
-        field: "dob",
-        headerName: "DOB",
-        flex: 1,
-      },
-      {
-        field: "insuranceNumber",
-        headerName: "Insurance Number",
+        headerName: "PATIENT ID",
         flex: 1,
       },
       {
         field: "doses",
-        headerName: "Doses",
+        headerName: "CURRENT DOSES",
         flex: 1,
         renderCell: ({ row: { doses } }) => {
           const dosesCount = parseInt(doses);
@@ -90,51 +74,38 @@ const JaneHopkinsAdminPatient = () => {
         },
       },
       {
-        field: "isEligible",
-        headerName: "Eligible",
+        headerName: "STATUS",
         flex: 1,
-        headerAlign:'center',
-        renderCell: ({ row: { isEligible } }) => {
+        renderCell: ({ row: { doses } }) => {
+          const dosesCount = parseInt(doses);
           return (
-            <Box
-              width="60%"
-              m="0 auto"
-              p="5px"
-              display="flex"
-              justifyContent="center"
-              backgroundColor={
-                isEligible === true
-                  ? colors.greenAccent[600]
-                  : isEligible === false
-                  ? colors.redAccent[600]
-                  : colors.redAccent[600]
-              }
-              borderRadius="4px"
-            >
-              {isEligible === true && <span>
-                <VerifiedUserIcon />
-                <span>Eligible</span>
-              </span>}
-              {isEligible === false && <span>
-                <GppBadIcon />
-                <span>Not Eligible</span>
-              </span>}
-              {isEligible === null && <span>
-                <GppBadIcon />
-                <span>Not Eligible</span>
-              </span>}
-              <Typography color={colors.grey[100]} sx={{ ml: "5px" }}>
-                {isEligible}
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
+              <Typography sx={{ color: dosesCount === 5 ? colors.greenAccent[600] : colors.redAccent[400]}}>
+                {dosesCount === 5 ? "Completed" : "In Progress"}
               </Typography>
             </Box>
           );
         },
       },
+    //   {
+    //     headerName: "DRUG TYPE",
+    //     flex: 1,
+    //     renderCell: ({ row: { doses } }) => {
+    //       const dosesCount = parseInt(doses);
+    //       return (
+    //         <Box sx={{ display: "flex", justifyContent: "center" }}>
+    //           <Typography sx={{ color: dosesCount === 5 ? colors.greenAccent[600] : colors.redAccent[400]}}>
+    //             {dosesCount ? "Bavaria " : "Placebo"}
+    //           </Typography>
+    //         </Box>
+    //       );
+    //     },
+    //   },
     ];
 
       return (
         <Box m="40px">
-          <Header title="Patient List" />
+          <Header title="Real-time Trials" />
           <Box
             m="20px 0 0 0"
             height="75vh"
@@ -164,15 +135,6 @@ const JaneHopkinsAdminPatient = () => {
               },
             }}
           >
-            <Button
-                color= "custom"
-                variant="contained" 
-                type="submit" 
-                sx={{ mb: "20px", padding: "10px 18px" }}
-              >
-                Send to FDA
-                <OutboxIcon sx={{ ml: "10px" }}></OutboxIcon>
-            </Button>
             <div style={{ height: '100%', width: '100%' }}>
               <DataGrid 
                 checkboxSelection={checkboxSelection} 
@@ -189,4 +151,4 @@ const JaneHopkinsAdminPatient = () => {
 };
 
 
-export default JaneHopkinsAdminPatient;
+export default RealtimeTrials;

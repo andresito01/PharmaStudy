@@ -28,6 +28,7 @@ const Patient = () => {
             operations: ["READ"],
             path: "isEligible"
           },
+          // Remove the permission below to disallow Bavaria's access to the patient's drug mapping
           {
             principal: {
               nodes: ["Bavaria"],
@@ -53,7 +54,9 @@ const Patient = () => {
       },
     };
 
-    const [eligiblePatients, setEligiblePatients] = useState([])
+    const [eligiblePatientsJaneHopkins, setEligiblePatientsJaneHopkins] = useState([])
+
+    // state for EligiblePatient high level property that only FDA should have full access to 
     const [eligiblePatientsFDA, setEligiblePatientsFDA] = useState([])
 
 
@@ -65,48 +68,50 @@ const Patient = () => {
 
     const { entities } = useFDA();
 
+    // List eligible patients from Patient property
     const listEligiblePatientsFromPatientProperty = async () => {
-      // List Eligible Patients from patient property
       const { items } = await entities.patient.list();
-      setEligiblePatients(items);
+      setEligiblePatientsJaneHopkins(items);
     };
 
+    // Populates EligiblePatients property with the list of eligible patients, this property will also later be updated with drug mapping to the eligible patients
     let addEligiblePatientResponse;
-
     const addEligiblePatientsToEligiblePatientProperty = async () => {
       console.log("Method initiated")
-      console.log(eligiblePatients)
-      // List Eligible Patients from eligiblePatient property that will be hidden from JaneHopkins
+      console.log(eligiblePatientsJaneHopkins)
+
       const { items } = await entities.eligiblePatient.list();
-      // Add Eligible Patients to the EligiblePatient entity
-      eligiblePatients.map(async (patient) => {
+      eligiblePatientsJaneHopkins.map(async (patient) => {
         console.log(items.some((item) => item.uuid === patient.uuid) === false)
         if (items.some((item) => item.uuid === patient.uuid) === false) {
           try {
             addEligiblePatientResponse = await entities.eligiblePatient.add({
               uuid: patient.uuid,
               isEligible: patient.isEligible,
-              medication: "Not Assigned",
+              trialGroupAssignment: patient.trialGroupAssignment||"TBD",
+              medication: patient.medication||"TBD",
               doses: patient.doses||"0",
-              hivViralLoad: "Not Determined"
+              hivViralLoad: "TBD"
             }, nodePermissions)
+            console.log("Patient Added to EligiblePatient")
             console.log(addEligiblePatientResponse)
           } catch (err) {
             console.log(err)
           }
         }
       })
+      listEligiblePatientsFromEligiblePatientProperty();
     }
 
+    // List eligible patients from the EligiblePatient property
     const listEligiblePatientsFromEligiblePatientProperty = async () => {
-      // List Eligible Patients from eligiblePatient property
       const { items } = await entities.eligiblePatient.list();
       setEligiblePatientsFDA(items);
     };
 
-
-    const mapDrugsToPatients =  () => {
-      const patientArrayForSort = [...eligiblePatients]
+    // Assigns eligible patients to a treatment or control group
+    const assignPatientsToTreatmentOrControlGroup = () => {
+      const patientArrayForSort = [...eligiblePatientsFDA]
       // Return a shuffled list of patients. 
       const shuffledPatients = shuffleList(patientArrayForSort);
       // Split shuffled list of patients in half at its midpoint. 
@@ -119,109 +124,47 @@ const Patient = () => {
       const controlGroup = shuffledPatients;
       setControlPatientGroup(controlGroup)
 
-      // console.log(treatmentGroup)
-      // // Update treatment group patients current medications to receive the generic medication 
-      // treatmentGroup.forEach(async (treatmentPatient) => {
-      //   let nodePermissions = {
-      //     aclInput: {
-      //       acl: [
-      //         {
-      //           principal: {
-      //             nodes: ["JaneHopkins"],
-      //           },
-      //           operations: ["READ", "WRITE"],
-      //           path: "currentMedications"
-      //         },
-      //         {
-      //           principal: {
-      //             nodes: ["Bavaria"],
-      //           },
-      //           operations: ["READ"],
-      //           path: "currentMedications"
-      //         },
-      //       ],
-      //     },
-      //   };
-      //   if(treatmentPatient.currentMedications == null) {
-      //     let currentMedicationsArray = [{medication: "Generic"}]
-      //     try {
-      //       const response = await entities.patient.update({
-      //         _id: treatmentPatient._id,
-      //         currentMedications: currentMedicationsArray
-      //       })
-      //       console.log(response)
-      //     } catch (err) {
-      //       console.log(err)
-      //     }
-      //   } else {
-      //     let currentMedicationsArray = treatmentPatient.currentMedications
-      //     if((currentMedicationsArray.includes({medication: "Generic"})) === false) {
-      //       currentMedicationsArray = currentMedicationsArray.push({medication: "Generic"})
-      //       try {
-      //         const response = await entities.patient.update({
-      //           _id: treatmentPatient._id,
-      //           currentMedications: currentMedicationsArray
-      //         })
-      //         console.log(response)
-      //       } catch (err) {
-      //         console.log(err)
-      //       }
-      //     }
-      //   }
-      // })
+      let updateEligiblePatientResponse;
+      // Update eligible patients' trialGroupAssignment property to their assigned values
+      treatmentGroup.map(async (patient) => {
+        console.log(patient)
+        if(patient.trialGroupAssignment === "TBD") {
+          console.log("Trial Group Assignment initiated")
+          try {
+            updateEligiblePatientResponse = await entities.eligiblePatient.update({
+              uuid: patient.uuid,
+              isEligible: patient.isEligible,
+              trialGroupAssignment: "Generic",
+              medication: "Generic",
+              doses: patient.doses||"0",
+              hivViralLoad: "TBD"
+            }, nodePermissions)
+            console.log(updateEligiblePatientResponse)
+          } catch (err) {
+            console.log(err)
+          }
+        }
+      })
 
-      // console.log(controlGroup)
-      // // Update control group patients current medications to receive the placebo medication 
-      // controlGroup.forEach(async (controlPatient) => {
-      //   let nodePermissions = {
-      //     aclInput: {
-      //       acl: [
-      //         {
-      //           principal: {
-      //             nodes: ["JaneHopkins"],
-      //           },
-      //           operations: ["READ", "WRITE"],
-      //           path: "currentMedications"
-      //         },
-      //         {
-      //           principal: {
-      //             nodes: ["Bavaria"],
-      //           },
-      //           operations: ["READ"],
-      //           path: "currentMedications"
-      //         },
-      //       ],
-      //     },
-      //   };
-        
-      //   if(controlPatient.currentMedications == null) {
-      //     let currentMedicationsArray = [{medication: "Placebo"}]
-      //     try {
-      //       const response = await entities.patient.update({
-      //         _id: controlPatient._id,
-      //         currentMedications: currentMedicationsArray
-      //       })
-      //       console.log(response)
-      //     } catch (err) {
-      //       console.log(err)
-      //     }
-      //   } else {
-      //     let currentMedicationsArray = controlPatient.currentMedications
-      //     if((currentMedicationsArray.includes({medication: "Placebo"})) === false) {
-      //       currentMedicationsArray = currentMedicationsArray.push({medication: "Placebo"})
-      //       console.log(currentMedicationsArray)
-      //       try {
-      //         const response = await entities.patient.update({
-      //           _id: controlPatient._id,
-      //           currentMedications: currentMedicationsArray
-      //         })
-      //         console.log(response)
-      //       } catch (err) {
-      //         console.log(err)
-      //       }
-      //     }
-      //   }
-      // })
+      controlGroup.map(async (patient) => {
+        console.log(patient)
+        if(patient.trialGroupAssignment === "TBD") {
+          console.log("Trial Group Assignment initiated")
+          try {
+            updateEligiblePatientResponse = await entities.eligiblePatient.update({
+              uuid: patient.uuid,
+              isEligible: patient.isEligible,
+              trialGroupAssignment: "Placebo",
+              medication: "Placebo",
+              doses: patient.doses||"0",
+              hivViralLoad: "TBD"
+            }, nodePermissions)
+            console.log(addEligiblePatientResponse)
+          } catch (err) {
+            console.log(err)
+          }
+        }
+      })
     }
 
     // Helper method to shuffle the list of patients thus randomizing the indices for each patient object in the list of patients
@@ -248,8 +191,7 @@ const Patient = () => {
 
     useEffect(() => {
       addEligiblePatientsToEligiblePatientProperty();
-      listEligiblePatientsFromEligiblePatientProperty();
-    }, [eligiblePatients]);
+    }, [eligiblePatientsJaneHopkins]);
 
     const getRowId = (row) => row._id;
 
@@ -301,6 +243,16 @@ const Patient = () => {
           },
         },
         {
+          field: `trialGroupAssignment`,
+          headerName: "Trial Group",
+          flex: 1,
+        },
+        {
+          field: `medication`,
+          headerName: "MEDICATION",
+          flex: 1,
+        },
+        {
           field: "doses",
           headerName: "Doses",
           flex: 1,
@@ -320,19 +272,14 @@ const Patient = () => {
           headerName: "HIV READING",
           flex: 1,
         },
-        {
-          field: `currentMedications`,
-          headerName: "MEDICATION",
-          flex: 1,
-        }
       ];
 
       return (
         
         <Box m="20px">
           <Header title="Patient List" />
-          <Button onClick={mapDrugsToPatients} color="custom" variant="contained">
-              Map Drugs To Patients
+          <Button onClick={assignPatientsToTreatmentOrControlGroup} color="custom" variant="contained">
+              Randomly Assign Patients To A Treatment Or Control Group
           </Button>
           <Box
             m="40px 0 0 0"
@@ -364,7 +311,7 @@ const Patient = () => {
             }}
           >
             <div style={{ height: '100%', width: '100%' }}>
-              <DataGrid checkboxSelection rows={eligiblePatients} columns={columns} getRowId={getRowId} /> 
+              <DataGrid checkboxSelection rows={eligiblePatientsFDA} columns={columns} getRowId={getRowId} /> 
             </div>
           </Box>
         </Box>

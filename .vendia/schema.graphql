@@ -156,6 +156,7 @@ enum Vendia_OperationType {
   DELETE
   INVOKE
   ALL
+  ERASE_GLOBAL
 }
 
 type Vendia_Version_Connection_ {
@@ -281,6 +282,7 @@ input Self_EligiblePatient_ConditionInput_ {
   hivViralLoad: Vendia_ModelStringInput_
   isEligible: Vendia_ModelBooleanInput_
   medication: Vendia_ModelStringInput_
+  trialGroupAssignment: Vendia_ModelStringInput_
   uuid: Vendia_ModelStringInput_
   _and: [Self_EligiblePatient_ConditionInput_]
   _or: [Self_EligiblePatient_ConditionInput_]
@@ -293,6 +295,7 @@ input Self_EligiblePatient_FilterInput_ {
   hivViralLoad: Vendia_ModelStringInput_
   isEligible: Vendia_ModelBooleanInput_
   medication: Vendia_ModelStringInput_
+  trialGroupAssignment: Vendia_ModelStringInput_
   uuid: Vendia_ModelStringInput_
   _and: [Self_EligiblePatient_FilterInput_]
   _or: [Self_EligiblePatient_FilterInput_]
@@ -309,6 +312,7 @@ type Self_EligiblePatient {
   hivViralLoad: String
   isEligible: Boolean
   medication: String
+  trialGroupAssignment: String
   uuid: String
   _acl: [Vendia_Acl!]
   _owner: String
@@ -320,6 +324,7 @@ type Self_EligiblePatient_Partial_ {
   hivViralLoad: String
   isEligible: Boolean
   medication: String
+  trialGroupAssignment: String
   uuid: String
   _acl: [Vendia_Acl!]
   _owner: String
@@ -351,6 +356,7 @@ input Self_EligiblePatient_Input_ {
   hivViralLoad: String
   isEligible: Boolean
   medication: String
+  trialGroupAssignment: String
   uuid: String
 }
 
@@ -359,6 +365,7 @@ input Self_EligiblePatient_UpdateInput_ {
   hivViralLoad: String
   isEligible: Boolean
   medication: String
+  trialGroupAssignment: String
   uuid: String
 }
 
@@ -367,6 +374,7 @@ input Self_EligiblePatient_PartialInput_ {
   hivViralLoad: String
   isEligible: Boolean
   medication: String
+  trialGroupAssignment: String
   uuid: String
 }
 

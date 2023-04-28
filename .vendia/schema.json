@@ -134,6 +134,9 @@
           "isEligible": {
             "type": "boolean"
           },
+          "trialGroupAssignment": {
+            "type": "string"
+          },
           "medication": {
             "type": "string"
           },
