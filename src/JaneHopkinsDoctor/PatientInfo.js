@@ -226,15 +226,9 @@ const PatientInfo = () => {
         ? icdString.split(",").map((icdCode) => ({ code: icdCode.trim() }))
         : icdDefaultArray;
 
-        const allergiesString =
-        values.allergies ||
-        patient.allergies.map((allergy) => allergy.allergy).join(", ");
-      const allergiesDefaultArray = patient.allergies
-        ? patient.allergies.map((allergy) => ({ allergy: allergy.allergy }))
-        : [];
-      const allergiesArray = allergiesString
-        ? allergiesString.split(",").map((allergiesCode) => ({ allergy: allergiesCode.trim() }))
-        : allergiesDefaultArray;
+        const allergiesString = values.allergies || (patient.allergies ? patient.allergies.map((allergy) => allergy.allergy).join(", ") : "");
+        const allergiesDefaultArray = patient.allergies ? patient.allergies.map((allergy) => ({ allergy: allergy.allergy })) : [];
+        const allergiesArray = allergiesString ? allergiesString.split(",").map((allergiesCode) => ({ allergy: allergiesCode.trim() })) : allergiesDefaultArray;
 
       const defaultDob = values.dob ? values.dob : patient.dob;
 
@@ -393,7 +387,7 @@ const PatientInfo = () => {
             currentlyEmployed: values.currentlyEmployed,
             currentlyInsured: values.currentlyInsured,
             icdHealthCodes: icdCodes,
-            doses: values.doses,
+            doses: values.doses ? values.doses.toString() : '',
             allergies: allergies,
             currentMedications: currentMedications,
             visits: visitData,
@@ -456,7 +450,7 @@ const PatientInfo = () => {
             currentlyEmployed: values.currentlyEmployed,
             currentlyInsured: values.currentlyInsured,
             icdHealthCodes: icdCodes,
-            doses: values.doses,
+            doses: values.doses ? values.doses.toString() : '',
             allergies: allergies,
             currentMedications: currentMedications,
             visits: visitData,
