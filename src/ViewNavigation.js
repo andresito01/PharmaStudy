@@ -20,16 +20,16 @@ function ViewNavigation() {
         gap: "2rem",
       }}
     >
-      <Link style={LinkCSS} to={"/janehopkinsdoctor"}>
+      <Link style={LinkCSS} to={"/janehopkinsdoctorlogin"}>
         Jane Hopkins Doctor
       </Link>
-      <Link style={LinkCSS} to={"/janehopkinsadmin"}>
+      <Link style={LinkCSS} to={"/janehopkinsadminlogin"}>
         Jane Hopkins Admin
       </Link>
-      <Link style={LinkCSS} to={"/fda"}>
+      <Link style={LinkCSS} to={"/fdalogin"}>
         FDA
       </Link>
-      <Link style={LinkCSS} to={"/bavaria"}>
+      <Link style={LinkCSS} to={"/bavarialogin"}>
         Bavaria
       </Link>
     </div>

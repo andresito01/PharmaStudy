@@ -8,12 +8,16 @@ import SplitButton from "../../components/SplitButton";
 import { useNavigate } from "react-router-dom";
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import GppBadIcon from '@mui/icons-material/GppBad';
+import { Snackbar, Alert } from "@mui/material";
+
 
 const Patient = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const [checkboxSelection, setCheckboxSelection] = React.useState(true);
     const [selectedRows, setSelectedRows] = useState([]);
+
+    const [open, setOpen] = React.useState(false);
 
     const [patients, setPatients] = useState([]);
     console.log(patients);
@@ -45,12 +49,17 @@ const Patient = () => {
       }
       setSelectedRows([]);
       listPatients();
+      setOpen(true);
     };
 
     const navigate = useNavigate();
     const handleRowClick = (rowParams) => {
       const patientId = rowParams.row._id;
       navigate(`/janehopkinsdoctor/patient/${patientId}`);
+    };
+
+    const onClose = () => {
+      setOpen(false);
     };
 
     const columns = [
@@ -178,6 +187,19 @@ const Patient = () => {
               />
             </div>
           </Box>
+          <Snackbar
+                    open={open}
+                    autoHideDuration={2000} // Now it will hide after 2 seconds
+                    onClose={onClose}
+                >
+                    <Alert
+                    //onClose={handleClose}
+                    severity="success"
+                    sx={{ width: "100%" }}
+                    >
+                    Patients have been deleted!
+                    </Alert>
+                </Snackbar>
         </Box>
     );
 };

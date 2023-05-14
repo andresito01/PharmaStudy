@@ -477,7 +477,7 @@ const PatientInfo = () => {
     setOpen(true);
   };
 
-  const handleClose = () => {
+  const onClose = () => {
     setOpen(false);
   };
 
@@ -1113,11 +1113,11 @@ const PatientInfo = () => {
               )}
               <Snackbar
                 open={open}
-                autoHideDuration={6000}
-                onClose={handleClose}
+                autoHideDuration={2000}
+                onClose={onClose}
               >
                 <Alert
-                  onClose={handleClose}
+                  onClose={onClose}
                   severity="success"
                   sx={{ width: "100%" }}
                 >
