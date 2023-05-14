@@ -1,15 +1,15 @@
 import { createVendiaClient } from "@vendia/client";
 
 const client = createVendiaClient({
-    apiUrl: `https://dd1qkotodb.execute-api.us-west-2.amazonaws.com/graphql/`,
-    websocketUrl: `wss://1z9xq0syl3.execute-api.us-west-2.amazonaws.com/graphql`,
-    apiKey: `EJVikCvZ9Jg8ZJU3C928TFnXjcUEJdTVKGBGMdENRMVd`, // <---- API key
-  })
+  apiUrl: `https://7i1z6vzwy1.execute-api.us-west-1.amazonaws.com/graphql/`,
+  websocketUrl: `wss://sicmjunumf.execute-api.us-west-1.amazonaws.com/graphql`,
+  apiKey: `itGyYoDwRrD6Mffkco4maoPCV7PXk7kyX6bxwfSo7Zk`, // <---- API key
+});
 
 const { entities } = client;
 
 const useJaneHopkins = () => {
-    return { entities };
+  return { entities };
 };
 
 export default useJaneHopkins;
