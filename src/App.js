@@ -26,24 +26,12 @@ import BavariaViewDrugView from "./Bavaria/BavariaViewDrugView";
 import BavariaView from "./Bavaria/BavariaView";
 import RealtimeTrials from "./Bavaria/RealtimeTrials";
 import BavariaLogin from "./Bavaria/BavariaLogin";
+import PostTrialReport from "./Bavaria/PostTrialReport";
 
 function App() {
   const [theme, colorMode] = useMode();
-  const [isSidebar, setIsSidebar] = useState(false);
+  const [isSidebar, setIsSidebar] = useState(true);
   const location = useLocation();
-  
-  useEffect(() => {
-    
-    if (location.pathname !== '/janehopkinsdoctor') {
-      setIsSidebar(true);
-    } else {
-      setIsSidebar(false);
-    }
-  
-
-  }, [location.pathname]
-  
-  );
 
   return (
     <ColorModeContext.Provider value={colorMode}>
@@ -86,6 +74,7 @@ function App() {
             <Route path="/bavaria" element={<BavariaView />}>
               <Route path="" element={<BavariaViewDrugView />} />
               <Route path="realtimetrials" element={<RealtimeTrials />} />
+              <Route path="posttrialreport" element={<PostTrialReport />} />
               <Route path="faq" element={<FAQ />} />
             </Route>
           </Routes>

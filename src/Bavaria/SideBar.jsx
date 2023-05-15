@@ -134,7 +134,7 @@ const SideBar = () => {
                 />
                 <Item
                   title="Post-trial Report"
-                  to="/bavaria/report"
+                  to="/bavaria/posttrialreport"
                   icon={<AssessmentIcon />}
                   selected={selected}
                   setSelected={setSelected}

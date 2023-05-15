@@ -5,15 +5,10 @@ import Header from "../components/Header";
 import useJaneHopkins from "../hooks/useJaneHopkins";
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
-import GppBadIcon from '@mui/icons-material/GppBad';
-import OutboxIcon from '@mui/icons-material/Outbox';
 
 const RealtimeTrials = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
-    const [checkboxSelection, setCheckboxSelection] = React.useState(true);
-    const [selectedRows, setSelectedRows] = useState([]);
 
     const [patients, setPatients] = useState([]);
     console.log(patients);
@@ -28,29 +23,7 @@ const RealtimeTrials = () => {
       listPatients();
     }, []);
 
-    const toggleSelectionBox = (value) => {
-      setCheckboxSelection(value);
-    };
-
     const getRowId = (row) => row._id;
-
-    const handleSelectionChange = (selectionModel) => {
-      setSelectedRows(selectionModel);
-    };
-
-    const handleDeleteClick = async () => {
-      for (const id of selectedRows) {
-        const response = await entities.patient.remove(id);
-      }
-      setSelectedRows([]);
-      listPatients();
-    };
-
-    const navigate = useNavigate();
-    const handleRowClick = (rowParams) => {
-      const patientId = rowParams.row._id;
-      navigate(`/janehopkinsdoctor/patient/${patientId}`);
-    };
 
     const columns = [
       {
@@ -74,6 +47,20 @@ const RealtimeTrials = () => {
         },
       },
       {
+        field: "lasthivviralload",
+        headerName: "LAST HIV VIRAL LOAD",
+        flex: 1,
+        renderCell: ({ row }) => {
+          const visits = row.visits || [];
+          const lastViralLoad = visits.length > 0 ? visits[visits.length - 1].hivViralLoad : "N/A";
+          return (
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
+              <Typography sx={{ color: lastViralLoad === '0' ? colors.greenAccent[600] : colors.redAccent[400]}}>{lastViralLoad}</Typography>
+            </Box>
+          );
+        },
+      },
+      {
         headerName: "STATUS",
         flex: 1,
         renderCell: ({ row: { doses } }) => {
@@ -87,20 +74,6 @@ const RealtimeTrials = () => {
           );
         },
       },
-    //   {
-    //     headerName: "DRUG TYPE",
-    //     flex: 1,
-    //     renderCell: ({ row: { doses } }) => {
-    //       const dosesCount = parseInt(doses);
-    //       return (
-    //         <Box sx={{ display: "flex", justifyContent: "center" }}>
-    //           <Typography sx={{ color: dosesCount === 5 ? colors.greenAccent[600] : colors.redAccent[400]}}>
-    //             {dosesCount ? "Bavaria " : "Placebo"}
-    //           </Typography>
-    //         </Box>
-    //       );
-    //     },
-    //   },
     ];
 
       return (
@@ -130,19 +103,13 @@ const RealtimeTrials = () => {
                 borderTop: "none",
                 backgroundColor: colors.blueAccent[700],
               },
-              "& .MuiCheckbox-root": {
-                color: `${colors.greenAccent[200]} !important`,
-              },
             }}
           >
             <div style={{ height: '100%', width: '100%' }}>
               <DataGrid 
-                checkboxSelection={checkboxSelection} 
                 rows={patients} 
                 columns={columns} 
                 getRowId={getRowId} 
-                //onSelectionModelChange={handleSelectionChange} 
-                //onRowClick={handleRowClick}
               />
             </div>
           </Box>
