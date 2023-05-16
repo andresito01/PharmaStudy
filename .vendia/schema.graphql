@@ -197,6 +197,156 @@ enum Vendia_SyncMode {
   ASYNC
 }
 
+enum Vendia_EraseMode {
+  LOCAL
+  GLOBAL
+}
+
+type Vendia_Meta_Field {
+  _erased: [Vendia_Meta_Erased]
+  _hash: String!
+  _salt: String
+}
+
+type Vendia_Meta_Erased {
+  type: Vendia_EraseMode!
+  nodes: [String!]!
+}
+
+input Self_ClinicalTrialDrugRequest_ConditionInput_ {
+  genericDrugRequestCount: Vendia_ModelFloatInput_
+  placeboDrugRequestCount: Vendia_ModelFloatInput_
+  _and: [Self_ClinicalTrialDrugRequest_ConditionInput_]
+  _or: [Self_ClinicalTrialDrugRequest_ConditionInput_]
+  _not: Self_ClinicalTrialDrugRequest_ConditionInput_
+}
+
+input Self_ClinicalTrialDrugRequest_FilterInput_ {
+  genericDrugRequestCount: Vendia_ModelFloatInput_
+  placeboDrugRequestCount: Vendia_ModelFloatInput_
+  _and: [Self_ClinicalTrialDrugRequest_FilterInput_]
+  _or: [Self_ClinicalTrialDrugRequest_FilterInput_]
+  _not: Self_ClinicalTrialDrugRequest_FilterInput_
+}
+
+type Self_ClinicalTrialDrugRequest {
+  genericDrugRequestCount: Float
+  placeboDrugRequestCount: Float
+  _acl: [Vendia_Acl!]
+  _owner: String
+}
+
+type Self_ClinicalTrialDrugRequest_Partial_ {
+  genericDrugRequestCount: Float
+  placeboDrugRequestCount: Float
+  _acl: [Vendia_Acl!]
+  _owner: String
+}
+
+type Self_ClinicalTrialDrugRequest_Result_ {
+  error: String
+  result: Self_ClinicalTrialDrugRequest
+}
+
+type Self_ClinicalTrialDrugRequest_Transaction_Result_ {
+  transaction: Vendia_Transaction!
+  result: Self_ClinicalTrialDrugRequest_PartialUnion_
+}
+
+type Self_ClinicalTrialDrugRequest_Delete_Transaction_Result_ {
+  transaction: Vendia_Transaction!
+}
+
+input Self_ClinicalTrialDrugRequest_Input_ {
+  genericDrugRequestCount: Float
+  placeboDrugRequestCount: Float
+}
+
+input Self_ClinicalTrialDrugRequest_UpdateInput_ {
+  genericDrugRequestCount: Float
+  placeboDrugRequestCount: Float
+}
+
+input Self_ClinicalTrialDrugRequest_PartialInput_ {
+  genericDrugRequestCount: Float
+  placeboDrugRequestCount: Float
+}
+
+union Self_ClinicalTrialDrugRequest_PartialUnion_ = Self_ClinicalTrialDrugRequest | Self_ClinicalTrialDrugRequest_Partial_
+
+input Self_ClinicalTrialDrugRequest2_ConditionInput_ {
+  genericDrugRequestCount: Vendia_ModelFloatInput_
+  placeboDrugRequestCount: Vendia_ModelFloatInput_
+  _and: [Self_ClinicalTrialDrugRequest2_ConditionInput_]
+  _or: [Self_ClinicalTrialDrugRequest2_ConditionInput_]
+  _not: Self_ClinicalTrialDrugRequest2_ConditionInput_
+}
+
+input Self_ClinicalTrialDrugRequest2_FilterInput_ {
+  _owner: Vendia_ModelStringInput_
+  genericDrugRequestCount: Vendia_ModelFloatInput_
+  placeboDrugRequestCount: Vendia_ModelFloatInput_
+  _and: [Self_ClinicalTrialDrugRequest2_FilterInput_]
+  _or: [Self_ClinicalTrialDrugRequest2_FilterInput_]
+  _not: Self_ClinicalTrialDrugRequest2_FilterInput_
+}
+
+input Self_ClinicalTrialDrugRequest2_OrderInput_ {
+  _id: Vendia_ModelSortDirection
+}
+
+type Self_ClinicalTrialDrugRequest2 {
+  _id: ID!
+  genericDrugRequestCount: Float
+  placeboDrugRequestCount: Float
+  _acl: [Vendia_Acl!]
+  _owner: String
+}
+
+type Self_ClinicalTrialDrugRequest2_Partial_ {
+  _id: ID!
+  genericDrugRequestCount: Float
+  placeboDrugRequestCount: Float
+  _acl: [Vendia_Acl!]
+  _owner: String
+}
+
+union Self_ClinicalTrialDrugRequest2_PartialUnion_ = Self_ClinicalTrialDrugRequest2 | Self_ClinicalTrialDrugRequest2_Partial_
+
+type Self_ClinicalTrialDrugRequest2_Result_ {
+  error: String
+  result: Self_ClinicalTrialDrugRequest2
+}
+
+type Self_ClinicalTrialDrugRequest2_Transaction_Result_ {
+  transaction: Vendia_Transaction!
+  result: Self_ClinicalTrialDrugRequest2_PartialUnion_
+}
+
+type Self_ClinicalTrialDrugRequest2_Delete_Transaction_Result_ {
+  transaction: Vendia_Transaction!
+}
+
+type Self_ClinicalTrialDrugRequest2_Connection_ {
+  _ClinicalTrialDrugRequest2Items: [Self_ClinicalTrialDrugRequest2_PartialUnion_]
+  nextToken: String
+}
+
+input Self_ClinicalTrialDrugRequest2_Input_ {
+  genericDrugRequestCount: Float
+  placeboDrugRequestCount: Float
+}
+
+input Self_ClinicalTrialDrugRequest2_UpdateInput_ {
+  genericDrugRequestCount: Float
+  placeboDrugRequestCount: Float
+}
+
+input Self_ClinicalTrialDrugRequest2_PartialInput_ {
+  genericDrugRequestCount: Float
+  placeboDrugRequestCount: Float
+}
+
 input Self_Drug_ConditionInput_ {
   batchNumber: Vendia_ModelStringInput_
   id: Vendia_ModelStringInput_
@@ -281,8 +431,8 @@ input Self_EligiblePatient_ConditionInput_ {
   doses: Vendia_ModelStringInput_
   hivViralLoad: Vendia_ModelStringInput_
   isEligible: Vendia_ModelBooleanInput_
-  medication: Vendia_ModelStringInput_
   trialGroupAssignment: Vendia_ModelStringInput_
+  trialMedication: Self_EligiblePatient_trialMedication_ConditionInput_
   uuid: Vendia_ModelStringInput_
   _and: [Self_EligiblePatient_ConditionInput_]
   _or: [Self_EligiblePatient_ConditionInput_]
@@ -294,8 +444,8 @@ input Self_EligiblePatient_FilterInput_ {
   doses: Vendia_ModelStringInput_
   hivViralLoad: Vendia_ModelStringInput_
   isEligible: Vendia_ModelBooleanInput_
-  medication: Vendia_ModelStringInput_
   trialGroupAssignment: Vendia_ModelStringInput_
+  trialMedication: Self_EligiblePatient_trialMedication_FilterInput_
   uuid: Vendia_ModelStringInput_
   _and: [Self_EligiblePatient_FilterInput_]
   _or: [Self_EligiblePatient_FilterInput_]
@@ -311,8 +461,8 @@ type Self_EligiblePatient {
   doses: String
   hivViralLoad: String
   isEligible: Boolean
-  medication: String
   trialGroupAssignment: String
+  trialMedication: Self_EligiblePatient_trialMedication
   uuid: String
   _acl: [Vendia_Acl!]
   _owner: String
@@ -323,8 +473,8 @@ type Self_EligiblePatient_Partial_ {
   doses: String
   hivViralLoad: String
   isEligible: Boolean
-  medication: String
   trialGroupAssignment: String
+  trialMedication: Self_EligiblePatient_trialMedication_Partial_
   uuid: String
   _acl: [Vendia_Acl!]
   _owner: String
@@ -355,8 +505,8 @@ input Self_EligiblePatient_Input_ {
   doses: String
   hivViralLoad: String
   isEligible: Boolean
-  medication: String
   trialGroupAssignment: String
+  trialMedication: Self_EligiblePatient_trialMedication_Input_
   uuid: String
 }
 
@@ -364,8 +514,8 @@ input Self_EligiblePatient_UpdateInput_ {
   doses: String
   hivViralLoad: String
   isEligible: Boolean
-  medication: String
   trialGroupAssignment: String
+  trialMedication: Self_EligiblePatient_trialMedication_UpdateInput_
   uuid: String
 }
 
@@ -373,8 +523,8 @@ input Self_EligiblePatient_PartialInput_ {
   doses: String
   hivViralLoad: String
   isEligible: Boolean
-  medication: String
   trialGroupAssignment: String
+  trialMedication: Self_EligiblePatient_trialMedication_PartialInput_
   uuid: String
 }
 
@@ -577,6 +727,50 @@ input Self_Patient_PartialInput_ {
   weight: String
 }
 
+input Self_EligiblePatient_trialMedication_ConditionInput_ {
+  batchNumber: Vendia_ModelStringInput_
+  id: Vendia_ModelStringInput_
+  placebo: Vendia_ModelBooleanInput_
+  _and: [Self_EligiblePatient_trialMedication_ConditionInput_]
+  _or: [Self_EligiblePatient_trialMedication_ConditionInput_]
+  _not: Self_EligiblePatient_trialMedication_ConditionInput_
+}
+
+input Self_EligiblePatient_trialMedication_FilterInput_ {
+  batchNumber: Vendia_ModelStringInput_
+  id: Vendia_ModelStringInput_
+  placebo: Vendia_ModelBooleanInput_
+  _and: [Self_EligiblePatient_trialMedication_FilterInput_]
+  _or: [Self_EligiblePatient_trialMedication_FilterInput_]
+  _not: Self_EligiblePatient_trialMedication_FilterInput_
+}
+
+type Self_EligiblePatient_trialMedication {
+  batchNumber: String
+  id: String
+  placebo: Boolean
+}
+
+type Self_EligiblePatient_trialMedication_Partial_ {
+  batchNumber: String
+  id: String
+  placebo: Boolean
+}
+
+type Self_EligiblePatient_trialMedication_Result_ {
+  error: String
+  result: Self_EligiblePatient_trialMedication
+}
+
+type Self_EligiblePatient_trialMedication_Transaction_Result_ {
+  transaction: Vendia_Transaction!
+  result: Self_EligiblePatient_trialMedication
+}
+
+type Self_EligiblePatient_trialMedication_Delete_Transaction_Result_ {
+  transaction: Vendia_Transaction!
+}
+
 input Self_Patient_allergies_allergiesItem_ConditionInput_ {
   allergy: Vendia_ModelStringInput_
   _and: [Self_Patient_allergies_allergiesItem_ConditionInput_]
@@ -690,6 +884,7 @@ input Self_Patient_visits_visitsItem_ConditionInput_ {
   hivViralLoad: Vendia_ModelStringInput_
   notes: Vendia_ModelStringInput_
   patient: Vendia_ModelStringInput_
+  trialMedication: Vendia_ModelStringInput_
   _and: [Self_Patient_visits_visitsItem_ConditionInput_]
   _or: [Self_Patient_visits_visitsItem_ConditionInput_]
   _not: Self_Patient_visits_visitsItem_ConditionInput_
@@ -700,6 +895,7 @@ input Self_Patient_visits_visitsItem_FilterInput_ {
   hivViralLoad: Vendia_ModelStringInput_
   notes: Vendia_ModelStringInput_
   patient: Vendia_ModelStringInput_
+  trialMedication: Vendia_ModelStringInput_
   _and: [Self_Patient_visits_visitsItem_FilterInput_]
   _or: [Self_Patient_visits_visitsItem_FilterInput_]
   _not: Self_Patient_visits_visitsItem_FilterInput_
@@ -710,6 +906,7 @@ type Self_Patient_visits_visitsItem {
   hivViralLoad: String
   notes: String
   patient: String
+  trialMedication: String
 }
 
 type Self_Patient_visits_visitsItem_Partial_ {
@@ -717,6 +914,7 @@ type Self_Patient_visits_visitsItem_Partial_ {
   hivViralLoad: String
   notes: String
   patient: String
+  trialMedication: String
 }
 
 type Self_Patient_visits_visitsItem_Result_ {
@@ -2682,6 +2880,7 @@ type Vendia_File {
   fileVersion: String
   vendia: Vendia_File_vendia
   _owner: String
+  _erased: [Vendia_Meta_Erased]
 }
 
 type Vendia_File_Partial_ {
@@ -3832,6 +4031,11 @@ input Vendia_Contract_InvokeInput_ {
 }
 
 type Query {
+  get_ClinicalTrialDrugRequest(version: Int, readMode: Vendia_ReadMode = NODE_COMMITTED): Self_ClinicalTrialDrugRequest_PartialUnion_
+  list_ClinicalTrialDrugRequestVersions(limit: Int, nextToken: String): Vendia_Version_Connection_
+  get_ClinicalTrialDrugRequest2(id: ID!, version: Int, readMode: Vendia_ReadMode = NODE_COMMITTED): Self_ClinicalTrialDrugRequest2_PartialUnion_
+  list_ClinicalTrialDrugRequest2Items(filter: Self_ClinicalTrialDrugRequest2_FilterInput_, readMode: Vendia_ReadMode = NODE_COMMITTED, order: [Self_ClinicalTrialDrugRequest2_OrderInput_!], limit: Int, nextToken: String): Self_ClinicalTrialDrugRequest2_Connection_
+  list_ClinicalTrialDrugRequest2Versions(id: ID!, limit: Int, nextToken: String): Vendia_Version_Connection_
   get_Drug(id: ID!, version: Int, readMode: Vendia_ReadMode = NODE_COMMITTED): Self_Drug_PartialUnion_
   list_DrugItems(filter: Self_Drug_FilterInput_, readMode: Vendia_ReadMode = NODE_COMMITTED, order: [Self_Drug_OrderInput_!], limit: Int, nextToken: String): Self_Drug_Connection_
   list_DrugVersions(id: ID!, limit: Int, nextToken: String): Vendia_Version_Connection_
@@ -3873,6 +4077,14 @@ type Query {
 }
 
 type Mutation {
+  create_ClinicalTrialDrugRequest(input: Self_ClinicalTrialDrugRequest_Input_!, aclInput: Vendia_Acls_Input_, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_ClinicalTrialDrugRequest_Transaction_Result_
+  put_ClinicalTrialDrugRequest(input: Self_ClinicalTrialDrugRequest_Input_!, condition: Self_ClinicalTrialDrugRequest_ConditionInput_, aclInput: Vendia_Acls_Input_!, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_ClinicalTrialDrugRequest_Transaction_Result_
+  update_ClinicalTrialDrugRequest(input: Self_ClinicalTrialDrugRequest_UpdateInput_!, condition: Self_ClinicalTrialDrugRequest_ConditionInput_, aclInput: Vendia_Acls_Input_, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_ClinicalTrialDrugRequest_Transaction_Result_
+  delete_ClinicalTrialDrugRequest(condition: Self_ClinicalTrialDrugRequest_ConditionInput_, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_ClinicalTrialDrugRequest_Delete_Transaction_Result_
+  add_ClinicalTrialDrugRequest2(input: Self_ClinicalTrialDrugRequest2_Input_!, aclInput: Vendia_Acls_Input_, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_ClinicalTrialDrugRequest2_Transaction_Result_
+  put_ClinicalTrialDrugRequest2(id: ID!, input: Self_ClinicalTrialDrugRequest2_Input_!, condition: Self_ClinicalTrialDrugRequest2_ConditionInput_, aclInput: Vendia_Acls_Input_!, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_ClinicalTrialDrugRequest2_Transaction_Result_
+  update_ClinicalTrialDrugRequest2(id: ID!, input: Self_ClinicalTrialDrugRequest2_UpdateInput_!, condition: Self_ClinicalTrialDrugRequest2_ConditionInput_, aclInput: Vendia_Acls_Input_, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_ClinicalTrialDrugRequest2_Transaction_Result_
+  remove_ClinicalTrialDrugRequest2(id: ID!, condition: Self_ClinicalTrialDrugRequest2_ConditionInput_, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_ClinicalTrialDrugRequest2_Delete_Transaction_Result_
   add_Drug(input: Self_Drug_Input_!, aclInput: Vendia_Acls_Input_, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_Drug_Transaction_Result_
   put_Drug(id: ID!, input: Self_Drug_Input_!, condition: Self_Drug_ConditionInput_, aclInput: Vendia_Acls_Input_!, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_Drug_Transaction_Result_
   update_Drug(id: ID!, input: Self_Drug_UpdateInput_!, condition: Self_Drug_ConditionInput_, aclInput: Vendia_Acls_Input_, syncMode: Vendia_SyncMode = NODE_COMMITTED): Self_Drug_Transaction_Result_
@@ -3889,6 +4101,7 @@ type Mutation {
   putVendia_File(id: ID!, input: Vendia_File_Input_!, condition: Vendia_File_ConditionInput_, syncMode: Vendia_SyncMode!): Vendia_File_Transaction_Result_
   updateVendia_File(id: ID!, input: Vendia_File_UpdateInput_!, condition: Vendia_File_ConditionInput_, syncMode: Vendia_SyncMode!): Vendia_File_Transaction_Result_
   removeVendia_File(id: ID!, condition: Vendia_File_ConditionInput_, syncMode: Vendia_SyncMode!): Vendia_File_Delete_Transaction_Result_
+  eraseVendia_File(id: ID!, eraseMode: Vendia_EraseMode!, syncMode: Vendia_SyncMode!): Vendia_File_Transaction_Result_
   addVendia_Folder(input: Vendia_Folder_Input_!, syncMode: Vendia_SyncMode!): Vendia_Folder_Transaction_Result_
   removeVendia_Folder(id: ID!, condition: Vendia_Folder_ConditionInput_, syncMode: Vendia_SyncMode!): Vendia_Folder_Delete_Transaction_Result_
   addVendia_Contract(input: Vendia_Contract_Input_!, aclInput: Vendia_Acls_Input_, syncMode: Vendia_SyncMode!): Vendia_Contract_Transaction_Result_
@@ -3905,6 +4118,14 @@ type Mutation {
 }
 
 type Subscription {
+  onCreate_ClinicalTrialDrugRequest: Self_ClinicalTrialDrugRequest_Result_
+  onUpdate_ClinicalTrialDrugRequest: Self_ClinicalTrialDrugRequest_Result_
+  onPut_ClinicalTrialDrugRequest: Self_ClinicalTrialDrugRequest_Result_
+  onDelete_ClinicalTrialDrugRequest: Self_ClinicalTrialDrugRequest_Result_
+  onAdd_ClinicalTrialDrugRequest2: Self_ClinicalTrialDrugRequest2_Result_
+  onUpdate_ClinicalTrialDrugRequest2: Self_ClinicalTrialDrugRequest2_Result_
+  onPut_ClinicalTrialDrugRequest2: Self_ClinicalTrialDrugRequest2_Result_
+  onRemove_ClinicalTrialDrugRequest2: Self_ClinicalTrialDrugRequest2_Result_
   onAdd_Drug: Self_Drug_Result_
   onUpdate_Drug: Self_Drug_Result_
   onPut_Drug: Self_Drug_Result_
@@ -3971,6 +4192,24 @@ type Schema {
   subscription: Subscription
 }
 
+input Self_EligiblePatient_trialMedication_Input_ {
+  batchNumber: String
+  id: String
+  placebo: Boolean
+}
+
+input Self_EligiblePatient_trialMedication_UpdateInput_ {
+  batchNumber: String
+  id: String
+  placebo: Boolean
+}
+
+input Self_EligiblePatient_trialMedication_PartialInput_ {
+  batchNumber: String
+  id: String
+  placebo: Boolean
+}
+
 input Self_Patient_allergies_allergiesItem_Input_ {
   allergy: String
 }
@@ -4012,6 +4251,7 @@ input Self_Patient_visits_visitsItem_Input_ {
   hivViralLoad: String
   notes: String
   patient: String
+  trialMedication: String
 }
 
 input Self_Patient_visits_visitsItem_UpdateInput_ {
@@ -4019,6 +4259,7 @@ input Self_Patient_visits_visitsItem_UpdateInput_ {
   hivViralLoad: String
   notes: String
   patient: String
+  trialMedication: String
 }
 
 input Self_Patient_visits_visitsItem_PartialInput_ {
@@ -4026,6 +4267,7 @@ input Self_Patient_visits_visitsItem_PartialInput_ {
   hivViralLoad: String
   notes: String
   patient: String
+  trialMedication: String
 }
 
 input Vendia_Block_transactions_transactionsItem_Input_ {

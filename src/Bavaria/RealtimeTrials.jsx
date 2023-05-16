@@ -2,12 +2,13 @@ import { Box, useTheme, Typography, Button } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../theme";
 import Header from "../components/Header";
-import useJaneHopkins from "../hooks/useJaneHopkins";
+//import useJaneHopkins from "../hooks/useJaneHopkins";
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import GppBadIcon from '@mui/icons-material/GppBad';
 import OutboxIcon from '@mui/icons-material/Outbox';
+import useBavaria from "../hooks/useBavaria.js";
 
 const RealtimeTrials = () => {
     const theme = useTheme();
@@ -18,7 +19,7 @@ const RealtimeTrials = () => {
     const [patients, setPatients] = useState([]);
     console.log(patients);
 
-    const { entities } = useJaneHopkins();
+    const { entities } = useBavaria();
     const listPatients = async () => {
       const { items } = await entities.patient.list();
       setPatients(items);

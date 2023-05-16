@@ -6,6 +6,7 @@ import useBavaria from "../hooks/useBavaria";
 import React, { useEffect, useState } from 'react';
 import { Snackbar } from "@mui/material";
 import { Alert } from "@mui/material";
+import {v4 as uuid} from 'uuid'
 
 const BavariaViewDrugView = () => {
     const theme = useTheme();
@@ -23,31 +24,103 @@ const BavariaViewDrugView = () => {
       setDrugs(items);
     };
 
+    const nodePermissions = {
+      aclInput: {
+        acl: [
+          {
+            principal: {
+              nodes: ["FDA"],
+            },
+            operations: ["READ"],
+            path: "placebo"
+          },
+          {
+            principal: {
+              nodes: ["FDA"],
+            },
+            operations: ["READ"],
+            path: "batchNumber"
+          },
+          {
+            principal: {
+              nodes: ["JaneHopkins"],
+            },
+            operations: ["READ", "WRITE"],
+            path: "batchNumber"
+          },
+          {
+            principal: {
+              nodes: ["FDA"],
+            },
+            operations: ["READ", "WRITE"],
+            path: "id"
+          },
+        ],
+      },
+    };
+
     let addBavariaResponse;
     const addBavaria = async (values) => {
-      addBavariaResponse = await entities.drug.add(
-        {
-          placebo: false,
-          batchNumber: "5",
-        },
-      );
-      if (addBavariaResponse?.transaction?._id != null) {
-        setOpen(true);
+
+      const { items } = await entities.clinicalTrialDrugRequest2.list()
+      console.log(items)
+      const genericBatchRequestCount = items[0].genericDrugRequestCount
+      const currentGenericDrugCount = drugs.filter((drug) => drug.placebo === false).length
+      console.log(genericBatchRequestCount)
+
+      //Create drugs according to the need of the eligible patients
+      for (let i = 0; i < genericBatchRequestCount - currentGenericDrugCount; i++) {
+        
+        // Generating unique id
+        let unique_id = uuid()
+        let small_id = unique_id.slice(0,12)
+
+        addBavariaResponse = await entities.drug.add(
+          {
+            placebo: false,
+            batchNumber: "5",
+            id: small_id
+          }, nodePermissions
+        );
+
+        console.log(addBavariaResponse)
+        if (addBavariaResponse?.transaction?._id != null) {
+          setOpen(true);
+        }
       }
       listDrugs();
     }
 
     let addPlaceboResponse;
     const addPlacebo = async (values) => {
-      addPlaceboResponse = await entities.drug.add(
-        {
-          placebo: true,
-          batchNumber: "5",
-        },
-      );
-      if (addPlaceboResponse?.transaction?._id != null) {
-        setOpen(true);
+
+      const { items } = await entities.clinicalTrialDrugRequest2.list()
+      console.log(items)
+      const placeboBatchRequestCount = items[0].placeboDrugRequestCount
+      const currentPlaceboDrugCount = drugs.filter((drug) => drug.placebo === true).length
+      console.log(placeboBatchRequestCount)
+
+      //Create drugs according to the need of the eligible patients
+      for (let i = 0; i < placeboBatchRequestCount - currentPlaceboDrugCount; i++) {
+
+        // Generating unique id
+        let unique_id = uuid()
+        let small_id = unique_id.slice(0,12)
+
+        addPlaceboResponse = await entities.drug.add(
+          {
+            placebo: true,
+            batchNumber: "5",
+            id: small_id
+          }, nodePermissions
+        );
+
+        console.log(addPlaceboResponse)
+        if (addPlaceboResponse?.transaction?._id != null) {
+          setOpen(true);
+        }
       }
+
       listDrugs();
     }
 

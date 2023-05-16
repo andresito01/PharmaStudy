@@ -8,6 +8,12 @@
     "eligiblePatientACL": {
       "type": "EligiblePatient"
     },
+    "clinicalTrialDrugRequestACL": {
+      "type": "ClinicalTrialDrugRequest"
+    },
+    "clinicalTrialDrugRequest2ACL": {
+      "type": "ClinicalTrialDrugRequest2"
+    },
     "drugACL": {
       "type": "Drug"
     }
@@ -105,6 +111,9 @@
                 "dateTime": {
                   "type": "string"
                 },
+                "trialMedication": {
+                  "type": "string"
+                },
                 "notes": {
                   "type": "string"
                 },
@@ -137,14 +146,50 @@
           "trialGroupAssignment": {
             "type": "string"
           },
-          "medication": {
-            "type": "string"
+          "trialMedication": {
+            "type": "object",
+            "properties": {
+              "placebo": {
+                "type": "boolean"
+              },
+              "batchNumber": {
+                "type": "string"
+              },
+              "id": {
+                "type": "string"
+              }
+            }
           },
           "doses": {
             "type": "string"
           },
           "hivViralLoad": {
             "type": "string"
+          }
+        }
+      }
+    },
+    "ClinicalTrialDrugRequest": {
+      "type": "object",
+      "properties": {
+        "placeboDrugRequestCount": {
+          "type": "number"
+        },
+        "genericDrugRequestCount": {
+          "type": "number"
+        }
+      }
+    },
+    "ClinicalTrialDrugRequest2": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "placeboDrugRequestCount": {
+            "type": "number"
+          },
+          "genericDrugRequestCount": {
+            "type": "number"
           }
         }
       }

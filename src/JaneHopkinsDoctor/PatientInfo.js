@@ -9,13 +9,12 @@ import { Alert } from "@mui/material";
 import { useMediaQuery } from "@mui/material";
 import { useRef } from "react";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
 const PatientInfo = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
@@ -30,8 +29,15 @@ const PatientInfo = () => {
   const [numMedications, setNumMedications] = useState(1);
   const [numAllergies, setNumAllergies] = useState(1);
   const [numVisits, setNumVisits] = useState(1);
-  
-  
+
+  // Visit Select for Trial Medication
+  const [trialMedication, setTrialMedication] = useState("");
+
+  const handlePatientVisitFormTrialMedicationChange = (event) => {
+    setTrialMedication(event.target.value);
+    console.log(event.target.value);
+  };
+
   const { entities } = useJaneHopkins();
   useEffect(() => {
     async function fetchPatient() {
@@ -40,8 +46,6 @@ const PatientInfo = () => {
     }
     fetchPatient();
   }, [patientId]);
-
-
 
   useEffect(() => {
     if (patient && patient.icdHealthCodes) {
@@ -70,8 +74,6 @@ const PatientInfo = () => {
   const removeVisitsRow = () => {
     setNumVisits(numVisits - 1);
   };
-
-
 
   if (!patient) {
     return <div>Loading...</div>;
@@ -123,32 +125,36 @@ const PatientInfo = () => {
     // ...
     // Other fields here
     // ...
-    ...((patient?.icdHealthCodes || []).reduce(
+    ...(patient?.icdHealthCodes || []).reduce(
       (acc, code, index) => ({ ...acc, [`icd-${index}`]: code.code }),
       {}
-    )),
-    ...((patient?.currentMedications || []).reduce(
-      (acc, medication, index) => ({ ...acc, [`medication-${index}`]: medication.medication }),
+    ),
+    ...(patient?.currentMedications || []).reduce(
+      (acc, medication, index) => ({
+        ...acc,
+        [`medication-${index}`]: medication.medication,
+      }),
       {}
-    )),
-    ...((patient?.allergies || []).reduce(
-      (acc, allergy, index) => ({ ...acc, [`allergy-${index}`]: allergy.allergy }),
+    ),
+    ...(patient?.allergies || []).reduce(
+      (acc, allergy, index) => ({
+        ...acc,
+        [`allergy-${index}`]: allergy.allergy,
+      }),
       {}
-    )),
-    ...((patient?.visits || []).reduce(
+    ),
+    ...(patient?.visits || []).reduce(
       (acc, visit, index) => ({
         ...acc,
         [`patient-${index}`]: visit.patient,
         [`dateTime-${index}`]: visit.dateTime,
+        [`trialMedication-${index}`]: visit.trialMedication,
         [`notes-${index}`]: visit.notes,
         [`hivViralLoad-${index}`]: visit.hivViralLoad,
       }),
       {}
-    )),
+    ),
   };
-
- 
-  
 
   const handleAddICD = () => {
     setNumICD(numICD + 1);
@@ -204,12 +210,14 @@ const PatientInfo = () => {
       const visitData = [];
       for (let i = 0; i < numVisits; i++) {
         const dateTimeKey = `dateTime-${i}`;
+        const trialMedicationKey = `trialMedication-${i}`;
         const notesKey = `notes-${i}`;
         const hivViralLoadKey = `hivViralLoad-${i}`;
-      
+
         const visit = {
           patient: patient._id,
           dateTime: values[dateTimeKey],
+          trialMedication: values[trialMedicationKey],
           notes: values[notesKey],
           hivViralLoad: values[hivViralLoadKey],
         };
@@ -226,9 +234,19 @@ const PatientInfo = () => {
         ? icdString.split(",").map((icdCode) => ({ code: icdCode.trim() }))
         : icdDefaultArray;
 
-        const allergiesString = values.allergies || (patient.allergies ? patient.allergies.map((allergy) => allergy.allergy).join(", ") : "");
-        const allergiesDefaultArray = patient.allergies ? patient.allergies.map((allergy) => ({ allergy: allergy.allergy })) : [];
-        const allergiesArray = allergiesString ? allergiesString.split(",").map((allergiesCode) => ({ allergy: allergiesCode.trim() })) : allergiesDefaultArray;
+      const allergiesString =
+        values.allergies ||
+        (patient.allergies
+          ? patient.allergies.map((allergy) => allergy.allergy).join(", ")
+          : "");
+      const allergiesDefaultArray = patient.allergies
+        ? patient.allergies.map((allergy) => ({ allergy: allergy.allergy }))
+        : [];
+      const allergiesArray = allergiesString
+        ? allergiesString
+            .split(",")
+            .map((allergiesCode) => ({ allergy: allergiesCode.trim() }))
+        : allergiesDefaultArray;
 
       const defaultDob = values.dob ? values.dob : patient.dob;
 
@@ -387,7 +405,7 @@ const PatientInfo = () => {
             currentlyEmployed: values.currentlyEmployed,
             currentlyInsured: values.currentlyInsured,
             icdHealthCodes: icdCodes,
-            doses: values.doses ? values.doses.toString() : '',
+            doses: values.doses ? values.doses.toString() : "",
             allergies: allergies,
             currentMedications: currentMedications,
             visits: visitData,
@@ -450,7 +468,7 @@ const PatientInfo = () => {
             currentlyEmployed: values.currentlyEmployed,
             currentlyInsured: values.currentlyInsured,
             icdHealthCodes: icdCodes,
-            doses: values.doses ? values.doses.toString() : '',
+            doses: values.doses ? values.doses.toString() : "",
             allergies: allergies,
             currentMedications: currentMedications,
             visits: visitData,
@@ -497,17 +515,18 @@ const PatientInfo = () => {
       const updatedVisits = [...prevState.visits];
       updatedVisits.splice(index, 1);
       const updatedPatient = { ...prevState, visits: updatedVisits };
-  
+
       updatedPatient.visits = updatedPatient.visits.map((visit, idx) => {
         if (idx >= index) {
           visit.patient = `patient-${idx}`;
           visit.dateTime = `dateTime-${idx}`;
+          visit.trialMedication = `trialMedication-${idx}`;
           visit.notes = `notes-${idx}`;
           visit.hivViralLoad = `hivViralLoad-${idx}`;
         }
         return visit;
       });
-  
+
       return updatedPatient;
     });
   };
@@ -529,12 +548,7 @@ const PatientInfo = () => {
           handleSubmit,
         }) => (
           <form onSubmit={handleSubmit}>
-            <Box
-              display="flex"
-              gap="30px"
-              flexDirection="column"
-              width="50%"
-            >
+            <Box display="flex" gap="30px" flexDirection="column" width="50%">
               <TextField
                 disabled={!isEditing}
                 fullWidth
@@ -599,7 +613,7 @@ const PatientInfo = () => {
                   name="bloodPressure"
                   sx={{ gridColumn: "span 1" }}
                 />
-                
+
                 <TextField
                   disabled={!isEditing}
                   fullWidth
@@ -700,7 +714,7 @@ const PatientInfo = () => {
                 name="familyHistory"
                 sx={{ gridColumn: "span 2" }}
               />
-              
+
               {/* <TextField
                 fullWidth
                 disabled={!isEditing}
@@ -714,157 +728,143 @@ const PatientInfo = () => {
                 sx={{ gridColumn: "3/4" }}
               /> */}
 
-              
               <Box display="flex" gap="30px">
-                    <Typography 
-                      variant="h3"
-                      fontWeight="bold"
-                    >
-                      ICD Health Codes
-                    </Typography>
-                    <Button
-                        disabled={!isEditing}
-                        color="custom"
-                        variant="contained"
-                        onClick={handleAddICD}
-                      >
-                        <AddCircleIcon/>
-                        </Button>
+                <Typography variant="h3" fontWeight="bold">
+                  ICD Health Codes
+                </Typography>
+                <Button
+                  disabled={!isEditing}
+                  color="custom"
+                  variant="contained"
+                  onClick={handleAddICD}
+                >
+                  <AddCircleIcon />
+                </Button>
               </Box>
 
-                {[...Array(numICD)].map((_, index) => (
-                  <Box display="flex" gap="30px">
-                          <TextField
-                            key={index}
-                            fullWidth
-                            disabled={!isEditing}
-                            defaultValue={
-                              patient.icdHealthCodes[index]
-                                ? patient.icdHealthCodes[index].code
-                                : ""
-                            }
-                            onBlur={handleBlur}
-                            onChange={handleChange}
-                            name={`icd-${index}`}
-                            sx={{ gridColumn: "span 2" }}
-                            label={`ICD Health Code ${index + 1}`}
-                          />
-                          {index >= 0 && (
-                            <Button
-                            disabled={!isEditing}
-                            color="error"
-                            variant="contained"
-                              onClick={() => {
-                                removeICDRow(index);
-                              }}
-                              
-                            >
-                              <HighlightOffIcon/>
-                            </Button>
-                          )}
-                          </Box>
-                        ))}
-
-                  <Box display="flex" gap="30px">
-                    <Typography 
-                      variant="h3"
-                      fontWeight="bold"
-                    >
-                      Allergies
-                    </Typography>
+              {[...Array(numICD)].map((_, index) => (
+                <Box display="flex" gap="30px">
+                  <TextField
+                    key={index}
+                    fullWidth
+                    disabled={!isEditing}
+                    defaultValue={
+                      patient.icdHealthCodes[index]
+                        ? patient.icdHealthCodes[index].code
+                        : ""
+                    }
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    name={`icd-${index}`}
+                    sx={{ gridColumn: "span 2" }}
+                    label={`ICD Health Code ${index + 1}`}
+                  />
+                  {index >= 0 && (
                     <Button
                       disabled={!isEditing}
-                        color="custom"
-                        variant="contained"
-                        onClick={handleAddAllergies}
-                      >
-                        <AddCircleIcon/>
-                        </Button>
-              </Box>
-
-                {[...Array(numAllergies)].map((_, index) => (
-                  <Box display="flex" gap="30px">
-                          <TextField
-                            key={index}
-                            fullWidth
-                            disabled={!isEditing}
-                            defaultValue={
-                              (patient?.allergies || [])[index]
-                                ? (patient?.allergies || [])[index].allergy
-                                : ""
-                            }
-                            onBlur={handleBlur}
-                            onChange={handleChange}
-                            name={`allergy-${index}`}
-                            sx={{ gridColumn: "span 2" }}
-                            label={`Allergy ${index + 1}`}
-                          />
-                          {index >= 0 && (
-                            <Button
-                            disabled={!isEditing}
-                            color="error"
-                            variant="contained"
-                              onClick={() => {
-                                removeAllergiesRow(index);
-                              }}
-                              
-                            >
-                              <HighlightOffIcon/>
-                            </Button>
-                          )}
-                          </Box>
-                        ))}
-
-            <Box display="flex" gap="30px">
-                    <Typography 
-                      variant="h3"
-                      fontWeight="bold"
+                      color="error"
+                      variant="contained"
+                      onClick={() => {
+                        removeICDRow(index);
+                      }}
                     >
-                      Current Medication
-                    </Typography>
-                    <Button
-                        disabled={!isEditing}
-                        color="custom"
-                        variant="contained"
-                        onClick={handleAddMedications}
-                      >
-                        <AddCircleIcon/>
-                        </Button>
+                      <HighlightOffIcon />
+                    </Button>
+                  )}
+                </Box>
+              ))}
+
+              <Box display="flex" gap="30px">
+                <Typography variant="h3" fontWeight="bold">
+                  Allergies
+                </Typography>
+                <Button
+                  disabled={!isEditing}
+                  color="custom"
+                  variant="contained"
+                  onClick={handleAddAllergies}
+                >
+                  <AddCircleIcon />
+                </Button>
               </Box>
 
-                {[...Array(numMedications)].map((_, index) => (
-                  <Box display="flex" gap="30px">
-                          <TextField
-                            key={index}
-                            fullWidth
-                            disabled={!isEditing}
-                            defaultValue={
-                              (patient?.currentMedications || [])[index]
-                                ? (patient?.currentMedications || [])[index].medication
-                                : ""
-                            }
-                            onBlur={handleBlur}
-                            onChange={handleChange}
-                            name={`medication-${index}`}
-                            sx={{ gridColumn: "span 2" }}
-                            label={`Medication ${index + 1}`}
-                          />
-                          {index >= 0 && (
-                            <Button
-                            disabled={!isEditing}
-                            color="error"
-                            variant="contained"
-                              onClick={() => {
-                                removeMedicationRow(index);
-                              }}
-                              
-                            >
-                              <HighlightOffIcon/>
-                            </Button>
-                          )}
-                          </Box>
-                        ))}
+              {[...Array(numAllergies)].map((_, index) => (
+                <Box display="flex" gap="30px">
+                  <TextField
+                    key={index}
+                    fullWidth
+                    disabled={!isEditing}
+                    defaultValue={
+                      (patient?.allergies || [])[index]
+                        ? (patient?.allergies || [])[index].allergy
+                        : ""
+                    }
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    name={`allergy-${index}`}
+                    sx={{ gridColumn: "span 2" }}
+                    label={`Allergy ${index + 1}`}
+                  />
+                  {index >= 0 && (
+                    <Button
+                      disabled={!isEditing}
+                      color="error"
+                      variant="contained"
+                      onClick={() => {
+                        removeAllergiesRow(index);
+                      }}
+                    >
+                      <HighlightOffIcon />
+                    </Button>
+                  )}
+                </Box>
+              ))}
 
+              <Box display="flex" gap="30px">
+                <Typography variant="h3" fontWeight="bold">
+                  Current Medication
+                </Typography>
+                <Button
+                  disabled={!isEditing}
+                  color="custom"
+                  variant="contained"
+                  onClick={handleAddMedications}
+                >
+                  <AddCircleIcon />
+                </Button>
+              </Box>
+
+              {[...Array(numMedications)].map((_, index) => (
+                <Box display="flex" gap="30px">
+                  <TextField
+                    key={index}
+                    fullWidth
+                    disabled={!isEditing}
+                    defaultValue={
+                      (patient?.currentMedications || [])[index]
+                        ? (patient?.currentMedications || [])[index].medication
+                        : ""
+                    }
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    name={`medication-${index}`}
+                    sx={{ gridColumn: "span 2" }}
+                    label={`Medication ${index + 1}`}
+                  />
+                  {index >= 0 && (
+                    <Button
+                      disabled={!isEditing}
+                      color="error"
+                      variant="contained"
+                      onClick={() => {
+                        removeMedicationRow(index);
+                      }}
+                    >
+                      <HighlightOffIcon />
+                    </Button>
+                  )}
+                </Box>
+              ))}
 
               {/* {isEditing ? (
                 <Button
@@ -905,124 +905,142 @@ const PatientInfo = () => {
               )} */}
 
               <Box display="flex" gap="30px">
-                    <Typography 
-                      variant="h3"
-                      fontWeight="bold"
-                    >
-                      Visits
-                    </Typography>
-                    <Button
-                        disabled={!isEditing}
-                        color="custom"
-                        variant="contained"
-                        onClick={handleAddVisit}
-                      >
-                        <EventAvailableIcon/>
-                        </Button>
+                <Typography variant="h3" fontWeight="bold">
+                  Visits
+                </Typography>
+                <Button
+                  disabled={!isEditing}
+                  color="custom"
+                  variant="contained"
+                  onClick={handleAddVisit}
+                >
+                  <EventAvailableIcon />
+                </Button>
               </Box>
 
-              
               {[...Array(numVisits)].map((_, index) => (
-                    <Box display="flex"
-                    gap="30px"
-                    flexDirection="column"
-                    key={index}>
-                      <Box display="flex" gap="30px">
-                        <TextField
-                          label="Patient"
-                          name={`patient-${index}`}
-                          defaultValue={
-                            (patient?.visits || [])[index]
-                              ? (patient?.visits || [])[index].patient
-                              : ""
-                          }
-                          onBlur={handleBlur}
-                          onChange={handleChange}
-                          disabled={!isEditing}
-                          fullWidth
-                        />
-                        {index >= 0 && (
-                          <Button
-                            disabled={!isEditing}
-                            color="error"
-                            variant="contained"
-                            onClick={() => {
-                              // const updatedValues = { ...initialValues };
-                              // delete updatedValues[`patient-${index}`];
-                              // delete updatedValues[`dateTime-${index}`];
-                              // delete updatedValues[`notes-${index}`];
-                              // delete updatedValues[`hivViralLoad-${index}`];
-                              // setInitialValues(updatedValues);
-                              removeVisitsRow();
-                            }}
-                          >
-                            <HighlightOffIcon />
-                          </Button>
-                        )}
-                      </Box>
-                      <Box display="flex" gap="30px">
-                        <TextField
-                          label="Date Time"
-                          name={`dateTime-${index}`}
-                          defaultValue={
-                            (patient?.visits || [])[index]
-                              ? (patient?.visits || [])[index].dateTime
-                              : ""
-                          }
-                          onBlur={handleBlur}
-                          onChange={handleChange}
-                          disabled={!isEditing}
-                          fullWidth
-                        />
-                      </Box>
-                      <Box display="flex" gap="30px">
-                        <TextField
-                          label="Notes"
-                          name={`notes-${index}`}
-                          defaultValue={
-                            (patient?.visits || [])[index]
-                              ? (patient?.visits || [])[index].notes
-                              : ""
-                          }
-                          onBlur={handleBlur}
-                          onChange={handleChange}
-                          disabled={!isEditing}
-                          fullWidth
-                        />
-                      </Box>
-                      <Box display="flex" gap="30px">
-                        <TextField
-                          label="HIV Viral Load"
-                          name={`hivViralLoad-${index}`}
-                          defaultValue={
-                            (patient?.visits || [])[index]
-                              ? (patient?.visits || [])[index].hivViralLoad
-                              : ""
-                          }
-                          onBlur={handleBlur}
-                          onChange={handleChange}
-                          disabled={!isEditing}
-                          fullWidth
-                        />
-                        
-                      </Box>
-                    </Box>
-                  ))
-              }
+                <Box
+                  display="flex"
+                  gap="30px"
+                  flexDirection="column"
+                  key={index}
+                >
+                  <Box display="flex" gap="30px">
+                    <TextField
+                      label="Patient"
+                      name={`patient-${index}`}
+                      defaultValue={
+                        (patient?.visits || [])[index]
+                          ? (patient?.visits || [])[index].patient
+                          : ""
+                      }
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      disabled={!isEditing}
+                      fullWidth
+                    />
+                    {index >= 0 && (
+                      <Button
+                        disabled={!isEditing}
+                        color="error"
+                        variant="contained"
+                        onClick={() => {
+                          // const updatedValues = { ...initialValues };
+                          // delete updatedValues[`patient-${index}`];
+                          // delete updatedValues[`dateTime-${index}`];
+                          // delete updatedValues[`notes-${index}`];
+                          // delete updatedValues[`hivViralLoad-${index}`];
+                          // setInitialValues(updatedValues);
+                          removeVisitsRow();
+                        }}
+                      >
+                        <HighlightOffIcon />
+                      </Button>
+                    )}
+                  </Box>
+                  <Box display="flex" gap="30px">
+                    <TextField
+                      label="Date Time"
+                      name={`dateTime-${index}`}
+                      defaultValue={
+                        (patient?.visits || [])[index]
+                          ? (patient?.visits || [])[index].dateTime
+                          : ""
+                      }
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      disabled={!isEditing}
+                      fullWidth
+                    />
+                  </Box>
+                  {/* Input Clinical Trial Assigned Medication Select for each visit to update dose count  */}
+                  <Box display="flex" gap="30px">
+                    <FormControl sx={{ minWidth: 175 }}>
+                      <InputLabel id="demo-simple-select-autowidth-label">
+                        Trial Medication
+                      </InputLabel>
+                      <Select
+                        labelId="demo-simple-select-autowidth-label"
+                        name={`trialMedication-${index}`}
+                        id="demo-simple-select-autowidth"
+                        value={trialMedication}
+                        onChange={handlePatientVisitFormTrialMedicationChange}
+                        autoWidth
+                        disabled={!isEditing}
+                        label="Trial Medication"
+                      >
+                        <MenuItem value="">
+                          <em>None</em>
+                        </MenuItem>
+                        <MenuItem value={10}>Twenty</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Box>
+                  <Box display="flex" gap="30px">
+                    <TextField
+                      label="Notes"
+                      name={`notes-${index}`}
+                      defaultValue={
+                        (patient?.visits || [])[index]
+                          ? (patient?.visits || [])[index].notes
+                          : ""
+                      }
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      disabled={!isEditing}
+                      fullWidth
+                    />
+                  </Box>
+                  <Box display="flex" gap="30px">
+                    <TextField
+                      label="HIV Viral Load"
+                      name={`hivViralLoad-${index}`}
+                      defaultValue={
+                        (patient?.visits || [])[index]
+                          ? (patient?.visits || [])[index].hivViralLoad
+                          : ""
+                      }
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      disabled={!isEditing}
+                      fullWidth
+                    />
+                  </Box>
+                </Box>
+              ))}
 
-            <Box display="flex" gap="30px" width = "50%">
-              <TextField
-                fullWidth
-                disabled={!isEditing}
-                label="Doses"
-                defaultValue={patient.doses}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                name="doses"
-                sx={{ gridColumn: "span 1" }}
-              />
-            </Box>
-            
+              <Box display="flex" gap="30px" width="50%">
+                <TextField
+                  fullWidth
+                  disabled={!isEditing}
+                  label="Doses"
+                  defaultValue={patient.doses}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  name="doses"
+                  sx={{ gridColumn: "span 1" }}
+                />
+              </Box>
 
               {/* {patient.visits &&
                 patient.visits.length > 0 &&
@@ -1076,8 +1094,6 @@ const PatientInfo = () => {
                     </Box>
                   );
                 })} */}
-
-
             </Box>
 
             <Box display="flex" justifyContent="start" mt="20px">
