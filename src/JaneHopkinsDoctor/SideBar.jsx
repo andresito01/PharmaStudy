@@ -35,7 +35,7 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
 };
 
 
-const SideBar = () => {
+const SideBar = ({ isSidebar }) => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const [isCollapsed, setIsCollapsed] = useState(false);
@@ -49,7 +49,7 @@ const SideBar = () => {
       }
     }, []);
     
-    return (
+    return isSidebar ? (
         <Box
           ref={sidebarRef}
           sx={{
@@ -126,8 +126,8 @@ const SideBar = () => {
     
               <Box paddingLeft={isCollapsed ? undefined : "10%"}>
                 <Item
-                  title="Dashboard"
-                  to="/janehopkinsdoctor"
+                  title="Home"
+                  to="/janehopkinsdoctor/patient"
                   icon={<HomeOutlinedIcon />}
                   selected={selected}
                   setSelected={setSelected}
@@ -179,7 +179,7 @@ const SideBar = () => {
             </Menu>
           </ProSidebar>
         </Box>
-    );
+    ) : null;
 };
     
 export default SideBar;

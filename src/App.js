@@ -1,7 +1,7 @@
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./theme";
-import { useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Routes, Route, useLocation } from "react-router-dom";
 import TopBar from "./scenes/global/TopBar";
 import Team from "./scenes/team";
 import Form from "./scenes/form";
@@ -15,30 +15,36 @@ import AddPatientJaneHopkins from "./scenes/addPatient";
 import JaneHopkinsAdminView from "./JaneHopkinsAdmin/JaneHopkinsAdminView";
 import PatientInfo from "./JaneHopkinsDoctor/PatientInfo";
 import JaneHopkinsAdminPatient from "./JaneHopkinsAdmin/JaneHopkinsAdminPatient";
+import JaneHopkinsDoctorLogin from "./JaneHopkinsDoctor/JaneHopkinsDoctorLogin";
+import JaneHopkinsAdminLogin from "./JaneHopkinsAdmin/JaneHopkinsAdminLogin";
 // FDA Imports
 import FDAView from "./FDA/FDAView.js";
 import FDAPatient from "./FDA/scenes/patient";
+import FDALogin from "./FDA/FDALogin";
 // Bavaria imports
 import BavariaViewDrugView from "./Bavaria/BavariaViewDrugView";
 import BavariaView from "./Bavaria/BavariaView";
 import RealtimeTrials from "./Bavaria/RealtimeTrials";
-import BavariaPatient from "./Bavaria/scenes/patient";
+import BavariaLogin from "./Bavaria/BavariaLogin";
+import PostTrialReport from "./Bavaria/PostTrialReport";
 
 function App() {
   const [theme, colorMode] = useMode();
-  const [isSidebar, setIsSidebar] = useState(false);
+  const [isSidebar, setIsSidebar] = useState(true);
+  const location = useLocation();
 
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <TopBar setIsSidebar={setIsSidebar} />
+        <TopBar isSidebar={isSidebar} setIsSidebar={setIsSidebar} />
         <div className="app">
           <Routes>
             <Route path="/" element={<ViewNavigation />} />
+            <Route path="/janehopkinsdoctorlogin" element={<JaneHopkinsDoctorLogin />} />
             <Route
               path="/janehopkinsdoctor"
-              element={<JaneHopkinsDoctorView />}
+              element={<JaneHopkinsDoctorView isSidebar={isSidebar}/>}
             >
               <Route path="" element={<JaneHopkinsPatient />} />
               <Route path="patient" element={<JaneHopkinsPatient />} />
@@ -47,12 +53,14 @@ function App() {
               <Route path="calendar" element={<Calendar />} />
               <Route path="faq" element={<FAQ />} />
             </Route>
+            <Route path="/janehopkinsadminlogin" element={<JaneHopkinsAdminLogin />} />
             <Route path="/janehopkinsadmin" element={<JaneHopkinsAdminView />}>
               <Route path="" element={<JaneHopkinsAdminPatient />} />
               <Route path="team" element={<Team />} />
               <Route path="form" element={<Form />} />
               <Route path="faq" element={<FAQ />} />
             </Route>
+            <Route path="/fdalogin" element={<FDALogin />} />
             <Route path="/fda" element={<FDAView />}>
               <Route path="" element={<FDAPatient />} />
               <Route path="team" element={<Team />} />
@@ -62,9 +70,11 @@ function App() {
               <Route path="patient" element={<FDAPatient />} />
               <Route path="invoices" />
             </Route>
+            <Route path="/bavarialogin" element={<BavariaLogin />} />
             <Route path="/bavaria" element={<BavariaView />}>
               <Route path="" element={<BavariaViewDrugView />} />
               <Route path="realtimetrials" element={<RealtimeTrials />} />
+              <Route path="posttrialreport" element={<PostTrialReport />} />
               <Route path="faq" element={<FAQ />} />
             </Route>
           </Routes>
