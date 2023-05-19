@@ -542,11 +542,6 @@ const Patient = () => {
             );
           },
         },
-        {
-          field: "hivViralLoad",
-          headerName: "HIV READING",
-          flex: 1,
-        },
       ];
 
       return (

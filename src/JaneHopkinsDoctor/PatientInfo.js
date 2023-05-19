@@ -31,12 +31,12 @@ const PatientInfo = () => {
   const [numVisits, setNumVisits] = useState(1);
 
   // Visit Select for Trial Medication
-  const [trialMedication, setTrialMedication] = useState("");
+  // const [trialMedication, setTrialMedication] = useState("");
 
-  const handlePatientVisitFormTrialMedicationChange = (event) => {
-    setTrialMedication(event.target.value);
-    console.log(event.target.value);
-  };
+  // const handlePatientVisitFormTrialMedicationChange = (event) => {
+  //   setTrialMedication(event.target.value);
+  //   console.log(event.target.value);
+  // };
 
   const { entities } = useJaneHopkins();
   useEffect(() => {
@@ -148,7 +148,7 @@ const PatientInfo = () => {
         ...acc,
         [`patient-${index}`]: visit.patient,
         [`dateTime-${index}`]: visit.dateTime,
-        [`trialMedication-${index}`]: visit.trialMedication,
+        //[`trialMedication-${index}`]: visit.trialMedication,
         [`notes-${index}`]: visit.notes,
         [`hivViralLoad-${index}`]: visit.hivViralLoad,
       }),
@@ -210,14 +210,14 @@ const PatientInfo = () => {
       const visitData = [];
       for (let i = 0; i < numVisits; i++) {
         const dateTimeKey = `dateTime-${i}`;
-        const trialMedicationKey = `trialMedication-${i}`;
+        //const trialMedicationKey = `trialMedication-${i}`;
         const notesKey = `notes-${i}`;
         const hivViralLoadKey = `hivViralLoad-${i}`;
 
         const visit = {
           patient: patient._id,
           dateTime: values[dateTimeKey],
-          trialMedication: values[trialMedicationKey],
+          //trialMedication: values[trialMedicationKey],
           notes: values[notesKey],
           hivViralLoad: values[hivViralLoadKey],
         };
@@ -520,7 +520,7 @@ const PatientInfo = () => {
         if (idx >= index) {
           visit.patient = `patient-${idx}`;
           visit.dateTime = `dateTime-${idx}`;
-          visit.trialMedication = `trialMedication-${idx}`;
+          //visit.trialMedication = `trialMedication-${idx}`;
           visit.notes = `notes-${idx}`;
           visit.hivViralLoad = `hivViralLoad-${idx}`;
         }
@@ -974,7 +974,7 @@ const PatientInfo = () => {
                     />
                   </Box>
                   {/* Input Clinical Trial Assigned Medication Select for each visit to update dose count  */}
-                  <Box display="flex" gap="30px">
+                  {/* <Box display="flex" gap="30px">
                     <FormControl sx={{ minWidth: 175 }}>
                       <InputLabel id="demo-simple-select-autowidth-label">
                         Trial Medication
@@ -995,7 +995,7 @@ const PatientInfo = () => {
                         <MenuItem value={10}>Twenty</MenuItem>
                       </Select>
                     </FormControl>
-                  </Box>
+                  </Box> */}
                   <Box display="flex" gap="30px">
                     <TextField
                       label="Notes"
@@ -1127,11 +1127,7 @@ const PatientInfo = () => {
                   Edit Patient
                 </Button>
               )}
-              <Snackbar
-                open={open}
-                autoHideDuration={2000}
-                onClose={onClose}
-              >
+              <Snackbar open={open} autoHideDuration={2000} onClose={onClose}>
                 <Alert
                   onClose={onClose}
                   severity="success"
